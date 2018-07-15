@@ -21,11 +21,13 @@ union command_id_union {
 };
 
 typedef union razer_report {
-    unsigned char  Data[256];
+    unsigned char Data[91];
     struct {
+        unsigned char report_id; /* required by hidraw or something - 0x00 */
         unsigned char status;
         union transaction_id_union transaction_id; /* */
-        unsigned short remaining_packets; /* Big Endian */
+        unsigned char remaining_packets; /* Big Endian */
+        unsigned char remaining_packets2; /* should be unsigned short - but breaks stuff */
         unsigned char protocol_type; /*0x0*/
         unsigned char data_size;
         unsigned char command_class;
@@ -51,7 +53,7 @@ unsigned char razer_calculate_crc(razer_report *report)
     unsigned char *_report = (unsigned char *) report;
 
     unsigned int i;
-    for (i = 2; i < 88; i++) {
+    for (i = 3; i < 89; i++) {
         crc ^= _report[i];
     }
 
@@ -94,10 +96,39 @@ int main(int argc, char *argv[])
     hid_device *handle;
     int i;
 
+    struct hid_device_info *devs, *cur_dev;
+
+    if (hid_init())
+        return -1;
+
+    devs = hid_enumerate(0x1532, 0x0043);
+    cur_dev = devs;
+    while (cur_dev) {
+        printf("Device Found\n  type: %04hx %04hx\n  path: %s\n  serial_number: %ls", cur_dev->vendor_id, cur_dev->product_id, cur_dev->path, cur_dev->serial_number);
+        printf("\n");
+        printf("  Manufacturer: %ls\n", cur_dev->manufacturer_string);
+        printf("  Product:      %ls\n", cur_dev->product_string);
+//         printf("  Release:      %hx\n", cur_dev->release_number);
+        printf("  Interface:    %d\n",  cur_dev->interface_number);
+        printf("\n");
+        if (cur_dev->interface_number == 1) { // See https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
+            break;
+        }
+        cur_dev = cur_dev->next;
+    }
+    char *dev_path = strdup(cur_dev->path);
+    if (dev_path == NULL) {
+        printf("failed to copy path string\n");
+        return 1;
+    }
+    hid_free_enumeration(devs);
+
     // Open the device using the VID, PID,
     // and optionally the Serial number.
 //     handle = hid_open(0x1532, 0x0c00, NULL);
-    handle = hid_open(0x1532, 0x0043, NULL);
+//     handle = hid_open(0x1532, 0x0043, NULL);
+    printf("Path: %s\n", dev_path);
+    handle = hid_open_path(dev_path);
     if (!handle) {
         printf("unable to open device\n");
         return 1;
@@ -118,12 +149,12 @@ int main(int argc, char *argv[])
     printf("Product String: %ls\n", wstr);
 
     // Read the Serial Number String
-    wstr[0] = 0x0000;
-    res = hid_get_serial_number_string(handle, wstr, MAX_STR);
-    if (res < 0)
-        printf("Unable to read serial number string\n");
-    printf("Serial Number String: %ls", wstr);
-    printf("\n");
+//     wstr[0] = 0x0000;
+//     res = hid_get_serial_number_string(handle, wstr, MAX_STR);
+//     if (res < 0)
+//         printf("Unable to read serial number string\n");
+//     printf("Serial Number String: %ls", wstr);
+//     printf("\n");
 
     // Send a Feature Report to the device
     razer_report report;
@@ -137,29 +168,44 @@ int main(int argc, char *argv[])
 //     report.command_id.id = 0x82;
 //     report.data_size = 0x16;
 
-    const char *buf2 = "100";
-    unsigned char brightness = (unsigned char)strtoul(buf2, NULL, 10);
+    unsigned char brightness = 0xff; // 0x00 -> 0xff
+//     brightness = 0x1A; // 26 in hex
+    printf("brightness: 0x%02X\n", brightness);
 
     report = razer_chroma_standard_set_led_brightness(0x01, 0x04, brightness);
 
     report.razer_report_inner.crc = razer_calculate_crc(&report);
+
+//     ioctl(handle->device_handle, HIDIOCSFEATURE(length), data);
+
     //int razer_get_usb_response(struct usb_device *usb_dev, uint report_index, struct razer_report* request_report, uint response_index, struct razer_report* response_report, ulong wait_min, ulong wait_max)
-    res = hid_send_feature_report(handle, report.Data, 90);
+    printf("0x%02X (0xff)\n", report.Data[2]);
+    printf("0x%02X (0x00)\n", report.Data[3]);
+    printf("0x%02X (0x00)\n", report.Data[4]);
+    printf("0x%02X (0x00)\n", report.Data[5]);
+    printf("0x%02X (0x03)\n", report.Data[6]);
+    printf("0x%02X (0x03)\n", report.Data[7]);
+
+//     report.Data[2] = 0x77; // transaction id
+//     report.Data[3] = 0xff; // ??????
+//     report.Data[4] = 0xcc; // remaining
+//     report.Data[5] = 0xaa; // remaining
+//     report.Data[6] = 0x99; // protocol type
+
+    res = hid_send_feature_report(handle, report.Data, 91);
     if (res < 0) {
         printf("Unable to send a feature report.\n");
-        printf("%ls\n", hid_error(handle));
     }
 
     // Read a Feature Report from the device
-    res = hid_get_feature_report(handle, buf, sizeof(buf));
-    if (res < 0) {
-        printf("Unable to get a feature report.\n");
-        printf("%ls\n", hid_error(handle));
-    } else {
-        // Print out the returned buffer.
-        printf("Feature Report\n   ");
-        for (i = 0; i < res; i++)
-            printf("%02hhx ", buf[i]);
-        printf("\n");
-    }
+//     res = hid_get_feature_report(handle, buf, sizeof(buf));
+//     if (res < 0) {
+//         printf("Unable to get a feature report.\n");
+//     } else {
+//         // Print out the returned buffer.
+//         printf("Feature Report\n   ");
+//         for (i = 0; i < res; i++)
+//             printf("%02hhx ", buf[i]);
+//         printf("\n");
+//     }
 }
