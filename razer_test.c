@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <hidapi.h>
+
+#include "razer_test.h"
 
 union transaction_id_union {
     unsigned char id;
@@ -86,15 +89,21 @@ razer_report razer_chroma_standard_set_led_brightness(unsigned char variable_sto
     return report;
 }
 
-void razer_send_report(hid_device *handle, razer_report report) {
+razer_report razer_chroma_standard_get_serial()
+{
+    return get_razer_report(0x00, 0x82, 0x16);
+}
+
+int razer_send_report(hid_device *handle, razer_report report, razer_report *response_report)
+{
     int res;
     unsigned char buf[91];
-    razer_report response_report;
     report.razer_report_inner.crc = razer_calculate_crc(&report);
 
     res = hid_send_feature_report(handle, report.Data, 91);
     if (res < 0) {
         printf("Unable to send a feature report.\n");
+        return 1;
     }
 
     // Read a Feature Report from the device
@@ -102,20 +111,22 @@ void razer_send_report(hid_device *handle, razer_report report) {
     res = hid_get_feature_report(handle, buf, sizeof(buf));
     if (res < 0) {
         printf("Unable to get a feature report.\n");
-    } else {
-        // Print out the returned buffer.
+        return 2;
+    }
+    // Print out the returned buffer.
 //         printf("Feature Report\n   ");
 //         for (i = 0; i < res; i++)
 //             printf("%02hhx ", buf[i]);
 //         printf("\n");
-        memcpy(response_report.Data, buf, sizeof(razer_report));
-        printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
-               response_report.razer_report_inner.status,
-               response_report.razer_report_inner.transaction_id.id,
-               response_report.razer_report_inner.data_size,
-               response_report.razer_report_inner.command_class,
-               response_report.razer_report_inner.command_id.id);
-    }
+
+    memcpy(response_report->Data, buf, sizeof(response_report->Data));
+    printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
+            response_report->razer_report_inner.status,
+            response_report->razer_report_inner.transaction_id.id,
+            response_report->razer_report_inner.data_size,
+            response_report->razer_report_inner.command_class,
+            response_report->razer_report_inner.command_id.id);
+    return 0;
 }
 
 
@@ -179,14 +190,28 @@ int main(int argc, char *argv[])
     printf("Product String: %ls\n", wstr);
 
     // Send a Feature Report to the device
+//     unsigned char brightness = 0xff; // 0x00 -> 0xff
+//     brightness = 0x1A; // 26 in hex
+//     printf("Setting brightness: 0x%02X\n", brightness);
+
     razer_report report;
-    memset(&report, 0, sizeof(razer_report));
+    razer_report response_report;
 
-    unsigned char brightness = 0xff; // 0x00 -> 0xff
-    brightness = 0x1A; // 26 in hex
-    printf("Setting brightness: 0x%02X\n", brightness);
+    report = razer_chroma_standard_get_serial();
+    razer_send_report(handle, report, &response_report);
+    printf("%s\n", response_report.razer_report_inner.arguments);
+    return 1;
+    while (1) {
+        report = razer_chroma_standard_set_led_brightness(STORE_VARSTORE, LED_LOGO, 0xFF);
 
-    report = razer_chroma_standard_set_led_brightness(0x01, 0x04, brightness);
+        razer_send_report(handle, report, &response_report);
 
-    razer_send_report(handle, report);
+        usleep(100000); // 0.1 seconds
+
+        report = razer_chroma_standard_set_led_brightness(STORE_VARSTORE, LED_LOGO, 0x10);
+
+        razer_send_report(handle, report, &response_report);
+
+        usleep(1000000); // 0.1 seconds
+    }
 }
