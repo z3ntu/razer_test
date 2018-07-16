@@ -86,15 +86,45 @@ razer_report razer_chroma_standard_set_led_brightness(unsigned char variable_sto
     return report;
 }
 
+void razer_send_report(hid_device *handle, razer_report report) {
+    int res;
+    unsigned char buf[91];
+    razer_report response_report;
+    report.razer_report_inner.crc = razer_calculate_crc(&report);
+
+    res = hid_send_feature_report(handle, report.Data, 91);
+    if (res < 0) {
+        printf("Unable to send a feature report.\n");
+    }
+
+    // Read a Feature Report from the device
+
+    res = hid_get_feature_report(handle, buf, sizeof(buf));
+    if (res < 0) {
+        printf("Unable to get a feature report.\n");
+    } else {
+        // Print out the returned buffer.
+//         printf("Feature Report\n   ");
+//         for (i = 0; i < res; i++)
+//             printf("%02hhx ", buf[i]);
+//         printf("\n");
+        memcpy(response_report.Data, buf, sizeof(razer_report));
+        printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
+               response_report.razer_report_inner.status,
+               response_report.razer_report_inner.transaction_id.id,
+               response_report.razer_report_inner.data_size,
+               response_report.razer_report_inner.command_class,
+               response_report.razer_report_inner.command_id.id);
+    }
+}
+
 
 int main(int argc, char *argv[])
 {
     int res;
-    unsigned char buf[91];
 #define MAX_STR 255
     wchar_t wstr[MAX_STR];
     hid_device *handle;
-    int i;
 
     /*struct hid_device_info *devs, *cur_dev;*/
 
@@ -153,27 +183,10 @@ int main(int argc, char *argv[])
     memset(&report, 0, sizeof(razer_report));
 
     unsigned char brightness = 0xff; // 0x00 -> 0xff
-//     brightness = 0x1A; // 26 in hex
+    brightness = 0x1A; // 26 in hex
     printf("Setting brightness: 0x%02X\n", brightness);
 
     report = razer_chroma_standard_set_led_brightness(0x01, 0x04, brightness);
 
-    report.razer_report_inner.crc = razer_calculate_crc(&report);
-
-    res = hid_send_feature_report(handle, report.Data, 91);
-    if (res < 0) {
-        printf("Unable to send a feature report.\n");
-    }
-
-    // Read a Feature Report from the device
-    res = hid_get_feature_report(handle, buf, sizeof(buf));
-    if (res < 0) {
-        printf("Unable to get a feature report.\n");
-    } else {
-        // Print out the returned buffer.
-        printf("Feature Report\n   ");
-        for (i = 0; i < res; i++)
-            printf("%02hhx ", buf[i]);
-        printf("\n");
-    }
+    razer_send_report(handle, report);
 }
