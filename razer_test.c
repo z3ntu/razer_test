@@ -96,39 +96,39 @@ int main(int argc, char *argv[])
     hid_device *handle;
     int i;
 
-//     struct hid_device_info *devs, *cur_dev;
+    /*struct hid_device_info *devs, *cur_dev;*/
 
     if (hid_init())
         return -1;
 
-//     devs = hid_enumerate(0x1532, 0x0043);
-//     cur_dev = devs;
-//     while (cur_dev) {
-//         printf("Device Found\n  type: %04hx %04hx\n  path: %s\n  serial_number: %ls", cur_dev->vendor_id, cur_dev->product_id, cur_dev->path, cur_dev->serial_number);
-//         printf("\n");
-//         printf("  Manufacturer: %ls\n", cur_dev->manufacturer_string);
-//         printf("  Product:      %ls\n", cur_dev->product_string);
-// //         printf("  Release:      %hx\n", cur_dev->release_number);
-//         printf("  Interface:    %d\n",  cur_dev->interface_number);
-//         printf("\n");
-//         if (cur_dev->interface_number == 2) { // See https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
-//             break;
-//         }
-//         cur_dev = cur_dev->next;
-//     }
-//     char *dev_path = strdup(cur_dev->path);
-//     if (dev_path == NULL) {
-//         printf("failed to copy path string\n");
-//         return 1;
-//     }
-//     hid_free_enumeration(devs);
+    /*devs = hid_enumerate(0x1532, 0x0043);
+    cur_dev = devs;
+    while (cur_dev) {
+        printf("Device Found\n  type: %04hx %04hx\n  path: %s\n  serial_number: %ls", cur_dev->vendor_id, cur_dev->product_id, cur_dev->path, cur_dev->serial_number);
+        printf("\n");
+        printf("  Manufacturer: %ls\n", cur_dev->manufacturer_string);
+        printf("  Product:      %ls\n", cur_dev->product_string);
+        printf("  Release:      %hx\n", cur_dev->release_number);
+        printf("  Interface:    %d\n",  cur_dev->interface_number);
+        printf("\n");
+        if (cur_dev->interface_number == 2) { // See https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
+            break;
+        }
+        cur_dev = cur_dev->next;
+    }
+    char *dev_path = strdup(cur_dev->path);
+    if (dev_path == NULL) {
+        printf("failed to copy path string\n");
+        return 1;
+    }
+    hid_free_enumeration(devs);*/
 
     // Open the device using the VID, PID,
     // and optionally the Serial number.
 //     handle = hid_open(0x1532, 0x0c00, NULL);
     handle = hid_open(0x1532, 0x0043, NULL);
-//     printf("Path: %s\n", dev_path);
-//     handle = hid_open_path(dev_path);
+    /*printf("Path: %s\n", dev_path);
+    handle = hid_open_path(dev_path);*/
     if (!handle) {
         printf("unable to open device\n");
         return 1;
