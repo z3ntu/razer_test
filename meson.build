@@ -1,6 +1,6 @@
-project('razer_test', 'c')
+project('razer_test', 'cpp')
 
-src = ['razer_test.c']
+src = ['razer_test.cpp', 'razerdevice.cpp', 'razerreport.cpp']
 
 if host_machine.system() == 'linux'
     hidapi = dependency('hidapi-hidraw')
