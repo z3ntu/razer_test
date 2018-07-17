@@ -200,18 +200,18 @@ int main(int argc, char *argv[])
     report = razer_chroma_standard_get_serial();
     razer_send_report(handle, report, &response_report);
     printf("%s\n", response_report.razer_report_inner.arguments);
-    return 1;
+//     return 1;
     while (1) {
         report = razer_chroma_standard_set_led_brightness(STORE_VARSTORE, LED_LOGO, 0xFF);
 
         razer_send_report(handle, report, &response_report);
 
-        usleep(100000); // 0.1 seconds
+        usleep(200000); // 0.2 seconds
 
         report = razer_chroma_standard_set_led_brightness(STORE_VARSTORE, LED_LOGO, 0x10);
 
         razer_send_report(handle, report, &response_report);
 
-        usleep(1000000); // 0.1 seconds
+        usleep(200000); // 0.2 seconds
     }
 }
