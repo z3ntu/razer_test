@@ -16,32 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERDEVICE_H
-#define RAZERDEVICE_H
-
-#include <hidapi.h>
-
-#include "razerreport.h"
-
-/**
- * @todo write docs
- */
-class RazerDevice
-{
-public:
-    /**
-     * Default constructor
-     */
-    RazerDevice(unsigned short vendor_id, unsigned short product_id);
-    bool openDeviceHandle();
-    int sendReport(razer_report report, razer_report *response_report);
-
-private:
-    hid_device *handle;
-    unsigned short vendor_id;
-    unsigned short product_id;
-    int deviceLeds[16]; // TODO
-
-};
-
-#endif // RAZERDEVICE_H
+#include "razerled.h"

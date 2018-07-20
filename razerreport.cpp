@@ -19,6 +19,7 @@
 #include <string.h>
 
 #include "razerreport.h"
+#include "razerled.h"
 
 /**
  * Calculate the checksum for the usb message
@@ -58,12 +59,44 @@ razer_report get_razer_report(unsigned char command_class, unsigned char command
     return new_report;
 }
 
-razer_report razer_chroma_standard_set_led_brightness(unsigned char variable_storage, unsigned char led_id, unsigned char brightness)
+razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness)
 {
     razer_report report = get_razer_report(0x03, 0x03, 0x03);
     report.arguments[0] = variable_storage;
     report.arguments[1] = led_id;
     report.arguments[2] = brightness;
+
+    return report;
+}
+
+razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerEffectId led_effect)
+{
+    struct razer_report report = get_razer_report(0x03, 0x02, 0x03);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
+    report.arguments[2] = led_effect;
+
+    return report;
+}
+
+razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, struct razer_rgb *rgb1)
+{
+    struct razer_report report = get_razer_report(0x03, 0x01, 0x05);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
+    report.arguments[2] = rgb1->r;
+    report.arguments[3] = rgb1->g;
+    report.arguments[4] = rgb1->b;
+
+    return report;
+}
+
+razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerLedState led_state)
+{
+    struct razer_report report = get_razer_report(0x03, 0x00, 0x03);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
+    report.arguments[2] = led_state;
 
     return report;
 }

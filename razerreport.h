@@ -19,37 +19,26 @@
 #ifndef RAZERREPORT_H
 #define RAZERREPORT_H
 
-// LED STATE
-#define STATE_OFF 0x00
-#define STATE_ON  0x01
+#include "razerled.h"
 
-// LED STORAGE Options
-#define STORE_NOSTORE       0x00
-#define STORE_VARSTORE      0x01
+enum RazerVarstore {
+    NOSTORE = 0x00,
+    STORE = 0x01
+};
 
-// LED definitions
-#define LED_SCROLL_WHEEL    0x01
-#define LED_BATTERY         0x03
-#define LED_LOGO            0x04
-#define LED_BACKLIGHT       0x05
-#define LED_MACRO           0x07
-#define LED_GAME            0x08
-#define LED_PROFILE_RED     0x0C
-#define LED_PROFILE_GREEN   0x0D
-#define LED_PROFILE_BLUE    0x0E
+enum RazerStatus {
+    CMD_NEW = 0x00,
+    CMD_BUSY = 0x01,
+    CMD_SUCCESSFUL = 0x02,
+    CMD_FAILURE = 0x03,
+    CMD_NO_RESPONSE_TIMEOUT = 0x04,
+    CMD_NOT_SUPPORTED = 0x05
+};
 
-// LED Effect definitions
-#define LED_EFFECT_STATIC           0x00
-#define LED_EFFECT_BLINKING         0x01
-#define LED_EFFECT_PULSATING        0x02
-#define LED_EFFECT_SPECTRUM_CYCLING 0x04
+struct razer_rgb {
+    unsigned char r,g,b;
+};
 
-// Report Responses
-#define RAZER_CMD_BUSY          0x01
-#define RAZER_CMD_SUCCESSFUL    0x02
-#define RAZER_CMD_FAILURE       0x03
-#define RAZER_CMD_TIMEOUT       0x04
-#define RAZER_CMD_NOT_SUPPORTED 0x05
 
 union transaction_id_union {
     unsigned char id;
@@ -84,7 +73,10 @@ typedef struct razer_report {
 
 unsigned char razer_calculate_crc(razer_report *report);
 razer_report get_razer_report(unsigned char command_class, unsigned char command_id, unsigned char data_size);
-razer_report razer_chroma_standard_set_led_brightness(unsigned char variable_storage, unsigned char led_id, unsigned char brightness);
+razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness);
+razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerEffectId led_effect);
+razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, struct razer_rgb *rgb1);
+razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerLedState led_state);
 razer_report razer_chroma_standard_get_serial();
 
 #endif // RAZERREPORT_H

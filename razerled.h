@@ -16,32 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERDEVICE_H
-#define RAZERDEVICE_H
+#ifndef RAZERLED_H
+#define RAZERLED_H
 
-#include <hidapi.h>
+enum RazerLedId {
+    ScrollWheelLED = 0x01,
+    BatteryLED = 0x03,
+    LogoLED = 0x04,
+    BacklightLED = 0x05,
+    MacroRecordingLED = 0x07,
+    GameModeLED = 0x08,
+    KeymapRedLED = 0x0C,
+    KeymapGreenLED = 0x0D,
+    KeymapBlueLED = 0x0E
+};
 
-#include "razerreport.h"
+enum RazerLedState {
+    Off = 0x00,
+    On = 0x01
+};
+
+enum RazerEffectId {
+    Static = 0x00,
+    Blinking = 0x01,
+    Pulsating = 0x02, // Breathing
+    Spectrum = 0x04
+};
 
 /**
  * @todo write docs
  */
-class RazerDevice
+class RazerLED
 {
-public:
-    /**
-     * Default constructor
-     */
-    RazerDevice(unsigned short vendor_id, unsigned short product_id);
-    bool openDeviceHandle();
-    int sendReport(razer_report report, razer_report *response_report);
-
 private:
-    hid_device *handle;
-    unsigned short vendor_id;
-    unsigned short product_id;
-    int deviceLeds[16]; // TODO
-
+    RazerLedId ledId;
 };
 
-#endif // RAZERDEVICE_H
+#endif // RAZERLED_H
