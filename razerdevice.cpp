@@ -57,6 +57,7 @@ int RazerDevice::sendReport(razer_report report, razer_report *response_report)
     usleep(800);
 
     // Read a Feature Report from the device
+    buf[0] = 0x00; // report id
     res = hid_get_feature_report(handle, buf, sizeof(buf));
     if (res < 0) {
         printf("Unable to get a feature report.\n");

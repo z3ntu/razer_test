@@ -73,10 +73,18 @@ typedef struct razer_report {
 
 unsigned char razer_calculate_crc(razer_report *report);
 razer_report get_razer_report(unsigned char command_class, unsigned char command_id, unsigned char data_size);
+
 razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness);
+razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_storage, RazerLedId led_id);
 razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerEffectId led_effect);
+razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage, RazerLedId led_id);
 razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, struct razer_rgb *rgb1);
+razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, RazerLedId led_id);
 razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerLedState led_state);
+razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage, RazerLedId led_id);
+
+razer_report razer_chroma_standard_get_firmware_version();
 razer_report razer_chroma_standard_get_serial();
+razer_report razer_chroma_standard_get_device_mode();
 
 #endif // RAZERREPORT_H

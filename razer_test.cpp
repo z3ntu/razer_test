@@ -25,13 +25,19 @@ int main(int argc, char *argv[])
     razer_report response_report;
     printf("sizeof(razer_report): %lu\n", sizeof(razer_report)); // should be 91
 
+    // Serial
     report = razer_chroma_standard_get_serial();
     razerDevice.sendReport(report, &response_report);
     printf("Serial: ");
     printf("%s\n", response_report.arguments);
 
+    // Firmware version
+    report = razer_chroma_standard_get_firmware_version();
+    razerDevice.sendReport(report, &response_report);
+    printf("Firmware version: v%d.%d\n", response_report.arguments[0], response_report.arguments[1]);
+
+    // LED ID List
     razer_report response_report2;
-    memset(&response_report2, 0, sizeof(razer_report));
     report = get_razer_report(0x03, 0x89, 0x16); // LED ID List
     razerDevice.sendReport(report, &response_report2);
     printf("LED ID List: ");
@@ -40,6 +46,7 @@ int main(int argc, char *argv[])
     printf("\n");
     return 0;
 
+    // Set RGB (#FF00FF)
     struct razer_rgb rgb;
     rgb.r = 0xFF;
     rgb.g = 0x00;
@@ -48,10 +55,12 @@ int main(int argc, char *argv[])
     razerDevice.sendReport(report, &response_report);
     usleep(200000); // 0.2 seconds
 
+    // Set effect (static)
     report = razer_chroma_standard_set_led_effect(RazerVarstore::STORE, RazerLedId::LogoLED, RazerEffectId::Static);
     razerDevice.sendReport(report, &response_report);
     usleep(200000); // 0.2 seconds
 
+    // Set state to on
     report = razer_chroma_standard_set_led_state(RazerVarstore::STORE, RazerLedId::LogoLED, RazerLedState::On);
     razerDevice.sendReport(report, &response_report);
     usleep(200000); // 0.2 seconds

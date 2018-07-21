@@ -69,12 +69,30 @@ razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_sto
     return report;
 }
 
+razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_storage, RazerLedId led_id)
+{
+    struct razer_report report = get_razer_report(0x03, 0x83, 0x03);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
+
+    return report;
+}
+
 razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerEffectId led_effect)
 {
     struct razer_report report = get_razer_report(0x03, 0x02, 0x03);
     report.arguments[0] = variable_storage;
     report.arguments[1] = led_id;
     report.arguments[2] = led_effect;
+
+    return report;
+}
+
+razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage, RazerLedId led_id)
+{
+    struct razer_report report = get_razer_report(0x03, 0x82, 0x03);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
 
     return report;
 }
@@ -91,6 +109,14 @@ razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, R
     return report;
 }
 
+razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, RazerLedId led_id)
+{
+    struct razer_report report = get_razer_report(0x03, 0x81, 0x05);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
+    return report;
+}
+
 razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerLedState led_state)
 {
     struct razer_report report = get_razer_report(0x03, 0x00, 0x03);
@@ -101,7 +127,26 @@ razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage,
     return report;
 }
 
+razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage, RazerLedId led_id)
+{
+    struct razer_report report = get_razer_report(0x03, 0x80, 0x03);
+    report.arguments[0] = variable_storage;
+    report.arguments[1] = led_id;
+
+    return report;
+}
+
+razer_report razer_chroma_standard_get_firmware_version()
+{
+    return get_razer_report(0x00, 0x81, 0x02);
+}
+
 razer_report razer_chroma_standard_get_serial()
 {
     return get_razer_report(0x00, 0x82, 0x16);
+}
+
+razer_report razer_chroma_standard_get_device_mode()
+{
+    return get_razer_report(0x00, 0x84, 0x02);
 }
