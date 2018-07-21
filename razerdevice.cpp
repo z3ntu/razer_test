@@ -49,7 +49,14 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
 
     // Copy request_report into req_buf, shifted by 1 byte to the right for the report number
     req_buf[0] = 0x00; // report number
-    memcpy(&req_buf[1], &request_report, sizeof(request_report));
+    memcpy(&req_buf[1], &request_report, sizeof(razer_report));
+
+#ifdef DEBUG
+    printf("Request report: ");
+    for (int i = 1; i < sizeof(razer_report)+1; i++)
+        printf("%02hhx ", req_buf[i]);
+    printf("\n");
+#endif
 
     // Send the Feature Report to the device
     res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
@@ -70,14 +77,15 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         return 2;
     }
 
-    // Print out the returned buffer.
-//         printf("Feature Report\n   ");
-//         for (i = 0; i < res; i++)
-//             printf("%02hhx ", buf[i]);
-//         printf("\n");
+#ifdef DEBUG
+    printf("Response report: ");
+    for (int i = 1; i < sizeof(razer_report)+1; i++)
+        printf("%02hhx ", res_buf[i]);
+    printf("\n");
+#endif
 
     // Copy returned data into the response_report, minus the report number
-    memcpy(response_report, &res_buf[1], sizeof(&response_report));
+    memcpy(response_report, &res_buf[1], sizeof(razer_report));
 
     printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
            response_report->status,
