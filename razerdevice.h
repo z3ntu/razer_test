@@ -34,7 +34,7 @@ public:
      */
     RazerDevice(unsigned short vendor_id, unsigned short product_id);
     bool openDeviceHandle();
-    int sendReport(razer_report report, razer_report *response_report);
+    int sendReport(razer_report request_report, razer_report *response_report);
 
 private:
     hid_device *handle;

@@ -23,13 +23,12 @@ int main(int argc, char *argv[])
 
     razer_report report;
     razer_report response_report;
-    printf("sizeof(razer_report): %lu\n", sizeof(razer_report)); // should be 91
+    printf("sizeof(razer_report): %lu\n", sizeof(razer_report)); // should be 90
 
     // Serial
     report = razer_chroma_standard_get_serial();
     razerDevice.sendReport(report, &response_report);
-    printf("Serial: ");
-    printf("%s\n", response_report.arguments);
+    printf("Serial: %s\n", response_report.arguments);
 
     // Firmware version
     report = razer_chroma_standard_get_firmware_version();
@@ -44,7 +43,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < 0x16; i++)
         printf("%02hhx ", response_report2.arguments[i]);
     printf("\n");
-    return 0;
+//     return 0;
 
     // Set RGB (#FF00FF)
     struct razer_rgb rgb;

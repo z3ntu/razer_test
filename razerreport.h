@@ -57,11 +57,9 @@ union command_id_union {
 };
 
 typedef struct razer_report {
-    unsigned char report_id; /* required by hidraw or something - 0x00 */
     unsigned char status;
     union transaction_id_union transaction_id; /* */
-    unsigned char remaining_packets; /* Big Endian */
-    unsigned char remaining_packets2; /* should be unsigned short - but breaks stuff */
+    unsigned short remaining_packets; /* Big Endian */
     unsigned char protocol_type; /*0x0*/
     unsigned char data_size;
     unsigned char command_class;

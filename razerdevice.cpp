@@ -38,15 +38,21 @@ bool RazerDevice::openDeviceHandle()
     return true;
 }
 
-int RazerDevice::sendReport(razer_report report, razer_report *response_report)
+int RazerDevice::sendReport(razer_report request_report, razer_report *response_report)
 {
     int res;
-    unsigned char buf[91];
+    unsigned char req_buf[sizeof(razer_report)+1];
+    unsigned char res_buf[sizeof(razer_report)+1];
 
     // Calculate the crc
-    report.crc = razer_calculate_crc(&report);
+    request_report.crc = razer_calculate_crc(&request_report);
 
-    res = hid_send_feature_report(handle, reinterpret_cast<const unsigned char*>(&report), 91);
+    // Copy request_report into req_buf, shifted by 1 byte to the right for the report number
+    req_buf[0] = 0x00; // report number
+    memcpy(&req_buf[1], &request_report, sizeof(request_report));
+
+    // Send the Feature Report to the device
+    res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
     if (res < 0) {
         printf("Unable to send a feature report.\n");
         return 1;
@@ -57,19 +63,22 @@ int RazerDevice::sendReport(razer_report report, razer_report *response_report)
     usleep(800);
 
     // Read a Feature Report from the device
-    buf[0] = 0x00; // report id
-    res = hid_get_feature_report(handle, buf, sizeof(buf));
+    res_buf[0] = 0x00; // report number
+    res = hid_get_feature_report(handle, res_buf, sizeof(res_buf));
     if (res < 0) {
         printf("Unable to get a feature report.\n");
         return 2;
     }
+
     // Print out the returned buffer.
 //         printf("Feature Report\n   ");
 //         for (i = 0; i < res; i++)
 //             printf("%02hhx ", buf[i]);
 //         printf("\n");
 
-    memcpy(response_report, buf, sizeof(buf));
+    // Copy returned data into the response_report, minus the report number
+    memcpy(response_report, &res_buf[1], sizeof(&response_report));
+
     printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
            response_report->status,
            response_report->transaction_id.id,
