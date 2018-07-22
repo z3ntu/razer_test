@@ -22,15 +22,28 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(unsigned short vendor_id, unsigned short product_id)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks)
 {
+    this->dev_path = dev_path;
     this->vendor_id = vendor_id;
     this->product_id = product_id;
+    this->name = name;
+    this->type = type;
+    this->pclass = pclass;
+    this->ledIds = ledIds;
+    this->quirks = quirks;
+
+    // TODO: Initialize 'leds' variable
+}
+
+RazerDevice::~RazerDevice()
+{
+    hid_close(handle);
 }
 
 bool RazerDevice::openDeviceHandle()
 {
-    handle = hid_open(vendor_id, product_id, NULL);
+    handle = hid_open_path(dev_path.toStdString().c_str());
     if (!handle) {
         printf("unable to open device\n");
         return false;
@@ -95,5 +108,30 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
            response_report->data_size,
            response_report->command_class,
            response_report->command_id.id);
+    if(response_report->status != RazerStatus::CMD_SUCCESSFUL)
+        return 3;
     return 0;
+}
+
+QVector<RazerLedId> RazerDevice::getLedIds()
+{
+    return ledIds;
+}
+
+QString RazerDevice::getSerial()
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_serial();
+    sendReport(report, &response_report);
+    return QString((char*)&response_report.arguments[0]);
+}
+
+QString RazerDevice::getFirmwareVersion()
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_firmware_version();
+    sendReport(report, &response_report);
+    return QString("v%1.%2").arg(response_report.arguments[0]).arg(response_report.arguments[1]);
 }

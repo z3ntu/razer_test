@@ -19,7 +19,8 @@
 #ifndef RAZERREPORT_H
 #define RAZERREPORT_H
 
-#include "razerled.h"
+#include "led/razerled.h"
+#include "led/razerclassicled.h"
 
 enum RazerVarstore {
     NOSTORE = 0x00,
@@ -74,11 +75,11 @@ razer_report get_razer_report(unsigned char command_class, unsigned char command
 
 razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness);
 razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_storage, RazerLedId led_id);
-razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerEffectId led_effect);
+razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerClassicEffectId led_effect);
 razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage, RazerLedId led_id);
-razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, struct razer_rgb *rgb1);
+razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, unsigned char red, unsigned char green, unsigned char blue);
 razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, RazerLedId led_id);
-razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerLedState led_state);
+razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerClassicLedState led_state);
 razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage, RazerLedId led_id);
 
 razer_report razer_chroma_standard_get_firmware_version();

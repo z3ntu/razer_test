@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Razer DeathAdder Chroma",
+        "vid": "1532",
+        "pid": "0043",
+        "type": "mouse",
+        "pclass": "classic",
+        "leds": [1, 4]
+    }
+]

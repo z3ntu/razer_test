@@ -1,0 +1,11 @@
+[
+    {
+        "name": "Razer Firefly",
+        "vid": "1532",
+        "pid": "0c00",
+        "type": "mousepad",
+        "pclass": "matrix",
+        "leds": [5]
+    }
+]
+

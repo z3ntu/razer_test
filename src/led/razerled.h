@@ -31,25 +31,16 @@ enum RazerLedId {
     KeymapBlueLED = 0x0E
 };
 
-enum RazerLedState {
-    Off = 0x00,
-    On = 0x01
-};
-
-enum RazerEffectId {
-    Static = 0x00,
-    Blinking = 0x01,
-    Pulsating = 0x02, // Breathing
-    Spectrum = 0x04
-};
-
 /**
  * @todo write docs
  */
 class RazerLED
 {
-private:
+public:
+    virtual ~RazerLED() = 0;
     RazerLedId ledId;
+    unsigned char brightness;
+    // current (classic) effect & current (classic) state in subclass
 };
 
 #endif // RAZERLED_H

@@ -16,32 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERDEVICE_H
-#define RAZERDEVICE_H
+#ifndef RAZERMATRIXLED_H
+#define RAZERMATRIXLED_H
 
-#include <hidapi.h>
+#include "razerled.h"
 
-#include "razerreport.h"
+enum RazerMatrixEffectId {
+    Off = 0x00,
+    Wave = 0x01,
+    Afterglow = 0x02, // Reactive
+    Breathing = 0x03,
+    Spectrum = 0x04,
+    Custom = 0x05,
+    Static = 0x06,
+    Starlight = 0x19
+};
 
 /**
  * @todo write docs
  */
-class RazerDevice
+class RazerMatrixLED : public RazerLED
 {
 public:
-    /**
-     * Default constructor
-     */
-    RazerDevice(unsigned short vendor_id, unsigned short product_id);
-    bool openDeviceHandle();
-    int sendReport(razer_report request_report, razer_report *response_report);
-
-private:
-    hid_device *handle;
-    unsigned short vendor_id;
-    unsigned short product_id;
-    int deviceLeds[16]; // TODO
-
+    RazerMatrixEffectId effect;
 };
 
-#endif // RAZERDEVICE_H
+#endif // RAZERMATRIXLED_H
