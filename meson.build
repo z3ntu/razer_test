@@ -1,4 +1,4 @@
-project('razer_test', 'cpp')
+project('razer_test', 'cpp', default_options : ['cpp_std=c++11'])
 
 src = ['razer_test.cpp', 'razerdevice.cpp', 'razerreport.cpp', 'razerled.cpp']
 

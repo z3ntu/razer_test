@@ -58,6 +58,8 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
     printf("\n");
 #endif
 
+    // TODO: Retry feature report if it fails
+
     // Send the Feature Report to the device
     res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
     if (res < 0) {
