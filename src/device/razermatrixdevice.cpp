@@ -20,6 +20,12 @@
 
 #include "razermatrixdevice.h"
 
+bool RazerMatrixDevice::initializeLeds()
+{
+    qDebug() << "initializeLeds() not implemented.";
+    return false;
+}
+
 bool RazerMatrixDevice::setNone(RazerLedId led)
 {
     qDebug() << "setNone() not implemented.";
@@ -53,5 +59,11 @@ bool RazerMatrixDevice::setWave(RazerLedId led)
 bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
 {
     qDebug() << "setBrightness() not implemented.";
+    return false;
+}
+
+bool RazerMatrixDevice::getBrightness(RazerLedId led, uchar *brightness)
+{
+    qDebug() << "getBrightness() not implemented.";
     return false;
 }

@@ -28,6 +28,8 @@ class RazerMatrixDevice : public RazerDevice
 {
     using RazerDevice::RazerDevice;
 
+    virtual bool initializeLeds();
+
     virtual bool setNone(RazerLedId led);
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
     virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
@@ -35,6 +37,7 @@ class RazerMatrixDevice : public RazerDevice
     virtual bool setWave(RazerLedId led);
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
+    virtual bool getBrightness(RazerLedId led, uchar *brightness);
 };
 
 #endif // RAZERMATRIXPROTOCOL_H

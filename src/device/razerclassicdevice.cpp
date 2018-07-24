@@ -20,6 +20,46 @@
 
 #include "razerclassicdevice.h"
 
+bool RazerClassicDevice::initializeLeds()
+{
+    foreach(RazerLedId ledId, ledIds) {
+        RazerClassicLED *rled = new RazerClassicLED(ledId);
+        bool ok;
+        uchar brightness;
+        RazerClassicEffectId effect;
+        RazerClassicLedState state;
+        uchar red, green, blue;
+        ok = getBrightness(ledId, &brightness);
+        if(!ok) {
+            qDebug() << "Error during getBrightness()";
+            return false;
+        }
+        ok = getLedEffect(ledId, &effect);
+        if(!ok) {
+            qDebug() << "Error during getLedEffect()";
+            return false;
+        }
+        ok = getLedState(ledId, &state);
+        if(!ok) {
+            qDebug() << "Error during getLedState()";
+            return false;
+        }
+        ok = getLedRgb(ledId, &red, &green, &blue);
+        if(!ok) {
+            qDebug() << "Error during getLedRgb()";
+            return false;
+        }
+        rled->brightness = brightness;
+        rled->effect = effect;
+        rled->state = state;
+        rled->red = red;
+        rled->green = green;
+        rled->blue = blue;
+        leds.insert(ledId, rled);
+    }
+    return true;
+}
+
 bool RazerClassicDevice::setNone(RazerLedId led)
 {
     return setLedState(led, RazerClassicLedState::Off);
@@ -29,19 +69,11 @@ bool RazerClassicDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar
 {
     ensureLedStateOn(led);
 
-    razer_report report, response_report;
-
-    report = razer_chroma_standard_set_led_rgb(RazerVarstore::STORE, led, red, green, blue);
-    if(sendReport(report, &response_report) != 0)
+    if(!setLedRgb(led, red, green, blue))
         return false;
 
-    // TODO: Save state into LED variable
-
-    report = razer_chroma_standard_set_led_effect(RazerVarstore::STORE, led, RazerClassicEffectId::Static);
-    if(sendReport(report, &response_report) != 0)
+    if(!setLedEffect(led, RazerClassicEffectId::Static))
         return false;
-
-    // TODO: Save state into LED variable
 
     return true;
 }
@@ -70,16 +102,55 @@ bool RazerClassicDevice::setBrightness(RazerLedId led, uchar brightness)
     return false;
 }
 
+bool RazerClassicDevice::getBrightness(RazerLedId led, uchar *brightness)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    *brightness = response_report.arguments[2];
+
+    return true;
+}
+
 bool RazerClassicDevice::setLedState(RazerLedId led, RazerClassicLedState state)
 {
     razer_report report, response_report;
 
     report = razer_chroma_standard_set_led_state(RazerVarstore::STORE, led, state);
     if(sendReport(report, &response_report) != 0) {
-        // TODO: Save state into LED variable
         return false;
     }
-    // TODO: Save state into LED variable
+
+    // Save state into LED variable
+    RazerClassicLED *rled = dynamic_cast<RazerClassicLED*>(leds[led]);
+    if(rled == NULL) {
+        qDebug() << "Error while casting RazerLED into RazerClassicLED";
+        return false;
+    }
+    rled->state = state;
+
+    return true;
+}
+
+bool RazerClassicDevice::getLedState(RazerLedId led, RazerClassicLedState *state)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_led_state(RazerVarstore::STORE, led);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    unsigned char stateChar = response_report.arguments[2];
+    if(stateChar < RazerClassicLedState::Off || stateChar > RazerClassicLedState::On) {
+        qDebug() << "getLedState value is out of bounds!";
+        return false;
+    }
+    *state = static_cast<RazerClassicLedState>(stateChar);
 
     return true;
 }
@@ -94,5 +165,82 @@ bool RazerClassicDevice::ensureLedStateOn(RazerLedId led)
     if(rled->state == RazerClassicLedState::Off) {
         return setLedState(led, RazerClassicLedState::On);
     }
+    return true;
+}
+
+bool RazerClassicDevice::setLedEffect(RazerLedId led, RazerClassicEffectId effect)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_set_led_effect(RazerVarstore::STORE, led, effect);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    // Save state into LED variable
+    RazerClassicLED *rled = dynamic_cast<RazerClassicLED*>(leds[led]);
+    if(rled == NULL) {
+        qDebug() << "Error while casting RazerLED into RazerClassicLED";
+        return false;
+    }
+    rled->effect = effect;
+
+    return true;
+}
+
+bool RazerClassicDevice::getLedEffect(RazerLedId led, RazerClassicEffectId *effect)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_led_effect(RazerVarstore::STORE, led);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    unsigned char effectChar = response_report.arguments[2];
+    if(effectChar < RazerClassicEffectId::Static || effectChar > RazerClassicEffectId::Spectrum) {
+        qDebug() << "getLedEffect value is out of bounds!";
+        return false;
+    }
+    *effect = static_cast<RazerClassicEffectId>(effectChar);
+
+    return true;
+}
+
+bool RazerClassicDevice::setLedRgb(RazerLedId led, uchar red, uchar green, uchar blue)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_set_led_rgb(RazerVarstore::STORE, led, red, green, blue);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    // Save state into LED variable
+    RazerClassicLED *rled = dynamic_cast<RazerClassicLED*>(leds[led]);
+    if(rled == NULL) {
+        qDebug() << "Error while casting RazerLED into RazerClassicLED";
+        return false;
+    }
+    rled->red = red;
+    rled->green = green;
+    rled->blue = blue;
+
+    return true;
+}
+
+bool RazerClassicDevice::getLedRgb(RazerLedId led, uchar* red, uchar* green, uchar* blue)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_led_rgb(RazerVarstore::STORE, led);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    *red = response_report.arguments[2];
+    *green = response_report.arguments[3];
+    *blue = response_report.arguments[4];
+
     return true;
 }

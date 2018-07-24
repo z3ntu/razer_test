@@ -17,3 +17,12 @@
  */
 
 #include "razerled.h"
+
+RazerLED::RazerLED(RazerLedId ledId)
+{
+    this->ledId = ledId;
+}
+
+RazerLED::~RazerLED()
+{
+}

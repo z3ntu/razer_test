@@ -39,8 +39,13 @@ enum RazerClassicEffectId {
 class RazerClassicLED : public RazerLED
 {
 public:
+    using RazerLED::RazerLED;
+
     RazerClassicLedState state;
     RazerClassicEffectId effect;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
 };
 
 #endif // RAZERCLASSICLED_H

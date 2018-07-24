@@ -27,7 +27,10 @@
  */
 class RazerClassicDevice : public RazerDevice
 {
+public:
     using RazerDevice::RazerDevice;
+
+    virtual bool initializeLeds();
 
     virtual bool setNone(RazerLedId led);
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
@@ -36,9 +39,16 @@ class RazerClassicDevice : public RazerDevice
     virtual bool setWave(RazerLedId led);
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
+    virtual bool getBrightness(RazerLedId led, uchar *brightness);
 
+private:
     bool setLedState(RazerLedId led, RazerClassicLedState state);
+    bool getLedState(RazerLedId led, RazerClassicLedState *state);
     bool ensureLedStateOn(RazerLedId led);
+    bool setLedEffect(RazerLedId led, RazerClassicEffectId effect);
+    bool getLedEffect(RazerLedId led, RazerClassicEffectId *effect);
+    bool setLedRgb(RazerLedId led, uchar red, uchar green, uchar blue);
+    bool getLedRgb(RazerLedId led, uchar *red, uchar *green, uchar *blue);
 };
 
 #endif // RAZERCLASSICDEVICE_H

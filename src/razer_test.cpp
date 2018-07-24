@@ -110,6 +110,10 @@ int main(int argc, char *argv[])
                     qDebug() << "Failed to open device handle";
                     return -1;
                 }
+                if(!device->initializeLeds()) {
+                    qDebug() << "Failed to initialize leds";
+                    return -3;
+                }
                 devices.append(device);
                 devicesPid.append(cur_dev->product_id);
                 break;
@@ -147,13 +151,8 @@ int main(int argc, char *argv[])
 
     foreach(RazerLedId id, razerDevice->getLedIds()) {
         qDebug() << "LED ID:" << id;
-        razerDevice->setStatic(id, 0x00, 0xFF, 0xFF);
+        razerDevice->setStatic(id, 0xFF, 0x00, 0x00);
     }
-
-    // Set state to on
-    report = razer_chroma_standard_set_led_state(RazerVarstore::STORE, RazerLedId::LogoLED, RazerClassicLedState::On);
-    razerDevice->sendReport(report, &response_report);
-    usleep(200000); // 0.2 seconds
 
     return 0;
 

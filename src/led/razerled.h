@@ -37,7 +37,8 @@ enum RazerLedId {
 class RazerLED
 {
 public:
-    virtual ~RazerLED() = 0;
+    RazerLED(RazerLedId ledId);
+    virtual ~RazerLED();
     RazerLedId ledId;
     unsigned char brightness;
     // current (classic) effect & current (classic) state in subclass
