@@ -11,10 +11,10 @@
 
 #ifndef RAZERDEVICEADAPTOR_H
 #define RAZERDEVICEADAPTOR_H
+#include "../led/razerled.h"
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
-#include "../led/razerled.h" // HAND-EDIT
 QT_BEGIN_NAMESPACE
 class QByteArray;
 template<class T> class QList;
@@ -33,14 +33,16 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "local.RazerDevice")
     Q_CLASSINFO("D-Bus Introspection", ""
                 "  <interface name=\"local.RazerDevice\">\n"
-                "    <method name=\"initializeLeds\">\n"
-                "      <arg direction=\"out\" type=\"b\"/>\n"
-                "    </method>\n"
                 "    <method name=\"getSerial\">\n"
                 "      <arg direction=\"out\" type=\"s\"/>\n"
                 "    </method>\n"
                 "    <method name=\"getFirmwareVersion\">\n"
                 "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setNone\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setStatic\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -50,6 +52,43 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
                 "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
                 "    </method>\n"
+                "    <method name=\"setBreathing\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"red\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setBlinking\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"red\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setSpectrum\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setWave\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setBrightness\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"brightness\"/>\n"
+                "    </method>\n"
+                "    <method name=\"getBrightness\">\n"
+                "      <arg direction=\"out\" type=\"y\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "    </method>\n"
                 "  </interface>\n"
                 "")
 public:
@@ -58,10 +97,16 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
+    uchar getBrightness(RazerLedId led);
     QString getFirmwareVersion();
     QString getSerial();
-    bool initializeLeds();
+    bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
+    bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
+    bool setBrightness(RazerLedId led, uchar brightness);
+    bool setNone(RazerLedId led);
+    bool setSpectrum(RazerLedId led);
     bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
+    bool setWave(RazerLedId led);
 Q_SIGNALS: // SIGNALS
 };
 

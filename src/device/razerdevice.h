@@ -44,10 +44,11 @@ public:
     bool openDeviceHandle();
     int sendReport(razer_report request_report, razer_report *response_report);
 
+    virtual bool initializeLeds() = 0;
+    virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
+
 public Q_SLOTS:
     QVector<RazerLedId> getLedIds();
-
-    virtual bool initializeLeds() = 0;
 
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
@@ -61,7 +62,7 @@ public Q_SLOTS:
     // etc
 
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
-    virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
+    uchar getBrightness(RazerLedId led);
 
 protected:
     hid_device *handle;

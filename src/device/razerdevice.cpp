@@ -135,3 +135,12 @@ QString RazerDevice::getFirmwareVersion()
     sendReport(report, &response_report);
     return QString("v%1.%2").arg(response_report.arguments[0]).arg(response_report.arguments[1]);
 }
+
+uchar RazerDevice::getBrightness(RazerLedId led)
+{
+    // Wrapper as D-Bus can't (easily) handle pointers / multiple return values
+    // TODO: Note: Actually it can, I don't know how to properly implement it though.
+    uchar brightness = 0x00;
+    getBrightness(led, &brightness);
+    return brightness;
+}
