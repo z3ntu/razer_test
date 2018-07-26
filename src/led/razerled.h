@@ -19,6 +19,10 @@
 #ifndef RAZERLED_H
 #define RAZERLED_H
 
+#include <QMetaType>
+
+#include "../dbus/enumDBus.h"
+
 enum RazerLedId {
     ScrollWheelLED = 0x01,
     BatteryLED = 0x03,
@@ -30,6 +34,7 @@ enum RazerLedId {
     KeymapGreenLED = 0x0D,
     KeymapBlueLED = 0x0E
 };
+Q_DECLARE_METATYPE(RazerLedId);
 
 /**
  * @todo write docs

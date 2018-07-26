@@ -35,6 +35,7 @@ public:
     virtual bool setNone(RazerLedId led);
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
     virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
+    virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     virtual bool setSpectrum(RazerLedId led);
     virtual bool setWave(RazerLedId led);
 

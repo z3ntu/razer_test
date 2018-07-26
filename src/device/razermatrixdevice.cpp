@@ -44,6 +44,12 @@ bool RazerMatrixDevice::setBreathing(RazerLedId led, uchar red, uchar green, uch
     return false;
 }
 
+bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
+{
+    qDebug() << "setBlinking() not implemented.";
+    return false;
+}
+
 bool RazerMatrixDevice::setSpectrum(RazerLedId led)
 {
     qDebug() << "setSpectrum() not implemented.";

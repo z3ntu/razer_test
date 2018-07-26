@@ -80,14 +80,38 @@ bool RazerClassicDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar
 
 bool RazerClassicDevice::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
 {
-    qDebug() << "setBreathing() not implemented.";
-    return false;
+    ensureLedStateOn(led);
+
+    if(!setLedRgb(led, red, green, blue))
+        return false;
+
+    if(!setLedEffect(led, RazerClassicEffectId::Pulsating))
+        return false;
+
+    return true;
+}
+
+bool RazerClassicDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
+{
+    ensureLedStateOn(led);
+
+    if(!setLedRgb(led, red, green, blue))
+        return false;
+
+    if(!setLedEffect(led, RazerClassicEffectId::Blinking))
+        return false;
+
+    return true;
 }
 
 bool RazerClassicDevice::setSpectrum(RazerLedId led)
 {
-    qDebug() << "setSpectrum() not implemented.";
-    return false;
+    ensureLedStateOn(led);
+
+    if(!setLedEffect(led, RazerClassicEffectId::Spectrum))
+        return false;
+
+    return true;
 }
 
 bool RazerClassicDevice::setWave(RazerLedId led)
@@ -98,8 +122,22 @@ bool RazerClassicDevice::setWave(RazerLedId led)
 
 bool RazerClassicDevice::setBrightness(RazerLedId led, uchar brightness)
 {
-    qDebug() << "setBrightness() not implemented.";
-    return false;
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    // Save state into LED variable
+    RazerClassicLED *rled = dynamic_cast<RazerClassicLED*>(leds[led]);
+    if(rled == NULL) {
+        qDebug() << "Error while casting RazerLED into RazerClassicLED";
+        return false;
+    }
+    rled->brightness = brightness;
+
+    return true;
 }
 
 bool RazerClassicDevice::getBrightness(RazerLedId led, uchar *brightness)

@@ -1,0 +1,22 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="local.RazerDevice">
+    <method name="initializeLeds">
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="getSerial">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="getFirmwareVersion">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="setStatic">
+      <arg type="b" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg name="led" type="(i)" direction="in"/>
+      <arg name="red" type="y" direction="in"/>
+      <arg name="green" type="y" direction="in"/>
+      <arg name="blue" type="y" direction="in"/>
+    </method>
+  </interface>
+</node>

@@ -13,12 +13,16 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QDebug>
+#include <QCoreApplication>
+
+#include <QDBusConnection>
 
 #include "device/razerdevice.h"
 #include "device/razerclassicdevice.h"
 #include "device/razermatrixdevice.h"
 #include "led/razerled.h"
 #include "led/razerclassicled.h"
+#include "dbus/razerdeviceadaptor.h"
 #include "razerreport.h"
 
 
@@ -45,6 +49,10 @@ QJsonArray loadDevicesFromJson()
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication app(argc, argv);
+    qRegisterMetaType<RazerLedId>("RazerLedId");
+    qDBusRegisterMetaType<RazerLedId>();
+
     if (hid_init())
         return -1;
 
@@ -154,7 +162,12 @@ int main(int argc, char *argv[])
         razerDevice->setStatic(id, 0xFF, 0x00, 0x00);
     }
 
-    return 0;
+    new RazerDeviceAdaptor(razerDevice);
+    QDBusConnection connection = QDBusConnection::sessionBus();
+    connection.registerObject("/Car", razerDevice);
+    connection.registerService("org.example.CarExample");
+
+    return app.exec();
 
     while (1) {
         report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, RazerLedId::LogoLED, 0xFF);

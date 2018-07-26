@@ -9,7 +9,8 @@ src = [
     'src/led/razerclassicled.cpp',
     'src/device/razerdevice.cpp',
     'src/device/razerclassicdevice.cpp',
-    'src/device/razermatrixdevice.cpp'
+    'src/device/razermatrixdevice.cpp',
+    'src/dbus/razerdeviceadaptor.cpp'
 ]
 
 if host_machine.system() == 'linux'
@@ -21,4 +22,9 @@ endif
 qt5 = import('qt5')
 qt5_dep = dependency('qt5', modules : ['Core', 'DBus'])
 
-executable('razer_test', src, dependencies : [hidapi, qt5_dep])
+
+processed = qt5.preprocess(
+  moc_headers : ['src/device/razerdevice.h', 'src/dbus/razerdeviceadaptor.h']
+)
+
+executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep])

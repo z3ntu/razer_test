@@ -21,6 +21,7 @@
 
 #include <hidapi.h>
 
+#include <QObject>
 #include <QString>
 #include <QVector>
 #include <QHash>
@@ -34,14 +35,16 @@ enum RazerDeviceQuirks {
 /**
  * @todo write docs
  */
-class RazerDevice
+class RazerDevice : public QObject
 {
+    Q_OBJECT
 public:
     RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks);
     virtual ~RazerDevice();
     bool openDeviceHandle();
     int sendReport(razer_report request_report, razer_report *response_report);
 
+public Q_SLOTS:
     QVector<RazerLedId> getLedIds();
 
     virtual bool initializeLeds() = 0;
@@ -52,6 +55,7 @@ public:
     virtual bool setNone(RazerLedId led) = 0;
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setSpectrum(RazerLedId led) = 0;
     virtual bool setWave(RazerLedId led) = 0;
     // etc
