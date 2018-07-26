@@ -32,8 +32,6 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->pclass = pclass;
     this->ledIds = ledIds;
     this->quirks = quirks;
-
-    // TODO: Initialize 'leds' variable
 }
 
 RazerDevice::~RazerDevice()
@@ -116,6 +114,20 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
 QVector<RazerLedId> RazerDevice::getLedIds()
 {
     return ledIds;
+}
+
+QVector<int> RazerDevice::getLedIds2()
+{
+    QVector<int> ret;
+    foreach(RazerLedId id, ledIds) {
+        ret.append(static_cast<int>(id));
+    }
+    return ret;
+}
+
+RazerLedId RazerDevice::getLedIds3()
+{
+    return ledIds[0];
 }
 
 QString RazerDevice::getSerial()

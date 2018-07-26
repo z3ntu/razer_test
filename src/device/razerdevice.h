@@ -50,6 +50,7 @@ public:
 public Q_SLOTS:
     QVector<RazerLedId> getLedIds();
 
+
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
 
@@ -63,6 +64,9 @@ public Q_SLOTS:
 
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
     uchar getBrightness(RazerLedId led);
+
+    QVector<int> getLedIds2();
+    RazerLedId getLedIds3();
 
 protected:
     hid_device *handle;

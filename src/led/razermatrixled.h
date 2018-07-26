@@ -21,7 +21,7 @@
 
 #include "razerled.h"
 
-enum RazerMatrixEffectId {
+enum class RazerMatrixEffectId : unsigned char {
     Off = 0x00,
     Wave = 0x01,
     Afterglow = 0x02, // Reactive
@@ -38,6 +38,8 @@ enum RazerMatrixEffectId {
 class RazerMatrixLED : public RazerLED
 {
 public:
+    using RazerLED::RazerLED;
+
     RazerMatrixEffectId effect;
 };
 

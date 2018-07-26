@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<RazerLedId>("RazerLedId");
     qDBusRegisterMetaType<RazerLedId>();
 
+    QDBusConnection connection = QDBusConnection::sessionBus();
+
     if (hid_init())
         return -1;
 
@@ -124,6 +126,11 @@ int main(int argc, char *argv[])
                 }
                 devices.append(device);
                 devicesPid.append(cur_dev->product_id);
+
+                // D-Bus
+                new RazerDeviceAdaptor(device);
+                connection.registerObject(QString("/%1").arg(device->getSerial()), device);
+
                 break;
             }
         }
@@ -162,9 +169,7 @@ int main(int argc, char *argv[])
         razerDevice->setStatic(id, 0xFF, 0x00, 0x00);
     }
 
-    new RazerDeviceAdaptor(razerDevice);
-    QDBusConnection connection = QDBusConnection::sessionBus();
-    connection.registerObject("/Car", razerDevice);
+    // TODO: Add DeviceManager object for e.g. listing devices
     connection.registerService("org.example.CarExample");
 
     return app.exec();

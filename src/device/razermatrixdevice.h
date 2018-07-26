@@ -39,6 +39,8 @@ class RazerMatrixDevice : public RazerDevice
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
     virtual bool getBrightness(RazerLedId led, uchar *brightness);
+private:
+    bool setSpectrumInit(RazerLedId led);
 };
 
 #endif // RAZERMATRIXPROTOCOL_H

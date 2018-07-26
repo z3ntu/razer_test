@@ -21,6 +21,7 @@
 
 #include "led/razerled.h"
 #include "led/razerclassicled.h"
+#include "led/razermatrixled.h"
 
 enum RazerVarstore {
     NOSTORE = 0x00,
@@ -85,5 +86,7 @@ razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage,
 razer_report razer_chroma_standard_get_firmware_version();
 razer_report razer_chroma_standard_get_serial();
 razer_report razer_chroma_standard_get_device_mode();
+
+razer_report razer_chroma_standard_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMatrixEffectId effect);
 
 #endif // RAZERREPORT_H

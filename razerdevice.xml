@@ -1,6 +1,18 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="local.RazerDevice">
+    <method name="getLedIds">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;RazerLedId&gt;"/>
+        <arg type="a(i)" direction="out"/>
+    </method>
+    <method name="getLedIds2">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;int&gt;"/>
+        <arg type="ai" direction="out"/>
+    </method>
+    <method name="getLedIds3">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RazerLedId"/>
+        <arg type="(i)" direction="out"/>
+    </method>
     <method name="getSerial">
       <arg type="s" direction="out"/>
     </method>

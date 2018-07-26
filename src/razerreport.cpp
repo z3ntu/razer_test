@@ -149,3 +149,11 @@ razer_report razer_chroma_standard_get_device_mode()
 {
     return get_razer_report(0x00, 0x84, 0x02);
 }
+
+razer_report razer_chroma_standard_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMatrixEffectId effect)
+{
+    struct razer_report report = get_razer_report(0x03, 0x0A, 0x01);
+    report.arguments[0] = static_cast<unsigned char>(effect); // Effect ID
+
+    return report;
+}
