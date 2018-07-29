@@ -23,7 +23,6 @@
 #include "led/razerled.h"
 #include "led/razerclassicled.h"
 #include "dbus/razerdeviceadaptor.h"
-#include "razerreport.h"
 
 
 QJsonArray loadDevicesFromJson()
@@ -50,8 +49,12 @@ QJsonArray loadDevicesFromJson()
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+
     qRegisterMetaType<RazerLedId>("RazerLedId");
     qDBusRegisterMetaType<RazerLedId>();
+
+    qRegisterMetaType<WaveDirection>("WaveDirection");
+    qDBusRegisterMetaType<WaveDirection>();
 
     QDBusConnection connection = QDBusConnection::sessionBus();
 
@@ -63,7 +66,7 @@ int main(int argc, char *argv[])
     QJsonArray supportedDevices = loadDevicesFromJson();
 
     QList<RazerDevice*> devices;
-    QList<unsigned short> devicesPid;
+    QList<ushort> devicesPid;
 
     struct hid_device_info *devs, *cur_dev;
     devs = hid_enumerate(0x1532, 0x0000);
@@ -82,19 +85,19 @@ int main(int argc, char *argv[])
             // TODO: Improve somehow
             QJsonObject deviceObj = deviceVal.toObject();
             bool ok;
-            unsigned short vid = deviceObj.value("vid").toString().toUShort(&ok, 16);
+            ushort vid = deviceObj.value("vid").toString().toUShort(&ok, 16);
             if(!ok) {
                 qDebug() << "Error converting vid: " << deviceObj.value("vid");
                 continue;
             }
-            unsigned short pid = deviceObj.value("pid").toString().toUShort(&ok, 16);
+            ushort pid = deviceObj.value("pid").toString().toUShort(&ok, 16);
             if(!ok) {
                 qDebug() << "Error converting pid: " << deviceObj.value("pid");
                 continue;
             }
 
             if(cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
-                qDebug() << "Found device!" << deviceObj.value("name").toString() << deviceObj.value("vid").toString() << deviceObj.value("pid").toString();
+                qDebug().noquote() << "Initializing device:" << deviceObj.value("name").toString() << "(" << deviceObj.value("vid").toString() << deviceObj.value("pid").toString() << ")";
                 QString pclass = deviceObj["pclass"].toString();
                 QString name = deviceObj["name"].toString();
                 QString type = deviceObj["type"].toString();
@@ -107,7 +110,7 @@ int main(int argc, char *argv[])
                     quirks.append(static_cast<RazerDeviceQuirks>(quirkVal.toInt()));
                 }
 
-                RazerDevice *device;
+                RazerDevice *device = NULL;
                 if(pclass == "classic") {
                     device = new RazerClassicDevice(QString(cur_dev->path), cur_dev->vendor_id, cur_dev->product_id, name, type, pclass, leds, quirks);
                 } else if(pclass == "matrix") {
@@ -117,12 +120,14 @@ int main(int argc, char *argv[])
                     return -2;
                 }
                 if(!device->openDeviceHandle()) {
-                    qDebug() << "Failed to open device handle";
-                    return -1;
+                    qDebug() << "ERROR: Failed to open device handle";
+                    delete device;
+                    break;
                 }
                 if(!device->initializeLeds()) {
-                    qDebug() << "Failed to initialize leds";
-                    return -3;
+                    qDebug() << "ERROR: Failed to initialize leds";
+                    delete device;
+                    break;
                 }
                 devices.append(device);
                 devicesPid.append(cur_dev->product_id);
@@ -148,7 +153,7 @@ int main(int argc, char *argv[])
     // TODO: Handle multiple devices
     RazerDevice *razerDevice = devices[0];
 
-    razer_report report, response_report;
+//     razer_report report, response_report;
 
     // Serial
     qDebug() << "Serial:" << razerDevice->getSerial();
@@ -157,30 +162,20 @@ int main(int argc, char *argv[])
     qDebug() << "Firmware version:" << razerDevice->getFirmwareVersion();
 
     // LED ID List
-    report = get_razer_report(0x03, 0x89, 0x16); // LED ID List
-    razerDevice->sendReport(report, &response_report);
-    printf("LED ID List: ");
-    for (int i = 0; i < 0x16; i++)
-        printf("%02hhx ", response_report.arguments[i]);
-    printf("\n");
+//     report = get_razer_report(0x03, 0x89, 0x16); // LED ID List
+//     razerDevice->sendReport(report, &response_report);
+//     printf("LED ID List: ");
+//     for (int i = 0; i < 0x16; i++)
+//         printf("%02hhx ", response_report.arguments[i]);
+//     printf("\n");
 
     foreach(RazerLedId id, razerDevice->getLedIds()) {
         qDebug() << "LED ID:" << id;
-        razerDevice->setStatic(id, 0xFF, 0x00, 0x00);
+        razerDevice->setStatic(id, 0xFF, 0xFF, 0x00);
     }
 
     // TODO: Add DeviceManager object for e.g. listing devices
-    connection.registerService("org.example.CarExample");
+    connection.registerService("io.github.openrazer");
 
     return app.exec();
-
-    while (1) {
-        report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, RazerLedId::LogoLED, 0xFF);
-        razerDevice->sendReport(report, &response_report);
-        usleep(200000); // 0.2 seconds
-
-        report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, RazerLedId::LogoLED, 0x10);
-        razerDevice->sendReport(report, &response_report);
-        usleep(200000); // 0.2 seconds
-    }
 }

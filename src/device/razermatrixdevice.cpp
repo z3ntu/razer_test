@@ -44,20 +44,27 @@ bool RazerMatrixDevice::initializeLeds()
 
 bool RazerMatrixDevice::setNone(RazerLedId led)
 {
-    qDebug() << "setNone() not implemented.";
-    return false;
+    return setMatrixEffect(led, RazerMatrixEffectId::Off);
 }
 
 bool RazerMatrixDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
 {
-    qDebug() << "setStatic() not implemented.";
-    return false;
+    return setMatrixEffect(led, RazerMatrixEffectId::Static, red, green, blue);
 }
 
 bool RazerMatrixDevice::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
 {
-    qDebug() << "setBreathing() not implemented.";
-    return false;
+    return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
+}
+
+bool RazerMatrixDevice::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+{
+    return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
+}
+
+bool RazerMatrixDevice::setBreathingRandom(RazerLedId led)
+{
+    return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x03);
 }
 
 bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
@@ -68,28 +75,12 @@ bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, ucha
 
 bool RazerMatrixDevice::setSpectrum(RazerLedId led)
 {
-    razer_report report, response_report;
-
-    report = razer_chroma_standard_matrix_effect(RazerVarstore::STORE, led, RazerMatrixEffectId::Spectrum);
-    if(sendReport(report, &response_report) != 0) {
-        return false;
-    }
-
-    // Save state into LED variable
-    RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED*>(leds[led]);
-    if(rled == NULL) {
-        qDebug() << "Error while casting RazerLED into RazerMatrixLED";
-        return false;
-    }
-    rled->effect = RazerMatrixEffectId::Spectrum;
-
-    return true;
+    return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
 }
 
-bool RazerMatrixDevice::setWave(RazerLedId led)
+bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
 {
-    qDebug() << "setWave() not implemented.";
-    return false;
+    return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
 }
 
 bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
@@ -130,10 +121,39 @@ bool RazerMatrixDevice::setSpectrumInit(RazerLedId led)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_matrix_effect(RazerVarstore::STORE, led, RazerMatrixEffectId::Spectrum);
+    report = razer_chroma_standard_matrix_effect(RazerMatrixEffectId::Spectrum);
     if(sendReport(report, &response_report) != 0) {
         return false;
     }
+
+    return true;
+}
+
+bool RazerMatrixDevice::setMatrixEffect(RazerLedId led, RazerMatrixEffectId effect, uchar arg1, uchar arg2, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_matrix_effect(effect);
+    report.arguments[1] = arg1;
+    report.arguments[2] = arg2;
+    report.arguments[3] = arg3;
+    report.arguments[4] = arg4;
+    report.arguments[5] = arg5;
+    report.arguments[6] = arg6;
+    report.arguments[7] = arg7;
+    report.arguments[8] = arg8;
+
+    if(sendReport(report, &response_report) != 0) {
+        return false;
+    }
+
+    // Save state into LED variable
+    RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED*>(leds[led]);
+    if(rled == NULL) {
+        qDebug() << "Error while casting RazerLED into RazerMatrixLED";
+        return false;
+    }
+    rled->effect = effect;
 
     return true;
 }

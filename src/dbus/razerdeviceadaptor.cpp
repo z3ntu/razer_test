@@ -73,11 +73,27 @@ RazerLedId RazerDeviceAdaptor::getLedIds3()
     return out0;
 }
 
+QString RazerDeviceAdaptor::getName()
+{
+    // handle method call local.RazerDevice.getName
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getName", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
 QString RazerDeviceAdaptor::getSerial()
 {
     // handle method call local.RazerDevice.getSerial
     QString out0;
     QMetaObject::invokeMethod(parent(), "getSerial", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
+QString RazerDeviceAdaptor::getType()
+{
+    // handle method call local.RazerDevice.getType
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getType", Q_RETURN_ARG(QString, out0));
     return out0;
 }
 
@@ -94,6 +110,22 @@ bool RazerDeviceAdaptor::setBreathing(RazerLedId led, uchar red, uchar green, uc
     // handle method call local.RazerDevice.setBreathing
     bool out0;
     QMetaObject::invokeMethod(parent(), "setBreathing", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    return out0;
+}
+
+bool RazerDeviceAdaptor::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+{
+    // handle method call local.RazerDevice.setBreathingDual
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue), Q_ARG(uchar, red2), Q_ARG(uchar, green2), Q_ARG(uchar, blue2));
+    return out0;
+}
+
+bool RazerDeviceAdaptor::setBreathingRandom(RazerLedId led)
+{
+    // handle method call local.RazerDevice.setBreathingRandom
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBreathingRandom", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
     return out0;
 }
 
@@ -129,11 +161,11 @@ bool RazerDeviceAdaptor::setStatic(RazerLedId led, uchar red, uchar green, uchar
     return out0;
 }
 
-bool RazerDeviceAdaptor::setWave(RazerLedId led)
+bool RazerDeviceAdaptor::setWave(RazerLedId led, WaveDirection direction)
 {
     // handle method call local.RazerDevice.setWave
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
+    QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(WaveDirection, direction));
     return out0;
 }
 

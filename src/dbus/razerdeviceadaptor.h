@@ -33,6 +33,12 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "local.RazerDevice")
     Q_CLASSINFO("D-Bus Introspection", ""
                 "  <interface name=\"local.RazerDevice\">\n"
+                "    <method name=\"getName\">\n"
+                "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
+                "    <method name=\"getType\">\n"
+                "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
                 "    <method name=\"getLedIds\">\n"
                 "      <annotation value=\"QVector&lt;RazerLedId&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
                 "      <arg direction=\"out\" type=\"a(i)\"/>\n"
@@ -72,6 +78,22 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
                 "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
                 "    </method>\n"
+                "    <method name=\"setBreathingDual\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"red\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"red2\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"green2\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"blue2\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setBreathingRandom\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "    </method>\n"
                 "    <method name=\"setBlinking\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
@@ -89,6 +111,8 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "      <annotation value=\"WaveDirection\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"direction\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setBrightness\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -114,14 +138,18 @@ public Q_SLOTS: // METHODS
     QVector<RazerLedId> getLedIds();
     QVector<int> getLedIds2();
     RazerLedId getLedIds3();
+    QString getName();
     QString getSerial();
+    QString getType();
     bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
+    bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2);
+    bool setBreathingRandom(RazerLedId led);
     bool setBrightness(RazerLedId led, uchar brightness);
     bool setNone(RazerLedId led);
     bool setSpectrum(RazerLedId led);
     bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
-    bool setWave(RazerLedId led);
+    bool setWave(RazerLedId led, WaveDirection direction);
 Q_SIGNALS: // SIGNALS
 };
 

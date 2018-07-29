@@ -87,6 +87,6 @@ razer_report razer_chroma_standard_get_firmware_version();
 razer_report razer_chroma_standard_get_serial();
 razer_report razer_chroma_standard_get_device_mode();
 
-razer_report razer_chroma_standard_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMatrixEffectId effect);
+razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect);
 
 #endif // RAZERREPORT_H

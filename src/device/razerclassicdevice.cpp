@@ -91,6 +91,18 @@ bool RazerClassicDevice::setBreathing(RazerLedId led, uchar red, uchar green, uc
     return true;
 }
 
+bool RazerClassicDevice::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+{
+    qDebug() << "setBreathingDual() not implemented.";
+    return false;
+}
+
+bool RazerClassicDevice::setBreathingRandom(RazerLedId led)
+{
+    qDebug() << "setBreathingRandom() not implemented.";
+    return false;
+}
+
 bool RazerClassicDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
 {
     ensureLedStateOn(led);
@@ -114,7 +126,7 @@ bool RazerClassicDevice::setSpectrum(RazerLedId led)
     return true;
 }
 
-bool RazerClassicDevice::setWave(RazerLedId led)
+bool RazerClassicDevice::setWave(RazerLedId led, WaveDirection direction)
 {
     qDebug() << "setWave() not implemented.";
     return false;

@@ -48,8 +48,12 @@ public:
     virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
 
 public Q_SLOTS:
-    QVector<RazerLedId> getLedIds();
+    QString getName();
+    QString getType();
 
+    QVector<RazerLedId> getLedIds();
+    QVector<int> getLedIds2();
+    RazerLedId getLedIds3();
 
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
@@ -57,16 +61,15 @@ public Q_SLOTS:
     virtual bool setNone(RazerLedId led) = 0;
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) = 0;
+    virtual bool setBreathingRandom(RazerLedId led) = 0;
     virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setSpectrum(RazerLedId led) = 0;
-    virtual bool setWave(RazerLedId led) = 0;
+    virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
     // etc
 
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
     uchar getBrightness(RazerLedId led);
-
-    QVector<int> getLedIds2();
-    RazerLedId getLedIds3();
 
 protected:
     hid_device *handle;

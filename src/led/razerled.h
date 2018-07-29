@@ -36,6 +36,12 @@ enum RazerLedId {
 };
 Q_DECLARE_METATYPE(RazerLedId);
 
+enum class WaveDirection : uchar {
+    LEFT_TO_RIGHT = 0x01,
+    RIGHT_TO_LEFT = 0x02
+};
+Q_DECLARE_METATYPE(WaveDirection);
+
 /**
  * @todo write docs
  */
@@ -45,7 +51,7 @@ public:
     RazerLED(RazerLedId ledId);
     virtual ~RazerLED();
     RazerLedId ledId;
-    unsigned char brightness;
+    uchar brightness;
     // current (classic) effect & current (classic) state in subclass
 };
 

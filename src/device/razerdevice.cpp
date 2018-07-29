@@ -111,6 +111,16 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
     return 0;
 }
 
+QString RazerDevice::getName()
+{
+    return name;
+}
+
+QString RazerDevice::getType()
+{
+    return type;
+}
+
 QVector<RazerLedId> RazerDevice::getLedIds()
 {
     return ledIds;
