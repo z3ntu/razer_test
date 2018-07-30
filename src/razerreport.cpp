@@ -61,7 +61,7 @@ razer_report get_razer_report(unsigned char command_class, unsigned char command
 razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness)
 {
     razer_report report = get_razer_report(0x03, 0x03, 0x03);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
     report.arguments[2] = brightness;
 
@@ -71,7 +71,7 @@ razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_sto
 razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_storage, RazerLedId led_id)
 {
     struct razer_report report = get_razer_report(0x03, 0x83, 0x03);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
 
     return report;
@@ -80,7 +80,7 @@ razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_sto
 razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerClassicEffectId led_effect)
 {
     struct razer_report report = get_razer_report(0x03, 0x02, 0x03);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
     report.arguments[2] = led_effect;
 
@@ -90,7 +90,7 @@ razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage
 razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage, RazerLedId led_id)
 {
     struct razer_report report = get_razer_report(0x03, 0x82, 0x03);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
 
     return report;
@@ -99,7 +99,7 @@ razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage
 razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, unsigned char red, unsigned char green, unsigned char blue)
 {
     struct razer_report report = get_razer_report(0x03, 0x01, 0x05);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
     report.arguments[2] = red;
     report.arguments[3] = green;
@@ -111,7 +111,7 @@ razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, R
 razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, RazerLedId led_id)
 {
     struct razer_report report = get_razer_report(0x03, 0x81, 0x05);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
     return report;
 }
@@ -119,7 +119,7 @@ razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, R
 razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerClassicLedState led_state)
 {
     struct razer_report report = get_razer_report(0x03, 0x00, 0x03);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
     report.arguments[2] = led_state;
 
@@ -129,7 +129,7 @@ razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage,
 razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage, RazerLedId led_id)
 {
     struct razer_report report = get_razer_report(0x03, 0x80, 0x03);
-    report.arguments[0] = variable_storage;
+    report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = led_id;
 
     return report;
@@ -153,7 +153,7 @@ razer_report razer_chroma_standard_get_device_mode()
 razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect)
 {
     struct razer_report report = get_razer_report(0x03, 0x0A, 0x01);
-    report.arguments[0] = static_cast<unsigned char>(effect); // Effect ID
+    report.arguments[0] = static_cast<uchar>(effect); // Effect ID
 
     return report;
 }

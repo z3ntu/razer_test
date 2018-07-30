@@ -16,44 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERLED_H
-#define RAZERLED_H
+#include "devicemanager.h"
+#include "config.h"
 
-#include <QMetaType>
-
-#include "../dbus/enumDBus.h"
-
-enum RazerLedId {
-    Unspecified = 0x00,
-    ScrollWheelLED = 0x01,
-    BatteryLED = 0x03,
-    LogoLED = 0x04,
-    BacklightLED = 0x05,
-    MacroRecordingLED = 0x07,
-    GameModeLED = 0x08,
-    KeymapRedLED = 0x0C,
-    KeymapGreenLED = 0x0D,
-    KeymapBlueLED = 0x0E
-};
-Q_DECLARE_METATYPE(RazerLedId);
-
-enum class WaveDirection : uchar {
-    LEFT_TO_RIGHT = 0x01,
-    RIGHT_TO_LEFT = 0x02
-};
-Q_DECLARE_METATYPE(WaveDirection);
-
-/**
- * @todo write docs
- */
-class RazerLED
+DeviceManager::DeviceManager(QVector<RazerDevice*> rDevices)
 {
-public:
-    RazerLED(RazerLedId ledId);
-    virtual ~RazerLED();
-    RazerLedId ledId;
-    uchar brightness;
-    // current (classic) effect & current (classic) state in subclass
-};
+    foreach(RazerDevice* rDevice, rDevices) {
+        devices.append(rDevice->getObjectPath());
+    }
+}
 
-#endif // RAZERLED_H
+QString DeviceManager::getVersion()
+{
+    return RAZER_TEST_VERSION;
+}
+
+QVector<QDBusObjectPath> DeviceManager::getDevices()
+{
+    return devices;
+}

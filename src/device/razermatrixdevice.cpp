@@ -78,9 +78,15 @@ bool RazerMatrixDevice::setSpectrum(RazerLedId led)
     return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
 }
 
-bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
+void RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
 {
-    return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
+    if(setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction)) != 0)
+        sendErrorReply(QDBusError::Failed);
+}
+
+bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
+{
+    return setMatrixEffect(led, RazerMatrixEffectId::Custom);
 }
 
 bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)

@@ -25,6 +25,7 @@
 #include <QString>
 #include <QVector>
 #include <QHash>
+#include <QDBusContext>
 
 #include "../razerreport.h"
 
@@ -35,14 +36,18 @@ enum RazerDeviceQuirks {
 /**
  * @todo write docs
  */
-class RazerDevice : public QObject
+class RazerDevice : public QObject, protected QDBusContext
 {
     Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device")
+    Q_PROPERTY(QString Name READ getName)
+
 public:
     RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks);
     virtual ~RazerDevice();
     bool openDeviceHandle();
     int sendReport(razer_report request_report, razer_report *response_report);
+    QDBusObjectPath getObjectPath();
 
     virtual bool initializeLeds() = 0;
     virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
@@ -65,7 +70,9 @@ public Q_SLOTS:
     virtual bool setBreathingRandom(RazerLedId led) = 0;
     virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setSpectrum(RazerLedId led) = 0;
-    virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
+    virtual void setWave(RazerLedId led, WaveDirection direction) = 0;
+    virtual bool setCustomFrame(RazerLedId led) = 0;
+//     virtual bool defineCustomRgb( // TODO
     // etc
 
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;

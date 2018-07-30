@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Razer BlackWidow Chroma",
+        "vid": "1532",
+        "pid": "0203",
+        "type": "keyboard",
+        "pclass": "matrix",
+        "leds": [0]
+    }
+]

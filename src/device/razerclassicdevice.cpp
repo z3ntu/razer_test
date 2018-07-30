@@ -126,9 +126,15 @@ bool RazerClassicDevice::setSpectrum(RazerLedId led)
     return true;
 }
 
-bool RazerClassicDevice::setWave(RazerLedId led, WaveDirection direction)
+void RazerClassicDevice::setWave(RazerLedId led, WaveDirection direction)
 {
-    qDebug() << "setWave() not implemented.";
+    sendErrorReply(QDBusError::NotSupported,
+                   "The method call 'setWave()' is not supported");
+}
+
+bool RazerClassicDevice::setCustomFrame(RazerLedId led)
+{
+    qDebug() << "setCustomFrame() not implemented.";
     return false;
 }
 

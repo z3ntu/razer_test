@@ -1,0 +1,13 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="io.github.openrazer1.Manager">
+    <property name="version" type="s" access="read"/>
+    <method name="getVersion">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="getDevices">
+      <arg type="a(o)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;QDBusObjectPath&gt;"/>
+    </method>
+  </interface>
+</node>

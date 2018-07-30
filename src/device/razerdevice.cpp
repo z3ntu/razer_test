@@ -111,6 +111,11 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
     return 0;
 }
 
+QDBusObjectPath RazerDevice::getObjectPath()
+{
+    return QDBusObjectPath(QString("/io/github/openrazer1/devices/%1").arg(getSerial()));
+}
+
 QString RazerDevice::getName()
 {
     return name;
