@@ -29,12 +29,12 @@ enum class RazerVarstore {
 };
 
 enum RazerStatus {
-    CMD_NEW = 0x00,
-    CMD_BUSY = 0x01,
-    CMD_SUCCESSFUL = 0x02,
-    CMD_FAILURE = 0x03,
-    CMD_NO_RESPONSE_TIMEOUT = 0x04,
-    CMD_NOT_SUPPORTED = 0x05
+    NEW = 0x00,
+    BUSY = 0x01,
+    SUCCESSFUL = 0x02,
+    FAILURE = 0x03,
+    NO_RESPONSE_TIMEOUT = 0x04,
+    NOT_SUPPORTED = 0x05
 };
 
 struct razer_rgb {

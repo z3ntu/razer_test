@@ -69,46 +69,58 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
     printf("\n");
 #endif
 
-    // TODO: Retry feature report if it fails
+    int retryCount = 3;
 
-    // Send the Feature Report to the device
-    res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
-    if (res < 0) {
-        printf("Unable to send a feature report.\n");
-        return 1;
-    }
+    while(retryCount > 0) {
 
-    // Wait a bit
-//     usleep(600);
-    usleep(800);
+        // Send the Feature Report to the device
+        res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
+        if (res < 0) {
+            printf("Unable to send a feature report.\n");
+            retryCount--;
+            continue;
+        }
 
-    // Read a Feature Report from the device
-    res_buf[0] = 0x00; // report number
-    res = hid_get_feature_report(handle, res_buf, sizeof(res_buf));
-    if (res < 0) {
-        printf("Unable to get a feature report.\n");
-        return 2;
-    }
+        // Wait a bit
+        usleep(800);
+
+        // Read a Feature Report from the device
+        res_buf[0] = 0x00; // report number
+        res = hid_get_feature_report(handle, res_buf, sizeof(res_buf));
+        if (res < 0) {
+            printf("Unable to get a feature report.\n");
+            retryCount--;
+            continue;
+        }
 
 #ifdef DEBUG
-    printf("Response report: ");
-    for (int i = 1; i < sizeof(razer_report)+1; i++)
-        printf("%02hhx ", res_buf[i]);
-    printf("\n");
+        printf("Response report: ");
+        for (int i = 1; i < sizeof(razer_report)+1; i++)
+            printf("%02hhx ", res_buf[i]);
+        printf("\n");
 #endif
 
-    // Copy returned data into the response_report, minus the report number
-    memcpy(response_report, &res_buf[1], sizeof(razer_report));
+        // Copy returned data into the response_report, minus the report number
+        memcpy(response_report, &res_buf[1], sizeof(razer_report));
 
-    printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
-           response_report->status,
-           response_report->transaction_id.id,
-           response_report->data_size,
-           response_report->command_class,
-           response_report->command_id.id);
-    if(response_report->status != RazerStatus::CMD_SUCCESSFUL)
-        return 3;
-    return 0;
+        printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
+               response_report->status,
+               response_report->transaction_id.id,
+               response_report->data_size,
+               response_report->command_class,
+               response_report->command_id.id);
+        if(response_report->status == RazerStatus::NOT_SUPPORTED)
+            return 2;
+
+        if(response_report->status != RazerStatus::SUCCESSFUL) {
+            retryCount--;
+            continue;
+        } else {
+            return 0;
+        }
+    }
+    printf("Failed to send report after 3 tries.\n");
+    return 1;
 }
 
 QDBusObjectPath RazerDevice::getObjectPath()

@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
     new DeviceManagerAdaptor(manager);
     connection.registerObject("/io/github/openrazer1", manager);
 
-    /*  ----------  */
+#ifdef DEMO
     if(devices.isEmpty()) {
         qDebug() << "No device found. Exiting.";
         return 1;
@@ -168,9 +168,11 @@ int main(int argc, char *argv[])
         qDebug() << "LED ID:" << id;
         razerDevice->setStatic(id, 0xFF, 0xFF, 0x00);
     }
-    /*  ----------  */
+    return 0;
+#else
 
     connection.registerService("io.github.openrazer1");
 
     return app.exec();
+#endif
 }
