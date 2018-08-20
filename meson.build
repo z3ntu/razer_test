@@ -28,6 +28,9 @@ else
     hidapi = dependency('hidapi')
 endif
 
+# Boost headers are required by src/dbus/enumDBus.h
+boost = dependency('boost')
+
 qt5 = import('qt5')
 qt5_dep = dependency('qt5', modules : ['Core', 'DBus'])
 
@@ -41,5 +44,5 @@ processed = qt5.preprocess(
   ]
 )
 
-#executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep])
-executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep], cpp_args : '-DDEMO')
+#executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep, boost])
+executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep, boost], cpp_args : '-DDEMO')
