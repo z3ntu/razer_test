@@ -1,0 +1,24 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+services:
+  - docker
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install meson qt hidapi; fi
+
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'FROM ubuntu:latest' > Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'ADD . /root' >> Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'RUN apt-get update && apt-get install -y meson qt5-default g++ clang pkg-config libhidapi-dev libboost-dev' >> Dockerfile; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker build -t myimage .; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker run myimage /bin/sh -c "cd /root && TRAVIS=true CC=$CC CXX=$CXX meson builddir && ninja -C builddir test"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/qt/bin:$PATH"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then meson builddir && ninja -C builddir test; fi
