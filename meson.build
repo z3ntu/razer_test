@@ -1,6 +1,6 @@
 project('razer_test', 'cpp',
         version : '0.0.1',
-        default_options : ['cpp_std=c++11'])
+        default_options : ['cpp_std=c++14'])
 
 conf_data = configuration_data()
 conf_data.set('version', meson.project_version())
@@ -25,7 +25,7 @@ src = [
 if host_machine.system() == 'linux'
     hidapi = dependency('hidapi-hidraw')
 else
-    hidapi = dependency('hidapi')
+    hidapi = dependency('hidapi', fallback : ['hidapi', 'hidapi'])
 endif
 
 # Boost headers are required by src/dbus/enumDBus.h
