@@ -44,5 +44,5 @@ processed = qt5.preprocess(
   ]
 )
 
-#executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep, boost])
-executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep, boost], cpp_args : '-DDEMO')
+executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep, boost])
+#executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep, boost], cpp_args : '-DDEMO')

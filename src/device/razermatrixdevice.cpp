@@ -28,11 +28,11 @@ bool RazerMatrixDevice::initializeLeds()
         uchar brightness;
         ok = getBrightness(ledId, &brightness);
         if(!ok) {
-            qDebug() << "Error during getBrightness()";
+            qWarning("Error during getBrightness()");
             return false;
         }
         if(!setSpectrumInit(ledId)) {
-            qDebug() << "Error during setSpectrumInit()";
+            qWarning("Error during setSpectrumInit()");
             return false;
         }
         rled->brightness = brightness;
@@ -41,6 +41,8 @@ bool RazerMatrixDevice::initializeLeds()
     }
     return true;
 }
+
+/* --------------------- DBUS METHODS --------------------- */
 
 bool RazerMatrixDevice::setNone(RazerLedId led)
 {
@@ -69,7 +71,7 @@ bool RazerMatrixDevice::setBreathingRandom(RazerLedId led)
 
 bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
 {
-    qDebug() << "setBlinking() not implemented.";
+    sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
@@ -78,10 +80,9 @@ bool RazerMatrixDevice::setSpectrum(RazerLedId led)
     return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
 }
 
-void RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
+bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
 {
-    if(setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction)) != 0)
-        sendErrorReply(QDBusError::Failed);
+    return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
 }
 
 bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
@@ -95,13 +96,15 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
 
     report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
     if(sendReport(report, &response_report) != 0) {
+        sendErrorReply(QDBusError::Failed);
         return false;
     }
 
     // Save state into LED variable
     RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED*>(leds[led]);
     if(rled == NULL) {
-        qDebug() << "Error while casting RazerLED into RazerMatrixLED";
+        qWarning("Error while casting RazerLED into RazerMatrixLED");
+        sendErrorReply(QDBusError::Failed);
         return false;
     }
     rled->brightness = brightness;
@@ -115,6 +118,7 @@ bool RazerMatrixDevice::getBrightness(RazerLedId led, uchar *brightness)
 
     report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
     if(sendReport(report, &response_report) != 0) {
+        sendErrorReply(QDBusError::Failed);
         return false;
     }
 
@@ -122,6 +126,8 @@ bool RazerMatrixDevice::getBrightness(RazerLedId led, uchar *brightness)
 
     return true;
 }
+
+/* --------------------- PRIVATE METHODS --------------------- */
 
 bool RazerMatrixDevice::setSpectrumInit(RazerLedId led)
 {
@@ -150,13 +156,15 @@ bool RazerMatrixDevice::setMatrixEffect(RazerLedId led, RazerMatrixEffectId effe
     report.arguments[8] = arg8;
 
     if(sendReport(report, &response_report) != 0) {
+        sendErrorReply(QDBusError::Failed);
         return false;
     }
 
     // Save state into LED variable
     RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED*>(leds[led]);
     if(rled == NULL) {
-        qDebug() << "Error while casting RazerLED into RazerMatrixLED";
+        qWarning("Error while casting RazerLED into RazerMatrixLED");
+        sendErrorReply(QDBusError::Failed);
         return false;
     }
     rled->effect = effect;

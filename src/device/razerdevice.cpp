@@ -129,6 +129,8 @@ QDBusObjectPath RazerDevice::getObjectPath()
     return QDBusObjectPath(QString("/io/github/openrazer1/devices/%1").arg(getSerial()));
 }
 
+/* --------------------- DBUS METHODS --------------------- */
+
 QString RazerDevice::getName()
 {
     return name;

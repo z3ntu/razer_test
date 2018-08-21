@@ -26,12 +26,10 @@
       <arg type="s" direction="out"/>
     </method>
     <method name="setNone">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
     </method>
     <method name="setStatic">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
       <arg name="red" type="y" direction="in"/>
@@ -39,7 +37,6 @@
       <arg name="blue" type="y" direction="in"/>
     </method>
     <method name="setBreathing">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
       <arg name="red" type="y" direction="in"/>
@@ -47,7 +44,6 @@
       <arg name="blue" type="y" direction="in"/>
     </method>
     <method name="setBreathingDual">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
       <arg name="red" type="y" direction="in"/>
@@ -58,12 +54,10 @@
       <arg name="blue2" type="y" direction="in"/>
     </method>
     <method name="setBreathingRandom">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
     </method>
     <method name="setBlinking">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
       <arg name="red" type="y" direction="in"/>
@@ -71,7 +65,6 @@
       <arg name="blue" type="y" direction="in"/>
     </method>
     <method name="setSpectrum">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
     </method>
@@ -82,7 +75,6 @@
       <arg name="direction" type="(i)" direction="in"/>
     </method>
     <method name="setBrightness">
-      <arg type="b" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
       <arg name="brightness" type="y" direction="in"/>

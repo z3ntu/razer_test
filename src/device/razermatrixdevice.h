@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERMATRIXPROTOCOL_H
-#define RAZERMATRIXPROTOCOL_H
+#ifndef RAZERMATRIXDEVICE_H
+#define RAZERMATRIXDEVICE_H
 
 #include "razerdevice.h"
 
@@ -37,7 +37,7 @@ class RazerMatrixDevice : public RazerDevice
     virtual bool setBreathingRandom(RazerLedId led);
     virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     virtual bool setSpectrum(RazerLedId led);
-    virtual void setWave(RazerLedId led, WaveDirection direction);
+    virtual bool setWave(RazerLedId led, WaveDirection direction);
     virtual bool setCustomFrame(RazerLedId led);
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
@@ -48,4 +48,4 @@ private:
                          uchar arg1 = 0x00, uchar arg2 = 0x00, uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00);
 };
 
-#endif // RAZERMATRIXPROTOCOL_H
+#endif // RAZERMATRIXDEVICE_H

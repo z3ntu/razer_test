@@ -70,7 +70,7 @@ public Q_SLOTS:
     virtual bool setBreathingRandom(RazerLedId led) = 0;
     virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setSpectrum(RazerLedId led) = 0;
-    virtual void setWave(RazerLedId led, WaveDirection direction) = 0;
+    virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
     virtual bool setCustomFrame(RazerLedId led) = 0;
 //     virtual bool defineCustomRgb( // TODO
     // etc

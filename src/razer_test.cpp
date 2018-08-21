@@ -24,6 +24,7 @@
 #include "dbus/razerdeviceadaptor.h"
 #include "dbus/devicemanageradaptor.h"
 #include "manager/devicemanager.h"
+#include "config.h"
 
 
 QJsonArray loadDevicesFromJson()
@@ -50,6 +51,8 @@ QJsonArray loadDevicesFromJson()
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+
+    qInfo("razer_test - version %s", RAZER_TEST_VERSION);
 
     qRegisterMetaType<RazerLedId>("RazerLedId");
     qDBusRegisterMetaType<RazerLedId>();
@@ -88,17 +91,17 @@ int main(int argc, char *argv[])
             bool ok;
             ushort vid = deviceObj.value("vid").toString().toUShort(&ok, 16);
             if(!ok) {
-                qDebug() << "Error converting vid: " << deviceObj.value("vid");
+                qWarning() << "Error converting vid: " << deviceObj.value("vid");
                 continue;
             }
             ushort pid = deviceObj.value("pid").toString().toUShort(&ok, 16);
             if(!ok) {
-                qDebug() << "Error converting pid: " << deviceObj.value("pid");
+                qWarning() << "Error converting pid: " << deviceObj.value("pid");
                 continue;
             }
 
             if(cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
-                qDebug().noquote().nospace() << "Initializing device: " << deviceObj.value("name").toString() << " (" << deviceObj.value("vid").toString() << ":" << deviceObj.value("pid").toString() << ")";
+                qInfo().noquote().nospace() << "Initializing device: " << deviceObj.value("name").toString() << " (" << deviceObj.value("vid").toString() << ":" << deviceObj.value("pid").toString() << ")";
                 QString pclass = deviceObj["pclass"].toString();
                 QString name = deviceObj["name"].toString();
                 QString type = deviceObj["type"].toString();
@@ -117,16 +120,16 @@ int main(int argc, char *argv[])
                 } else if(pclass == "matrix") {
                     device = new RazerMatrixDevice(QString(cur_dev->path), cur_dev->vendor_id, cur_dev->product_id, name, type, pclass, leds, quirks);
                 } else {
-                    qDebug() << "Unknown device class" << pclass;
-                    return -2;
+                    qCritical("Unknown device class: %s", qUtf8Printable(pclass));
+                    break;
                 }
                 if(!device->openDeviceHandle()) {
-                    qDebug() << "ERROR: Failed to open device handle";
+                    qCritical("ERROR: Failed to open device handle");
                     delete device;
                     break;
                 }
                 if(!device->initializeLeds()) {
-                    qDebug() << "ERROR: Failed to initialize leds";
+                    qCritical("ERROR: Failed to initialize leds");
                     delete device;
                     break;
                 }
@@ -152,7 +155,7 @@ int main(int argc, char *argv[])
 
 #ifdef DEMO
     if(devices.isEmpty()) {
-        qDebug() << "No device found. Exiting.";
+        qFatal("No device found. Exiting.");
         return 1;
     }
     RazerDevice *razerDevice = devices[0];
