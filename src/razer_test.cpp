@@ -161,7 +161,11 @@ int main(int argc, char *argv[])
 
                     // D-Bus
                     new RazerDeviceAdaptor(device);
-                    connection.registerObject(device->getObjectPath().path(), device);
+                    if(!connection.registerObject(device->getObjectPath().path(), device)) {
+                        qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
+                        delete device;
+                        break;
+                    }
 
                     break;
                 }
@@ -206,13 +210,20 @@ int main(int argc, char *argv[])
 
             // D-Bus
             new RazerDeviceAdaptor(device);
-            connection.registerObject(device->getObjectPath().path(), device);
+            if(!connection.registerObject(device->getObjectPath().path(), device)) {
+                qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
+                delete device;
+                break;
+            }
         }
     }
 
     DeviceManager *manager = new DeviceManager(devices);
     new DeviceManagerAdaptor(manager);
-    connection.registerObject("/io/github/openrazer1", manager);
+    if(!connection.registerObject("/io/github/openrazer1", manager)) {
+        qCritical("Failed to register D-Bus object at \"/io/github/openrazer1\".");
+        return 1;
+    }
 
 #ifdef DEMO
     if(devices.isEmpty()) {
@@ -228,13 +239,16 @@ int main(int argc, char *argv[])
     qDebug() << "Firmware version:" << razerDevice->getFirmwareVersion();
 
     foreach(RazerLedId id, razerDevice->getLedIds()) {
-        qDebug() << "LED ID:" << id;
+        qDebug() << "LED ID:" << static_cast<uchar>(id);
         razerDevice->setStatic(id, 0xFF, 0xFF, 0x00);
     }
     return 0;
 #else
 
-    connection.registerService("io.github.openrazer1");
+    if(!connection.registerService("io.github.openrazer1")) {
+        qCritical("Failed to register D-Bus service at \"io.github.openrazer1\". Maybe it's already running?");
+        return 1;
+    }
 
     return app.exec();
 #endif

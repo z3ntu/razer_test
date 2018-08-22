@@ -17,11 +17,9 @@ install:
   # Set paths to dependencies (based on architecture)
   - cmd: if %arch%==x86 (set PYTHON_ROOT=C:\python37) else (set PYTHON_ROOT=C:\python37-x64)
   - cmd: if %arch%==x86 (set QT_ROOT=C:\Qt\5.11\%compiler%) else (set QT_ROOT=C:\Qt\5.11\%compiler%_64)
-  - cmd: set BOOST_ROOT=C:\Libraries\boost_1_67_0
   # Print out dependency paths
   - cmd: echo Using Python at %PYTHON_ROOT%
   - cmd: echo Using Qt at %QT_ROOT%
-  - cmd: echo Using Boost at %BOOST_ROOT%
   # Add neccessary paths to PATH variable
   - cmd: set PATH=%cd%;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson

@@ -20,10 +20,9 @@
 #define RAZERLED_H
 
 #include <QMetaType>
+#include <QDBusArgument>
 
-#include "../dbus/enumDBus.h"
-
-enum RazerLedId {
+enum class RazerLedId : uchar {
     Unspecified = 0x00,
     ScrollWheelLED = 0x01,
     BatteryLED = 0x03,
@@ -37,11 +36,21 @@ enum RazerLedId {
 };
 Q_DECLARE_METATYPE(RazerLedId)
 
+QDBusArgument &operator<<(QDBusArgument &argument, const RazerLedId &value);
+const QDBusArgument &operator>>(const QDBusArgument &argument, RazerLedId &value);
+inline uint qHash(RazerLedId key, uint seed)
+{
+    return ::qHash(static_cast<uchar>(key), seed);
+}
+
 enum class WaveDirection : uchar {
     LEFT_TO_RIGHT = 0x01,
     RIGHT_TO_LEFT = 0x02
 };
 Q_DECLARE_METATYPE(WaveDirection)
+
+QDBusArgument &operator<<(QDBusArgument &argument, const WaveDirection &value);
+const QDBusArgument &operator>>(const QDBusArgument &argument, WaveDirection &value);
 
 /**
  * @todo write docs

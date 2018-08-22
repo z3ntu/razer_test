@@ -113,12 +113,15 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         // Copy returned data into the response_report, minus the report number
         memcpy(response_report, &res_buf[1], sizeof(razer_report));
 
+#ifdef DEBUG
         printf("Response report: Status: %02x transaction id: %02x Data size: %02x Command class: %02x Command id: %02x\n",
                response_report->status,
                response_report->transaction_id.id,
                response_report->data_size,
                response_report->command_class,
                response_report->command_id.id);
+#endif
+
         if(response_report->status == RazerStatus::NOT_SUPPORTED)
             return 2;
 
@@ -142,21 +145,25 @@ QDBusObjectPath RazerDevice::getObjectPath()
 
 QString RazerDevice::getName()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     return name;
 }
 
 QString RazerDevice::getType()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     return type;
 }
 
 QVector<RazerLedId> RazerDevice::getLedIds()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     return ledIds;
 }
 
 QVector<int> RazerDevice::getLedIds2()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     QVector<int> ret;
     foreach(RazerLedId id, ledIds) {
         ret.append(static_cast<int>(id));
@@ -166,11 +173,13 @@ QVector<int> RazerDevice::getLedIds2()
 
 RazerLedId RazerDevice::getLedIds3()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     return ledIds[0];
 }
 
 QString RazerDevice::getSerial()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_serial();
@@ -180,6 +189,7 @@ QString RazerDevice::getSerial()
 
 QString RazerDevice::getFirmwareVersion()
 {
+    qDebug("Called %s", Q_FUNC_INFO);
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_firmware_version();
