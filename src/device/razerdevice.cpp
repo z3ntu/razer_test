@@ -23,7 +23,7 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks, bool fakeDevice)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
@@ -33,18 +33,24 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->pclass = pclass;
     this->ledIds = ledIds;
     this->quirks = quirks;
+    this->fakeDevice = fakeDevice;
 }
 
 RazerDevice::~RazerDevice()
 {
-    hid_close(handle);
+    if(handle != NULL)
+        hid_close(handle);
 }
 
 bool RazerDevice::openDeviceHandle()
 {
+    if(dev_path == NULL) {
+        qCritical("dev_path is NULL but openDeviceHandle() was called. This should not happen!");
+        return false;
+    }
     handle = hid_open_path(dev_path.toStdString().c_str());
     if (!handle) {
-        printf("unable to open device\n");
+        qCritical("unable to open device");
         return false;
     }
     return true;
@@ -52,6 +58,10 @@ bool RazerDevice::openDeviceHandle()
 
 int RazerDevice::sendReport(razer_report request_report, razer_report *response_report)
 {
+    if(fakeDevice) {
+        qCritical("sendReport called on fake device. This should not happen!");
+        return 1;
+    }
     int res;
     unsigned char req_buf[sizeof(razer_report)+1];
     unsigned char res_buf[sizeof(razer_report)+1];

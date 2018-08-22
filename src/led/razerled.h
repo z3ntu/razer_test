@@ -35,13 +35,13 @@ enum RazerLedId {
     KeymapGreenLED = 0x0D,
     KeymapBlueLED = 0x0E
 };
-Q_DECLARE_METATYPE(RazerLedId);
+Q_DECLARE_METATYPE(RazerLedId)
 
 enum class WaveDirection : uchar {
     LEFT_TO_RIGHT = 0x01,
     RIGHT_TO_LEFT = 0x02
 };
-Q_DECLARE_METATYPE(WaveDirection);
+Q_DECLARE_METATYPE(WaveDirection)
 
 /**
  * @todo write docs

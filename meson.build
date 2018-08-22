@@ -17,6 +17,7 @@ src = [
     'src/device/razerdevice.cpp',
     'src/device/razerclassicdevice.cpp',
     'src/device/razermatrixdevice.cpp',
+    'src/device/razerfakedevice.cpp',
     'src/dbus/razerdeviceadaptor.cpp',
     'src/dbus/devicemanageradaptor.cpp',
     'src/manager/devicemanager.cpp'
@@ -44,5 +45,9 @@ processed = qt5.preprocess(
   ]
 )
 
-executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep, boost])
-#executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep, boost], cpp_args : '-DDEMO')
+if get_option('build_daemon')
+  executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep, boost])
+endif
+if get_option('build_demo')
+  executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep, boost], cpp_args : '-DDEMO')
+endif
