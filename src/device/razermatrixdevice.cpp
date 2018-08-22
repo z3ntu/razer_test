@@ -46,52 +46,62 @@ bool RazerMatrixDevice::initializeLeds()
 
 bool RazerMatrixDevice::setNone(RazerLedId led)
 {
+    qDebug("Called %s with param %i", Q_FUNC_INFO, led);
     return setMatrixEffect(led, RazerMatrixEffectId::Off);
 }
 
 bool RazerMatrixDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
 {
+    qDebug("Called %s with params %i, %i, %i, %i", Q_FUNC_INFO, led, red, green, blue);
     return setMatrixEffect(led, RazerMatrixEffectId::Static, red, green, blue);
 }
 
 bool RazerMatrixDevice::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
 {
+    qDebug("Called %s with params %i, %i, %i, %i", Q_FUNC_INFO, led, red, green, blue);
     return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
 }
 
 bool RazerMatrixDevice::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
 {
+    qDebug("Called %s with params %i, %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, led, red, green, blue, red2, green2, blue2);
     return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
 }
 
 bool RazerMatrixDevice::setBreathingRandom(RazerLedId led)
 {
+    qDebug("Called %s with param %i", Q_FUNC_INFO, led);
     return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x03);
 }
 
 bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
 {
+    qDebug("Called %s with params %i, %i, %i, %i", Q_FUNC_INFO, led, red, green, blue);
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
 bool RazerMatrixDevice::setSpectrum(RazerLedId led)
 {
+    qDebug("Called %s with param %i", Q_FUNC_INFO, led);
     return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
 }
 
 bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
 {
+    qDebug("Called %s with params %i, %hhu", Q_FUNC_INFO, led, direction);
     return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
 }
 
 bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
 {
+    qDebug("Called %s with param %i", Q_FUNC_INFO, led);
     return setMatrixEffect(led, RazerMatrixEffectId::Custom);
 }
 
 bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
 {
+    qDebug("Called %s with params %i, %i", Q_FUNC_INFO, led, brightness);
     razer_report report, response_report;
 
     report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
@@ -114,11 +124,13 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
 
 bool RazerMatrixDevice::getBrightness(RazerLedId led, uchar *brightness)
 {
+    qDebug("Called %s with param %i", Q_FUNC_INFO, led);
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
     if(sendReport(report, &response_report) != 0) {
-        sendErrorReply(QDBusError::Failed);
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
 

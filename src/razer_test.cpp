@@ -49,20 +49,20 @@ QJsonArray loadDevicesFromJson()
     return devices;
 }
 
-RazerDevice* initializeDevice(QString dev_path, ushort vid, ushort pid, QString name, QString type, QString pclass, QVector<RazerLedId> leds, QVector<RazerDeviceQuirks> quirks, bool fakeDevice)
+RazerDevice* initializeDevice(QString dev_path, ushort vid, ushort pid, QString name, QString type, QString pclass, QVector<RazerLedId> leds, QVector<RazerDeviceQuirks> quirks)
 {
     RazerDevice *device;
-    if(fakeDevice) {
-        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, quirks, fakeDevice);
+    if(dev_path == NULL) { // create a fake device
+        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, quirks);
     } else if(pclass == "classic") {
-        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, quirks, fakeDevice);
+        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, quirks);
     } else if(pclass == "matrix") {
-        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, quirks, fakeDevice);
+        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, quirks);
     } else {
         qCritical("Unknown device class: %s", qUtf8Printable(pclass));
         return NULL;
     }
-    if(!fakeDevice && !device->openDeviceHandle()) {
+    if(!device->openDeviceHandle()) {
         qCritical("Failed to open device handle");
         delete device;
         return NULL;
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
                         quirks.append(static_cast<RazerDeviceQuirks>(quirkVal.toInt()));
                     }
 
-                    RazerDevice *device = initializeDevice(QString(cur_dev->path), vid, pid, deviceObj["name"].toString(), deviceObj["type"].toString(), deviceObj["pclass"].toString(), leds, quirks, false);
+                    RazerDevice *device = initializeDevice(QString(cur_dev->path), vid, pid, deviceObj["name"].toString(), deviceObj["type"].toString(), deviceObj["pclass"].toString(), leds, quirks);
                     if(device == NULL)
                         break;
 
@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
                 quirks.append(static_cast<RazerDeviceQuirks>(quirkVal.toInt()));
             }
 
-            RazerDevice *device = initializeDevice(NULL, vid, pid, deviceObj["name"].toString(), deviceObj["type"].toString(), deviceObj["pclass"].toString(), leds, quirks, true);
+            RazerDevice *device = initializeDevice(NULL, vid, pid, deviceObj["name"].toString(), deviceObj["type"].toString(), deviceObj["pclass"].toString(), leds, quirks);
             if(device == NULL)
                 continue;
 

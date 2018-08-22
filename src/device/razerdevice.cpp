@@ -23,7 +23,7 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks, bool fakeDevice)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
@@ -33,7 +33,6 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->pclass = pclass;
     this->ledIds = ledIds;
     this->quirks = quirks;
-    this->fakeDevice = fakeDevice;
 }
 
 RazerDevice::~RazerDevice()
@@ -58,8 +57,8 @@ bool RazerDevice::openDeviceHandle()
 
 int RazerDevice::sendReport(razer_report request_report, razer_report *response_report)
 {
-    if(fakeDevice) {
-        qCritical("sendReport called on fake device. This should not happen!");
+    if(handle == NULL) {
+        qCritical("sendReport called on an unopened handle. This should not happen!");
         return 1;
     }
     int res;

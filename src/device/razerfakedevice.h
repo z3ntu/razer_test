@@ -28,6 +28,8 @@ class RazerFakeDevice : public RazerDevice
 {
     using RazerDevice::RazerDevice;
 
+    virtual bool openDeviceHandle();
+
     virtual bool initializeLeds();
 
     virtual QString getSerial();
@@ -45,6 +47,11 @@ class RazerFakeDevice : public RazerDevice
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
     virtual bool getBrightness(RazerLedId led, uchar *brightness);
+private:
+    QString serial;
+    QString fwVersion;
+
+    static int serialCounter;
 };
 
 #endif // RAZERFAKEDEVICE_H
