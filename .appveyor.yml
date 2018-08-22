@@ -31,7 +31,7 @@ install:
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
-  - cmd: meson --backend=ninja builddir
+  - cmd: meson --backend=ninja -Dbuild_tests=true builddir
   - cmd: ninja -C builddir -v
 
 test_script:

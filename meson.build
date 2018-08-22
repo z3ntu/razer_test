@@ -9,6 +9,19 @@ configure_file(input : 'src/config.h.in',
                output : 'config.h',
                configuration : conf_data)
 
+if host_machine.system() == 'linux'
+    hidapi = dependency('hidapi-hidraw')
+else
+    hidapi = dependency('hidapi', fallback : ['hidapi', 'hidapi'])
+endif
+
+qt5 = import('qt5')
+qt5_dep = dependency('qt5', modules : ['Core', 'DBus'])
+
+if get_option('build_tests')
+    subdir('test')
+endif
+
 src = [
     'src/razer_test.cpp',
     'src/razerreport.cpp',
@@ -22,16 +35,6 @@ src = [
     'src/dbus/devicemanageradaptor.cpp',
     'src/manager/devicemanager.cpp'
 ]
-
-if host_machine.system() == 'linux'
-    hidapi = dependency('hidapi-hidraw')
-else
-    hidapi = dependency('hidapi', fallback : ['hidapi', 'hidapi'])
-endif
-
-qt5 = import('qt5')
-qt5_dep = dependency('qt5', modules : ['Core', 'DBus'])
-
 
 processed = qt5.preprocess(
   moc_headers : [

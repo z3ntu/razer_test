@@ -1,2 +1,3 @@
 option('build_demo', type : 'boolean', value : true, description : 'Build the demo application.')
 option('build_daemon', type : 'boolean', value : true, description : 'Build the daemon application.')
+option('build_tests', type : 'boolean', value : false, description : 'Build the tests.')

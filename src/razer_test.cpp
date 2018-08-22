@@ -100,8 +100,6 @@ int main(int argc, char *argv[])
 
     QDBusConnection connection = QDBusConnection::sessionBus();
 
-    printf("sizeof(razer_report): %lu\n", sizeof(razer_report)); // should be 90
-
     QJsonArray supportedDevices = loadDevicesFromJson();
 
     QVector<RazerDevice*> devices;
