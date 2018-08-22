@@ -21,7 +21,7 @@
 
 void SomeTest::testRazerReportSize()
 {
-    QCOMPARE(sizeof(razer_report), 90U);
+    QCOMPARE(sizeof(razer_report), static_cast<size_t>(90));
 }
 
 QTEST_MAIN(SomeTest)
