@@ -43,14 +43,6 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <annotation value=\"QVector&lt;RazerLedId&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
                 "      <arg direction=\"out\" type=\"a(i)\"/>\n"
                 "    </method>\n"
-                "    <method name=\"getLedIds2\">\n"
-                "      <annotation value=\"QVector&lt;int&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
-                "      <arg direction=\"out\" type=\"ai\"/>\n"
-                "    </method>\n"
-                "    <method name=\"getLedIds3\">\n"
-                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
-                "      <arg direction=\"out\" type=\"(i)\"/>\n"
-                "    </method>\n"
                 "    <method name=\"getSupportedFx\">\n"
                 "      <annotation value=\"QVector&lt;QString&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
                 "      <arg direction=\"out\" type=\"as\"/>\n"
@@ -131,8 +123,6 @@ public Q_SLOTS: // METHODS
     uchar getBrightness(RazerLedId led);
     QString getFirmwareVersion();
     QVector<RazerLedId> getLedIds();
-    QVector<int> getLedIds2();
-    RazerLedId getLedIds3();
     QString getName();
     QString getSerial();
     QStringList getSupportedFx();

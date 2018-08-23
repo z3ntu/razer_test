@@ -162,22 +162,6 @@ QVector<RazerLedId> RazerDevice::getLedIds()
     return ledIds;
 }
 
-QVector<int> RazerDevice::getLedIds2()
-{
-    qDebug("Called %s", Q_FUNC_INFO);
-    QVector<int> ret;
-    foreach(RazerLedId id, ledIds) {
-        ret.append(static_cast<int>(id));
-    }
-    return ret;
-}
-
-RazerLedId RazerDevice::getLedIds3()
-{
-    qDebug("Called %s", Q_FUNC_INFO);
-    return ledIds[0];
-}
-
 QStringList RazerDevice::getSupportedFx()
 {
     qDebug("Called %s", Q_FUNC_INFO);

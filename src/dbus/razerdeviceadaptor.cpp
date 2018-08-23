@@ -57,22 +57,6 @@ QVector<RazerLedId> RazerDeviceAdaptor::getLedIds()
     return out0;
 }
 
-QVector<int> RazerDeviceAdaptor::getLedIds2()
-{
-    // handle method call io.github.openrazer1.Device.getLedIds2
-    QVector<int> out0;
-    QMetaObject::invokeMethod(parent(), "getLedIds2", Q_RETURN_ARG(QVector<int>, out0));
-    return out0;
-}
-
-RazerLedId RazerDeviceAdaptor::getLedIds3()
-{
-    // handle method call io.github.openrazer1.Device.getLedIds3
-    RazerLedId out0;
-    QMetaObject::invokeMethod(parent(), "getLedIds3", Q_RETURN_ARG(RazerLedId, out0));
-    return out0;
-}
-
 QString RazerDeviceAdaptor::getName()
 {
     // handle method call io.github.openrazer1.Device.getName

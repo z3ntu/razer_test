@@ -57,9 +57,6 @@ public Q_SLOTS:
     QString getType();
 
     QVector<RazerLedId> getLedIds();
-    QVector<int> getLedIds2();
-    RazerLedId getLedIds3();
-
     QStringList getSupportedFx();
 
     virtual QString getSerial();

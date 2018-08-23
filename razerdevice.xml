@@ -11,14 +11,6 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;RazerLedId&gt;"/>
       <arg type="a(i)" direction="out"/>
     </method>
-    <method name="getLedIds2">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;int&gt;"/>
-      <arg type="ai" direction="out"/>
-    </method>
-    <method name="getLedIds3">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RazerLedId"/>
-      <arg type="(i)" direction="out"/>
-    </method>
     <method name="getSupportedFx">
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;QString&gt;"/>
       <arg type="as" direction="out"/>
