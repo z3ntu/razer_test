@@ -5,6 +5,8 @@
         "pid": "0c00",
         "type": "mousepad",
         "pclass": "matrix",
-        "leds": [5]
+        "leds": [5],
+        "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame"],
+        "quirks": []
     }
 ]

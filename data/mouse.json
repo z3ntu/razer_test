@@ -5,6 +5,8 @@
         "pid": "0043",
         "type": "mouse",
         "pclass": "classic",
-        "leds": [1, 4]
+        "leds": [1, 4],
+        "fx": ["off", "static", "blinking", "breathing", "spectrum"],
+        "quirks": []
     }
 ]

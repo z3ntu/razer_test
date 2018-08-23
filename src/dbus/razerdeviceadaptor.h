@@ -51,6 +51,10 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
                 "      <arg direction=\"out\" type=\"(i)\"/>\n"
                 "    </method>\n"
+                "    <method name=\"getSupportedFx\">\n"
+                "      <annotation value=\"QVector&lt;QString&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
+                "      <arg direction=\"out\" type=\"as\"/>\n"
+                "    </method>\n"
                 "    <method name=\"getSerial\">\n"
                 "      <arg direction=\"out\" type=\"s\"/>\n"
                 "    </method>\n"
@@ -131,6 +135,7 @@ public Q_SLOTS: // METHODS
     RazerLedId getLedIds3();
     QString getName();
     QString getSerial();
+    QStringList getSupportedFx();
     QString getType();
     void setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     void setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);

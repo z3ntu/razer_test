@@ -23,7 +23,7 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
@@ -32,6 +32,7 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->type = type;
     this->pclass = pclass;
     this->ledIds = ledIds;
+    this->fx = fx;
     this->quirks = quirks;
 }
 
@@ -177,6 +178,12 @@ RazerLedId RazerDevice::getLedIds3()
     return ledIds[0];
 }
 
+QStringList RazerDevice::getSupportedFx()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    return fx;
+}
+
 QString RazerDevice::getSerial()
 {
     qDebug("Called %s", Q_FUNC_INFO);
@@ -204,4 +211,25 @@ uchar RazerDevice::getBrightness(RazerLedId led)
     uchar brightness = 0x00;
     getBrightness(led, &brightness);
     return brightness;
+}
+
+/**
+ * Checks if the device has/supports the given LED & FX.
+ * fxStr can be an empty string (e.g. QString::null) to skip the FX check.
+ * Returns true if both are valid.
+ * Returns false and sends a D-Bus NotSupported error otherwise.
+ */
+bool RazerDevice::checkLedAndFx(RazerLedId led, QString fxStr)
+{
+    if(!ledIds.contains(led)) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::NotSupported, "Unsupported LED.");
+        return false;
+    }
+    if(!fxStr.isEmpty() && !fx.contains(fxStr)) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
+        return false;
+    }
+    return true;
 }

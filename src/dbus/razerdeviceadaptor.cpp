@@ -89,6 +89,14 @@ QString RazerDeviceAdaptor::getSerial()
     return out0;
 }
 
+QStringList RazerDeviceAdaptor::getSupportedFx()
+{
+    // handle method call io.github.openrazer1.Device.getSupportedFx
+    QStringList out0;
+    QMetaObject::invokeMethod(parent(), "getSupportedFx", Q_RETURN_ARG(QStringList, out0));
+    return out0;
+}
+
 QString RazerDeviceAdaptor::getType()
 {
     // handle method call io.github.openrazer1.Device.getType

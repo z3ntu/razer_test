@@ -29,7 +29,7 @@ enum RazerClassicLedState {
 enum RazerClassicEffectId {
     Static = 0x00,
     Blinking = 0x01,
-    Pulsating = 0x02, // Breathing
+    Breathing = 0x02, // a.k.a. Pulsating
     Spectrum = 0x04
 };
 

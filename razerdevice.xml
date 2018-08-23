@@ -19,6 +19,10 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RazerLedId"/>
       <arg type="(i)" direction="out"/>
     </method>
+    <method name="getSupportedFx">
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;QString&gt;"/>
+      <arg type="as" direction="out"/>
+    </method>
     <method name="getSerial">
       <arg type="s" direction="out"/>
     </method>

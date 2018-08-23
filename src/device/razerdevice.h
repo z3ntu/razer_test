@@ -43,7 +43,7 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_PROPERTY(QString Name READ getName)
 
 public:
-    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QVector<RazerDeviceQuirks> quirks);
+    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks);
     virtual ~RazerDevice();
     virtual bool openDeviceHandle();
     int sendReport(razer_report request_report, razer_report *response_report);
@@ -59,6 +59,8 @@ public Q_SLOTS:
     QVector<RazerLedId> getLedIds();
     QVector<int> getLedIds2();
     RazerLedId getLedIds3();
+
+    QStringList getSupportedFx();
 
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
@@ -88,9 +90,12 @@ protected:
     QString type;
     QString pclass;
     QVector<RazerLedId> ledIds;
+    QStringList fx;
     QVector<RazerDeviceQuirks> quirks;
 
     QHash<RazerLedId, RazerLED*> leds;
+
+    bool checkLedAndFx(RazerLedId led, QString fxStr);
 };
 
 #endif // RAZERDEVICE_H
