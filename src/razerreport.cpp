@@ -150,6 +150,11 @@ razer_report razer_chroma_standard_get_device_mode()
     return get_razer_report(0x00, 0x84, 0x02);
 }
 
+razer_report razer_chroma_standard_get_keyboard_layout()
+{
+    return get_razer_report(0x00, 0x86, 0x02);
+}
+
 razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect)
 {
     struct razer_report report = get_razer_report(0x03, 0x0A, 0x01);

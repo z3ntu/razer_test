@@ -53,6 +53,9 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "    <method name=\"getFirmwareVersion\">\n"
                 "      <arg direction=\"out\" type=\"s\"/>\n"
                 "    </method>\n"
+                "    <method name=\"getKeyboardLayout\">\n"
+                "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
                 "    <method name=\"setNone\">\n"
                 "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
@@ -122,6 +125,7 @@ public: // PROPERTIES
 public Q_SLOTS: // METHODS
     uchar getBrightness(RazerLedId led);
     QString getFirmwareVersion();
+    QString getKeyboardLayout();
     QVector<RazerLedId> getLedIds();
     QString getName();
     QString getSerial();

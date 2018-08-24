@@ -159,6 +159,10 @@ int main(int argc, char *argv[])
 
     // Load the supported devices from the json files
     QJsonArray supportedDevices = loadDevicesFromJson();
+    if(supportedDevices.isEmpty()) {
+        qCritical("JSON device definition files were not found. Exiting.");
+        return -1;
+    }
 
     QVector<RazerDevice*> devices;
 

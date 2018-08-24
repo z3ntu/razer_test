@@ -21,6 +21,9 @@
     <method name="getFirmwareVersion">
       <arg type="s" direction="out"/>
     </method>
+    <method name="getKeyboardLayout">
+      <arg type="s" direction="out"/>
+    </method>
     <method name="setNone">
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>

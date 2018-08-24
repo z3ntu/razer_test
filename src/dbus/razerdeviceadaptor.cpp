@@ -49,6 +49,14 @@ QString RazerDeviceAdaptor::getFirmwareVersion()
     return out0;
 }
 
+QString RazerDeviceAdaptor::getKeyboardLayout()
+{
+    // handle method call io.github.openrazer1.Device.getKeyboardLayout
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getKeyboardLayout", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
 QVector<RazerLedId> RazerDeviceAdaptor::getLedIds()
 {
     // handle method call io.github.openrazer1.Device.getLedIds

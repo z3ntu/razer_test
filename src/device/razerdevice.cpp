@@ -174,7 +174,11 @@ QString RazerDevice::getSerial()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_serial();
-    sendReport(report, &response_report);
+    if(sendReport(report, &response_report) != 0) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return "error";
+    }
     return QString((char*)&response_report.arguments[0]);
 }
 
@@ -184,8 +188,28 @@ QString RazerDevice::getFirmwareVersion()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_firmware_version();
-    sendReport(report, &response_report);
+    if(sendReport(report, &response_report) != 0) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return "error";
+    }
     return QString("v%1.%2").arg(response_report.arguments[0]).arg(response_report.arguments[1]);
+}
+
+QString RazerDevice::getKeyboardLayout()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+//     if(!checkLedAndFx(RazerLedId::Unspecified, "keyboard_layout")) // TODO Fix LED
+//         return "error";
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_get_keyboard_layout();
+    if(sendReport(report, &response_report) != 0) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return "error";
+    }
+    return keyboardLayoutIds.value(response_report.arguments[0], "unknown");
 }
 
 uchar RazerDevice::getBrightness(RazerLedId led)

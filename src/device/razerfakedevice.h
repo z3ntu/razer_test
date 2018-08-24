@@ -34,6 +34,7 @@ class RazerFakeDevice : public RazerDevice
 
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
+    virtual QString getKeyboardLayout();
 
     virtual bool setNone(RazerLedId led);
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
@@ -47,6 +48,7 @@ class RazerFakeDevice : public RazerDevice
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
     virtual bool getBrightness(RazerLedId led, uchar *brightness);
+
 private:
     QString serial;
     QString fwVersion;

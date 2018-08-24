@@ -61,6 +61,7 @@ public Q_SLOTS:
 
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
+    virtual QString getKeyboardLayout();
 
     virtual bool setNone(RazerLedId led) = 0;
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
@@ -73,6 +74,8 @@ public Q_SLOTS:
     virtual bool setCustomFrame(RazerLedId led) = 0;
 //     virtual bool defineCustomRgb( // TODO
     // etc
+
+    // getDeviceMode, setDeviceMode
 
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
     uchar getBrightness(RazerLedId led);
@@ -93,6 +96,17 @@ protected:
     QHash<RazerLedId, RazerLED*> leds;
 
     bool checkLedAndFx(RazerLedId led, QString fxStr);
+
+    QHash<uchar, QString> keyboardLayoutIds {
+        {0x01, "en_US"},
+        {0x02, "el_GR"},
+        {0x03, "de_DE"},
+        {0x04, "fr_FR"},
+        {0x06, "en_GB"},
+        {0x11, "it_IT"},
+        {0x12, "pt_PT"},
+        {0x81, "en_US_mac"}
+    };
 };
 
 #endif // RAZERDEVICE_H
