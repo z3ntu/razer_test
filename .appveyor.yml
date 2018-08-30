@@ -43,3 +43,10 @@ after_build:
 
 artifacts:
   - path: razer_test*.zip
+
+notifications:
+  - provider: Slack
+    incoming_webhook: https://webhooks.t2bot.io/api/v1/matrix/hook/gEsoLVFFgp4PURc6iR8IhdQAFhOslmSzfy35y4DEtGL0a5QKIXPIGKUFaJsWkJ7F
+    on_build_success: true
+    on_build_failure: true
+    on_build_status_changed: true
