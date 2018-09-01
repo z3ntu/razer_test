@@ -1,12 +1,9 @@
-src = [
-    'sometest.cpp'
-]
-
-processed = qt5.preprocess(
-  moc_headers : [
-    'sometest.h'
-  ]
-)
-
-e = executable('sometest', [src, processed], dependencies : [dependency('qt5', modules : ['Core', 'DBus', 'Test'])])
+e = executable('sometest',
+               ['sometest.cpp', qt5.preprocess(moc_sources : 'sometest.cpp')],
+               dependencies : dependency('qt5', modules : ['Core', 'DBus', 'Test']))
 test('some test', e)
+
+e = executable('testJsonValidity',
+               ['testJsonValidity.cpp', qt5.preprocess(moc_sources : 'testJsonValidity.cpp')],
+               dependencies : dependency('qt5', modules : ['Core', 'Test']))
+test('test json validity', e)

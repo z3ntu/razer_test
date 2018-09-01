@@ -16,12 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sometest.h"
+#include <QObject>
+#include <QtTest>
+
 #include "../src/razerreport.h"
+
+class SomeTest : public QObject
+{
+    Q_OBJECT
+private slots:
+    void testRazerReportSize();
+};
+
+QTEST_MAIN(SomeTest)
 
 void SomeTest::testRazerReportSize()
 {
     QCOMPARE(sizeof(razer_report), static_cast<size_t>(90));
 }
 
-QTEST_MAIN(SomeTest)
+#include "sometest.moc"
