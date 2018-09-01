@@ -11,9 +11,9 @@ platform:
   - x64
 
 install:
-  # Download ninja & pkg-config
-  - ps: (new-object net.webclient).DownloadFile('https://www.dropbox.com/s/cyghxjrvgplu7sy/ninja.exe?dl=1', 'C:\projects\razer-test\ninja.exe')
-  - ps: (new-object net.webclient).DownloadFile('http://nirbheek.in/files/binaries/pkg-config/win32/pkg-config.exe', 'C:\projects\razer-test\pkg-config.exe')
+  # Download ninja
+  - cmd: mkdir C:\ninja-build
+  - ps: (new-object net.webclient).DownloadFile('https://www.dropbox.com/s/cyghxjrvgplu7sy/ninja.exe?dl=1', 'C:\ninja-build\ninja.exe')
   # Set paths to dependencies (based on architecture)
   - cmd: if %arch%==x86 (set PYTHON_ROOT=C:\python37) else (set PYTHON_ROOT=C:\python37-x64)
   - cmd: if %arch%==x86 (set QT_ROOT=C:\Qt\5.11\%compiler%) else (set QT_ROOT=C:\Qt\5.11\%compiler%_64)
@@ -21,18 +21,17 @@ install:
   - cmd: echo Using Python at %PYTHON_ROOT%
   - cmd: echo Using Qt at %QT_ROOT%
   # Add neccessary paths to PATH variable
-  - cmd: set PATH=%cd%;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
+  - cmd: set PATH=%cd%;C:\ninja-build;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson
   - cmd: pip install meson
   # Set up the build environment
-  - cmd: if %compiler%==msvc2010 ( call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch% )
   - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
   - cmd: if %compiler%==msvc2017 ( call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %arch% )
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
   - cmd: meson --backend=ninja -Dbuild_tests=true builddir
-  - cmd: ninja -C builddir -v
+  - cmd: ninja -C builddir
 
 test_script:
   - cmd: ninja -C builddir test
