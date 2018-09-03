@@ -16,31 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERMATRIXLED_H
-#define RAZERMATRIXLED_H
+#ifndef RAZERMOUSEMATRIXLED_H
+#define RAZERMOUSEMATRIXLED_H
 
 #include "razerled.h"
 
-enum class RazerMatrixEffectId : unsigned char {
-    Off         = 0x00,
-    Wave        = 0x01,
-    Afterglow   = 0x02, // Reactive
-    Breathing   = 0x03,
-    Spectrum    = 0x04,
-    CustomFrame = 0x05,
-    Static      = 0x06,
-    Starlight   = 0x19
+enum class RazerMouseMatrixEffectId : unsigned char {
+    Off          = 0x00,
+    Static       = 0x01,
+    Breathing    = 0x02,
+    Spectrum     = 0x03,
+    Wave         = 0x04,
+    Reactive     = 0x05,
+    Starlight    = 0x07,
+    CustomFrame  = 0x08
 };
 
 /**
  * @todo write docs
  */
-class RazerMatrixLED : public RazerLED
+class RazerMouseMatrixLED : public RazerLED
 {
 public:
     using RazerLED::RazerLED;
 
-    RazerMatrixEffectId effect;
+    RazerMouseMatrixEffectId effect;
 };
 
-#endif // RAZERMATRIXLED_H
+#endif // RAZERMOUSEMATRIXLED_H

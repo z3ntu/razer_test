@@ -29,8 +29,8 @@
 
 #include "../razerreport.h"
 
-enum RazerDeviceQuirks {
-
+enum class RazerDeviceQuirks {
+    MouseMatrix
 };
 
 /**

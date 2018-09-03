@@ -23,6 +23,7 @@
 bool RazerMatrixDevice::initializeLeds()
 {
     foreach(RazerLedId ledId, ledIds) {
+        // TODO Create RazerMouseMatrixLED if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
         RazerMatrixLED *rled = new RazerMatrixLED(ledId);
         bool ok;
         uchar brightness;
@@ -49,7 +50,11 @@ bool RazerMatrixDevice::setNone(RazerLedId led)
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
     if(!checkLedAndFx(led, "off"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Off);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Off);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Off);
+    }
 }
 
 bool RazerMatrixDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
@@ -57,7 +62,11 @@ bool RazerMatrixDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar 
     qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
     if(!checkLedAndFx(led, "static"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Static, red, green, blue);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Static, 0x00, 0x00, 0x01, red, green, blue);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Static, red, green, blue);
+    }
 }
 
 bool RazerMatrixDevice::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
@@ -65,7 +74,11 @@ bool RazerMatrixDevice::setBreathing(RazerLedId led, uchar red, uchar green, uch
     qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
     if(!checkLedAndFx(led, "breathing"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Breathing, 0x01, 0x00, 0x01, red, green, blue);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
+    }
 }
 
 bool RazerMatrixDevice::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
@@ -73,7 +86,11 @@ bool RazerMatrixDevice::setBreathingDual(RazerLedId led, uchar red, uchar green,
     qDebug("Called %s with params %hhu, %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue, red2, green2, blue2);
     if(!checkLedAndFx(led, "breathing_dual"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Breathing, 0x02, 0x00, 0x02, red, green, blue, red2, green2, blue2);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
+    }
 }
 
 bool RazerMatrixDevice::setBreathingRandom(RazerLedId led)
@@ -81,7 +98,11 @@ bool RazerMatrixDevice::setBreathingRandom(RazerLedId led)
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
     if(!checkLedAndFx(led, "breathing_random"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x03);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Breathing);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x03);
+    }
 }
 
 bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
@@ -98,7 +119,11 @@ bool RazerMatrixDevice::setSpectrum(RazerLedId led)
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
     if(!checkLedAndFx(led, "spectrum"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Spectrum);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
+    }
 }
 
 bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
@@ -106,7 +131,12 @@ bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
     qDebug("Called %s with params %hhu, %hhu", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(direction));
     if(!checkLedAndFx(led, "wave"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        // Wave direction is 0x00 / 0x01 instead of 0x01 / 0x02 for mouse_matrix, so subtract one
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Wave, static_cast<uchar>(direction) - 0x01, 0x28);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
+    }
 }
 
 bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
@@ -114,7 +144,11 @@ bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
     if(!checkLedAndFx(led, "custom_frame"))
         return false;
-    return setMatrixEffect(led, RazerMatrixEffectId::Custom);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::CustomFrame);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::CustomFrame);
+    }
 }
 
 bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
@@ -167,7 +201,11 @@ bool RazerMatrixDevice::setSpectrumInit(RazerLedId led)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_matrix_effect(RazerMatrixEffectId::Spectrum);
+    if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, led, RazerMouseMatrixEffectId::Spectrum);
+    } else {
+        report = razer_chroma_standard_matrix_effect(RazerMatrixEffectId::Spectrum);
+    }
     if(sendReport(report, &response_report) != 0) {
         return false;
     }
@@ -202,6 +240,39 @@ bool RazerMatrixDevice::setMatrixEffect(RazerLedId led, RazerMatrixEffectId effe
         return false;
     }
     rled->effect = effect;
+
+    return true;
+}
+
+bool RazerMatrixDevice::setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEffectId effect, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8, uchar arg9, uchar arg10, uchar arg11)
+{
+    razer_report report, response_report;
+
+    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, led, effect);
+    report.arguments[3] = arg3;
+    report.arguments[4] = arg4;
+    report.arguments[5] = arg5;
+    report.arguments[6] = arg6;
+    report.arguments[7] = arg7;
+    report.arguments[8] = arg8;
+    report.arguments[9] = arg9;
+    report.arguments[10] = arg10;
+    report.arguments[11] = arg11;
+
+    if(sendReport(report, &response_report) != 0) {
+        sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+
+    // Save state into LED variable
+    RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED*>(leds[led]);
+    if(rled == NULL) {
+        qWarning("Error while casting RazerLED into RazerMatrixLED");
+        sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+    // FIXME
+//     rled->effect = effect;
 
     return true;
 }

@@ -32,7 +32,9 @@ enum class RazerLedId : uchar {
     GameModeLED = 0x08,
     KeymapRedLED = 0x0C,
     KeymapGreenLED = 0x0D,
-    KeymapBlueLED = 0x0E
+    KeymapBlueLED = 0x0E,
+    RightSideLED = 0x10,
+    LeftSideLED = 0x11
 };
 Q_DECLARE_METATYPE(RazerLedId)
 

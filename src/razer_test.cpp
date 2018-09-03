@@ -78,7 +78,9 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
         fx->append(fxVal.toString());
     }
     foreach(const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
-        quirks->append(static_cast<RazerDeviceQuirks>(quirkVal.toInt()));
+        if(quirkVal.toString() == "mouse_matrix") {
+            quirks->append(RazerDeviceQuirks::MouseMatrix);
+        }
     }
     return true;
 }

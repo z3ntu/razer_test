@@ -33,7 +33,7 @@ private:
     QStringList validPclass = {"classic", "matrix"};
     QStringList validFx = {"off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame"};
     QStringList validFeatures = {"dpi", "poll_rate"};
-    QStringList validQuirks = {}; // currently nothing
+    QStringList validQuirks = {"mouse_matrix"};
 
 private slots:
     void checkJsonDataValidity();

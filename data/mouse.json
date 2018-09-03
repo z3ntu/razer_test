@@ -9,5 +9,16 @@
         "fx": ["off", "static", "blinking", "breathing", "spectrum"],
         "features": ["dpi", "poll_rate"],
         "quirks": []
+    },
+    {
+        "name": "Razer Lancehead Tournament Edition",
+        "vid": "1532",
+        "pid": "0060",
+        "type": "mouse",
+        "pclass": "matrix",
+        "leds": [1, 4, 16, 17],
+        "fx": ["off", "breathing", "breathing_dual", "reactive", "spectrum", "static", "wave"],
+        "features": ["dpi", "poll_rate"],
+        "quirks": ["mouse_matrix"]
     }
 ]

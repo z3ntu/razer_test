@@ -22,12 +22,14 @@
 #include "led/razerled.h"
 #include "led/razerclassicled.h"
 #include "led/razermatrixled.h"
+#include "led/razermousematrixled.h"
 
 enum class RazerVarstore {
     NOSTORE = 0x00,
     STORE = 0x01
 };
 
+// TODO: Convert to enum class
 enum RazerStatus {
     NEW = 0x00,
     BUSY = 0x01,
@@ -89,5 +91,6 @@ razer_report razer_chroma_standard_get_device_mode();
 razer_report razer_chroma_standard_get_keyboard_layout();
 
 razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect);
+razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect);
 
 #endif // RAZERREPORT_H

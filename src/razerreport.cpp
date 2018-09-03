@@ -157,8 +157,18 @@ razer_report razer_chroma_standard_get_keyboard_layout()
 
 razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect)
 {
-    struct razer_report report = get_razer_report(0x03, 0x0A, 0x01);
+    struct razer_report report = get_razer_report(0x03, 0x0A, 80);
     report.arguments[0] = static_cast<uchar>(effect); // Effect ID
+
+    return report;
+}
+
+razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect)
+{
+    struct razer_report report = get_razer_report(0x0F, 0x02, 80);
+    report.arguments[0] = static_cast<uchar>(variable_storage);
+    report.arguments[1] = static_cast<uchar>(led_id);
+    report.arguments[2] = static_cast<uchar>(effect);
 
     return report;
 }
