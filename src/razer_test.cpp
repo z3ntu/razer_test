@@ -80,6 +80,10 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
     foreach(const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
         if(quirkVal.toString() == "mouse_matrix") {
             quirks->append(RazerDeviceQuirks::MouseMatrix);
+        } else if(quirkVal.toString() == "matrix_brightness") {
+            quirks->append(RazerDeviceQuirks::MatrixBrightness);
+        } else {
+            qCritical("Unhandled quirks string!");
         }
     }
     return true;

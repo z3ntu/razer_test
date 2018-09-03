@@ -19,6 +19,6 @@
         "leds": [1, 4, 16, 17],
         "fx": ["off", "breathing", "breathing_dual", "reactive", "spectrum", "static", "wave"],
         "features": ["dpi", "poll_rate"],
-        "quirks": ["mouse_matrix"]
+        "quirks": ["mouse_matrix", "matrix_brightness"]
     }
 ]

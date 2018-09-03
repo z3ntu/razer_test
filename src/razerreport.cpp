@@ -172,3 +172,22 @@ razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_st
 
     return report;
 }
+
+razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness)
+{
+    struct razer_report report = get_razer_report(0x0F, 0x04, 0x03);
+    report.arguments[0] = static_cast<uchar>(variable_storage);
+    report.arguments[1] = static_cast<uchar>(led_id);
+    report.arguments[2] = brightness;
+
+    return report;
+}
+
+razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, RazerLedId led_id)
+{
+    struct razer_report report = get_razer_report(0x0F, 0x84, 0x03);
+    report.arguments[0] = static_cast<uchar>(variable_storage);
+    report.arguments[1] = static_cast<uchar>(led_id);
+
+    return report;
+}

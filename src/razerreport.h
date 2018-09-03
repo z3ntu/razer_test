@@ -92,5 +92,7 @@ razer_report razer_chroma_standard_get_keyboard_layout();
 
 razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect);
 razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect);
+razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness);
+razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, RazerLedId led_id);
 
 #endif // RAZERREPORT_H

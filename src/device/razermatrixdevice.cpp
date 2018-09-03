@@ -158,7 +158,11 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
         return false;
     razer_report report, response_report;
 
-    report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
+    if(quirks.contains(RazerDeviceQuirks::MatrixBrightness)) {
+        report = razer_chroma_extended_matrix_set_brightness(RazerVarstore::STORE, led, brightness);
+    } else {
+        report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
+    }
     if(sendReport(report, &response_report) != 0) {
         sendErrorReply(QDBusError::Failed);
         return false;
@@ -183,7 +187,11 @@ bool RazerMatrixDevice::getBrightness(RazerLedId led, uchar *brightness)
         return false;
     razer_report report, response_report;
 
-    report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
+    if(quirks.contains(RazerDeviceQuirks::MatrixBrightness)) {
+        report = razer_chroma_extended_matrix_get_brightness(RazerVarstore::STORE, led);
+    } else {
+        report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
+    }
     if(sendReport(report, &response_report) != 0) {
         if(calledFromDBus())
             sendErrorReply(QDBusError::Failed);

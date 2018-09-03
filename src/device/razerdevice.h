@@ -30,7 +30,8 @@
 #include "../razerreport.h"
 
 enum class RazerDeviceQuirks {
-    MouseMatrix
+    MouseMatrix,
+    MatrixBrightness
 };
 
 /**
