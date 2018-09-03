@@ -24,7 +24,12 @@ bool RazerMatrixDevice::initializeLeds()
 {
     foreach(RazerLedId ledId, ledIds) {
         // TODO Create RazerMouseMatrixLED if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        RazerMatrixLED *rled = new RazerMatrixLED(ledId);
+        RazerLED *rled;
+        if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+            rled = new RazerMouseMatrixLED(ledId);
+        } else {
+            rled = new RazerMatrixLED(ledId);
+        }
         bool ok;
         uchar brightness;
         ok = getBrightness(ledId, &brightness);
@@ -37,7 +42,11 @@ bool RazerMatrixDevice::initializeLeds()
             return false;
         }
         rled->brightness = brightness;
-        rled->effect = RazerMatrixEffectId::Spectrum;
+        if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+            static_cast<RazerMouseMatrixLED*>(rled)->effect = RazerMouseMatrixEffectId::Spectrum;
+        } else {
+            static_cast<RazerMatrixLED*>(rled)->effect = RazerMatrixEffectId::Spectrum;
+        }
         leds.insert(ledId, rled);
     }
     return true;
@@ -273,14 +282,13 @@ bool RazerMatrixDevice::setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEff
     }
 
     // Save state into LED variable
-    RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED*>(leds[led]);
+    RazerMouseMatrixLED *rled = dynamic_cast<RazerMouseMatrixLED*>(leds[led]);
     if(rled == NULL) {
-        qWarning("Error while casting RazerLED into RazerMatrixLED");
+        qWarning("Error while casting RazerLED into RazerMouseMatrixLED");
         sendErrorReply(QDBusError::Failed);
         return false;
     }
-    // FIXME
-//     rled->effect = effect;
+    rled->effect = effect;
 
     return true;
 }

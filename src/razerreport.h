@@ -24,7 +24,7 @@
 #include "led/razermatrixled.h"
 #include "led/razermousematrixled.h"
 
-enum class RazerVarstore {
+enum class RazerVarstore : uchar {
     NOSTORE = 0x00,
     STORE = 0x01
 };
