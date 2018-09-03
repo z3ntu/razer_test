@@ -41,6 +41,12 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device")
     Q_PROPERTY(QString Name READ getName)
+    Q_PROPERTY(QString Type READ getType)
+    Q_PROPERTY(QString Serial READ getSerial)
+    Q_PROPERTY(QString FirmwareVersion READ getFirmwareVersion)
+    Q_PROPERTY(QString KeyboardLayout READ getKeyboardLayout)
+    Q_PROPERTY(QVector<RazerLedId> LedIds READ getLedIds)
+    Q_PROPERTY(QStringList SupportedFx READ getSupportedFx)
 
 public:
     RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks);
@@ -52,7 +58,6 @@ public:
     virtual bool initializeLeds() = 0;
     virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
 
-public Q_SLOTS:
     QString getName();
     QString getType();
 
@@ -63,6 +68,11 @@ public Q_SLOTS:
     virtual QString getFirmwareVersion();
     virtual QString getKeyboardLayout();
 
+public Q_SLOTS:
+    virtual QVector<int> getDPI();
+    virtual bool setDPI(uchar something);
+
+    // FX
     virtual bool setNone(RazerLedId led) = 0;
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
     virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
@@ -76,6 +86,7 @@ public Q_SLOTS:
     // etc
 
     // getDeviceMode, setDeviceMode
+
 
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
     uchar getBrightness(RazerLedId led);
@@ -98,14 +109,15 @@ protected:
     bool checkLedAndFx(RazerLedId led, QString fxStr);
 
     QHash<uchar, QString> keyboardLayoutIds {
-        {0x01, "en_US"},
-        {0x02, "el_GR"},
-        {0x03, "de_DE"},
-        {0x04, "fr_FR"},
-        {0x06, "en_GB"},
-        {0x11, "it_IT"},
-        {0x12, "pt_PT"},
-        {0x81, "en_US_mac"}
+        {0x01, "US"},
+        {0x02, "Greek"},
+        {0x03, "German"},
+        {0x04, "French"},
+        {0x06, "UK"},
+        {0x07, "Nordic"},
+        {0x11, "Italian"},
+        {0x12, "Portugese"},
+        {0x81, "US-mac"}
     };
 };
 

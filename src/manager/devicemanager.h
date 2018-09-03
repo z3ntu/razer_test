@@ -32,15 +32,14 @@ class DeviceManager : public QObject
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Manager")
-    Q_PROPERTY(QVector<QDBusObjectPath> devices READ getDevices)
-    Q_PROPERTY(QString version READ getVersion)
+    Q_PROPERTY(QList<QDBusObjectPath> Devices READ getDevices)
+    Q_PROPERTY(QString Version READ getVersion)
 
 public:
     DeviceManager(QVector<RazerDevice*> devices);
 
-public Q_SLOTS:
-    QString getVersion(); // TODO move up to 'public:' label
-    QVector<QDBusObjectPath> getDevices();
+    QString getVersion();
+    QList<QDBusObjectPath> getDevices();
 
 private:
     QVector<QDBusObjectPath> devices;

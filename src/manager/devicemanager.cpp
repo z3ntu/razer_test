@@ -31,7 +31,7 @@ QString DeviceManager::getVersion()
     return RAZER_TEST_VERSION;
 }
 
-QVector<QDBusObjectPath> DeviceManager::getDevices()
+QList<QDBusObjectPath> DeviceManager::getDevices()
 {
-    return devices;
+    return devices.toList();
 }

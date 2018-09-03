@@ -1,50 +1,48 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="io.github.openrazer1.Device">
-    <method name="getName">
-      <arg type="s" direction="out"/>
+    <property name="Name" type="s" access="read"/>
+    <property name="Type" type="s" access="read"/>
+    <property name="Serial" type="s" access="read"/>
+    <property name="FirmwareVersion" type="s" access="read"/>
+    <property name="KeyboardLayout" type="s" access="read"/>
+    <property name="LedIds" type="a(i)" access="read">
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="QVector&lt;RazerLedId&gt;"/>
+    </property>
+    <property name="SupportedFx" type="as" access="read"/>
+    <method name="getDPI">
+      <arg type="ai" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;int&gt;"/>
     </method>
-    <method name="getType">
-      <arg type="s" direction="out"/>
-    </method>
-    <method name="getLedIds">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;RazerLedId&gt;"/>
-      <arg type="a(i)" direction="out"/>
-    </method>
-    <method name="getSupportedFx">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;QString&gt;"/>
-      <arg type="as" direction="out"/>
-    </method>
-    <method name="getSerial">
-      <arg type="s" direction="out"/>
-    </method>
-    <method name="getFirmwareVersion">
-      <arg type="s" direction="out"/>
-    </method>
-    <method name="getKeyboardLayout">
-      <arg type="s" direction="out"/>
+    <method name="setDPI">
+      <arg type="b" direction="out"/>
+      <arg name="something" type="y" direction="in"/>
     </method>
     <method name="setNone">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
     <method name="setStatic">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="red" type="y" direction="in"/>
       <arg name="green" type="y" direction="in"/>
       <arg name="blue" type="y" direction="in"/>
     </method>
     <method name="setBreathing">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="red" type="y" direction="in"/>
       <arg name="green" type="y" direction="in"/>
       <arg name="blue" type="y" direction="in"/>
     </method>
     <method name="setBreathingDual">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="red" type="y" direction="in"/>
       <arg name="green" type="y" direction="in"/>
       <arg name="blue" type="y" direction="in"/>
@@ -53,35 +51,45 @@
       <arg name="blue2" type="y" direction="in"/>
     </method>
     <method name="setBreathingRandom">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
     <method name="setBlinking">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="red" type="y" direction="in"/>
       <arg name="green" type="y" direction="in"/>
       <arg name="blue" type="y" direction="in"/>
     </method>
     <method name="setSpectrum">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
     <method name="setWave">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="WaveDirection"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="direction" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="WaveDirection"/>
+    </method>
+    <method name="setCustomFrame">
+      <arg type="b" direction="out"/>
+      <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
     <method name="setBrightness">
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+      <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="brightness" type="y" direction="in"/>
     </method>
     <method name="getBrightness">
       <arg type="y" direction="out"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
       <arg name="led" type="(i)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
   </interface>
 </node>

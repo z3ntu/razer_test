@@ -212,6 +212,18 @@ QString RazerDevice::getKeyboardLayout()
     return keyboardLayoutIds.value(response_report.arguments[0], "unknown");
 }
 
+QVector<int> RazerDevice::getDPI()
+{
+    // TODO Implement
+    return {100, 100};
+}
+
+bool RazerDevice::setDPI(uchar something)
+{
+    // TODO Implement
+    return false;
+}
+
 uchar RazerDevice::getBrightness(RazerLedId led)
 {
     // Wrapper as D-Bus can't (easily) handle pointers / multiple return values

@@ -32,14 +32,8 @@ class DeviceManagerAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Manager")
     Q_CLASSINFO("D-Bus Introspection", ""
                 "  <interface name=\"io.github.openrazer1.Manager\">\n"
-                "    <property access=\"read\" type=\"s\" name=\"version\"/>\n"
-                "    <method name=\"getVersion\">\n"
-                "      <arg direction=\"out\" type=\"s\"/>\n"
-                "    </method>\n"
-                "    <method name=\"getDevices\">\n"
-                "      <arg direction=\"out\" type=\"a(o)\"/>\n"
-                "      <annotation value=\"QVector&lt;QDBusObjectPath&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
-                "    </method>\n"
+                "    <property access=\"read\" type=\"ao\" name=\"Devices\"/>\n"
+                "    <property access=\"read\" type=\"s\" name=\"Version\"/>\n"
                 "  </interface>\n"
                 "")
 public:
@@ -47,12 +41,13 @@ public:
     virtual ~DeviceManagerAdaptor();
 
 public: // PROPERTIES
-    Q_PROPERTY(QString version READ version)
+    Q_PROPERTY(QList<QDBusObjectPath> Devices READ devices)
+    QList<QDBusObjectPath> devices() const;
+
+    Q_PROPERTY(QString Version READ version)
     QString version() const;
 
 public Q_SLOTS: // METHODS
-    QVector<QDBusObjectPath> getDevices();
-    QString getVersion();
 Q_SIGNALS: // SIGNALS
 };
 

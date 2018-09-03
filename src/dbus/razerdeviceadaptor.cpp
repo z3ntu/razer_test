@@ -33,6 +33,48 @@ RazerDeviceAdaptor::~RazerDeviceAdaptor()
     // destructor
 }
 
+QString RazerDeviceAdaptor::firmwareVersion() const
+{
+    // get the value of property FirmwareVersion
+    return qvariant_cast< QString >(parent()->property("FirmwareVersion"));
+}
+
+QString RazerDeviceAdaptor::keyboardLayout() const
+{
+    // get the value of property KeyboardLayout
+    return qvariant_cast< QString >(parent()->property("KeyboardLayout"));
+}
+
+QVector<RazerLedId> RazerDeviceAdaptor::ledIds() const
+{
+    // get the value of property LedIds
+    return qvariant_cast< QVector<RazerLedId> >(parent()->property("LedIds"));
+}
+
+QString RazerDeviceAdaptor::name() const
+{
+    // get the value of property Name
+    return qvariant_cast< QString >(parent()->property("Name"));
+}
+
+QString RazerDeviceAdaptor::serial() const
+{
+    // get the value of property Serial
+    return qvariant_cast< QString >(parent()->property("Serial"));
+}
+
+QStringList RazerDeviceAdaptor::supportedFx() const
+{
+    // get the value of property SupportedFx
+    return qvariant_cast< QStringList >(parent()->property("SupportedFx"));
+}
+
+QString RazerDeviceAdaptor::type() const
+{
+    // get the value of property Type
+    return qvariant_cast< QString >(parent()->property("Type"));
+}
+
 uchar RazerDeviceAdaptor::getBrightness(RazerLedId led)
 {
     // handle method call io.github.openrazer1.Device.getBrightness
@@ -41,113 +83,99 @@ uchar RazerDeviceAdaptor::getBrightness(RazerLedId led)
     return out0;
 }
 
-QString RazerDeviceAdaptor::getFirmwareVersion()
+QVector<int> RazerDeviceAdaptor::getDPI()
 {
-    // handle method call io.github.openrazer1.Device.getFirmwareVersion
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "getFirmwareVersion", Q_RETURN_ARG(QString, out0));
+    // handle method call io.github.openrazer1.Device.getDPI
+    QVector<int> out0;
+    QMetaObject::invokeMethod(parent(), "getDPI", Q_RETURN_ARG(QVector<int>, out0));
     return out0;
 }
 
-QString RazerDeviceAdaptor::getKeyboardLayout()
-{
-    // handle method call io.github.openrazer1.Device.getKeyboardLayout
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "getKeyboardLayout", Q_RETURN_ARG(QString, out0));
-    return out0;
-}
-
-QVector<RazerLedId> RazerDeviceAdaptor::getLedIds()
-{
-    // handle method call io.github.openrazer1.Device.getLedIds
-    QVector<RazerLedId> out0;
-    QMetaObject::invokeMethod(parent(), "getLedIds", Q_RETURN_ARG(QVector<RazerLedId>, out0));
-    return out0;
-}
-
-QString RazerDeviceAdaptor::getName()
-{
-    // handle method call io.github.openrazer1.Device.getName
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "getName", Q_RETURN_ARG(QString, out0));
-    return out0;
-}
-
-QString RazerDeviceAdaptor::getSerial()
-{
-    // handle method call io.github.openrazer1.Device.getSerial
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "getSerial", Q_RETURN_ARG(QString, out0));
-    return out0;
-}
-
-QStringList RazerDeviceAdaptor::getSupportedFx()
-{
-    // handle method call io.github.openrazer1.Device.getSupportedFx
-    QStringList out0;
-    QMetaObject::invokeMethod(parent(), "getSupportedFx", Q_RETURN_ARG(QStringList, out0));
-    return out0;
-}
-
-QString RazerDeviceAdaptor::getType()
-{
-    // handle method call io.github.openrazer1.Device.getType
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "getType", Q_RETURN_ARG(QString, out0));
-    return out0;
-}
-
-void RazerDeviceAdaptor::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerDeviceAdaptor::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
 {
     // handle method call io.github.openrazer1.Device.setBlinking
-    QMetaObject::invokeMethod(parent(), "setBlinking", Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBlinking", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerDeviceAdaptor::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
 {
     // handle method call io.github.openrazer1.Device.setBreathing
-    QMetaObject::invokeMethod(parent(), "setBreathing", Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBreathing", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+bool RazerDeviceAdaptor::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
 {
     // handle method call io.github.openrazer1.Device.setBreathingDual
-    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue), Q_ARG(uchar, red2), Q_ARG(uchar, green2), Q_ARG(uchar, blue2));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue), Q_ARG(uchar, red2), Q_ARG(uchar, green2), Q_ARG(uchar, blue2));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setBreathingRandom(RazerLedId led)
+bool RazerDeviceAdaptor::setBreathingRandom(RazerLedId led)
 {
     // handle method call io.github.openrazer1.Device.setBreathingRandom
-    QMetaObject::invokeMethod(parent(), "setBreathingRandom", Q_ARG(RazerLedId, led));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBreathingRandom", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setBrightness(RazerLedId led, uchar brightness)
+bool RazerDeviceAdaptor::setBrightness(RazerLedId led, uchar brightness)
 {
     // handle method call io.github.openrazer1.Device.setBrightness
-    QMetaObject::invokeMethod(parent(), "setBrightness", Q_ARG(RazerLedId, led), Q_ARG(uchar, brightness));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setBrightness", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, brightness));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setNone(RazerLedId led)
+bool RazerDeviceAdaptor::setCustomFrame(RazerLedId led)
+{
+    // handle method call io.github.openrazer1.Device.setCustomFrame
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
+    return out0;
+}
+
+bool RazerDeviceAdaptor::setDPI(uchar something)
+{
+    // handle method call io.github.openrazer1.Device.setDPI
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, something));
+    return out0;
+}
+
+bool RazerDeviceAdaptor::setNone(RazerLedId led)
 {
     // handle method call io.github.openrazer1.Device.setNone
-    QMetaObject::invokeMethod(parent(), "setNone", Q_ARG(RazerLedId, led));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setNone", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setSpectrum(RazerLedId led)
+bool RazerDeviceAdaptor::setSpectrum(RazerLedId led)
 {
     // handle method call io.github.openrazer1.Device.setSpectrum
-    QMetaObject::invokeMethod(parent(), "setSpectrum", Q_ARG(RazerLedId, led));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setSpectrum", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerDeviceAdaptor::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
 {
     // handle method call io.github.openrazer1.Device.setStatic
-    QMetaObject::invokeMethod(parent(), "setStatic", Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setStatic", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    return out0;
 }
 
-void RazerDeviceAdaptor::setWave(RazerLedId led, WaveDirection direction)
+bool RazerDeviceAdaptor::setWave(RazerLedId led, WaveDirection direction)
 {
     // handle method call io.github.openrazer1.Device.setWave
-    QMetaObject::invokeMethod(parent(), "setWave", Q_ARG(RazerLedId, led), Q_ARG(WaveDirection, direction));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(WaveDirection, direction));
+    return out0;
 }
 

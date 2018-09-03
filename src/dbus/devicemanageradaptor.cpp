@@ -33,25 +33,15 @@ DeviceManagerAdaptor::~DeviceManagerAdaptor()
     // destructor
 }
 
+QList<QDBusObjectPath> DeviceManagerAdaptor::devices() const
+{
+    // get the value of property Devices
+    return qvariant_cast< QList<QDBusObjectPath> >(parent()->property("Devices"));
+}
+
 QString DeviceManagerAdaptor::version() const
 {
-    // get the value of property version
-    return qvariant_cast< QString >(parent()->property("version"));
-}
-
-QVector<QDBusObjectPath> DeviceManagerAdaptor::getDevices()
-{
-    // handle method call io.github.openrazer1.Manager.getDevices
-    QVector<QDBusObjectPath> out0;
-    QMetaObject::invokeMethod(parent(), "getDevices", Q_RETURN_ARG(QVector<QDBusObjectPath>, out0));
-    return out0;
-}
-
-QString DeviceManagerAdaptor::getVersion()
-{
-    // handle method call io.github.openrazer1.Manager.getVersion
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "getVersion", Q_RETURN_ARG(QString, out0));
-    return out0;
+    // get the value of property Version
+    return qvariant_cast< QString >(parent()->property("Version"));
 }
 
