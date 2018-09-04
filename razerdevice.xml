@@ -100,10 +100,15 @@
       <arg name="green" type="y" direction="in"/>
       <arg name="blue" type="y" direction="in"/>
     </method>
-    <method name="setCustomFrame">
+    <method name="displayCustomFrame">
       <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
+    </method>
+    <method name="defineCustomFrame">
+      <arg type="b" direction="out"/>
+      <arg name="row" type="y" direction="in"/>
+      <arg name="startColumn" type="y" direction="in"/>
+      <arg name="endColumn" type="y" direction="in"/>
+      <arg name="rgbData" type="ay" direction="in"/>
     </method>
     <method name="setBrightness">
       <arg type="b" direction="out"/>

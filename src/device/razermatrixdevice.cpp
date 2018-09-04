@@ -160,16 +160,31 @@ bool RazerMatrixDevice::setReactive(RazerLedId led, ReactiveSpeed speed, uchar r
     }
 }
 
-bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
+bool RazerMatrixDevice::displayCustomFrame()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!checkLedAndFx(led, "custom_frame"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFx("custom_frame"))
         return false;
     if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::CustomFrame);
+        return setMouseMatrixEffect(RazerLedId::Unspecified, RazerMouseMatrixEffectId::CustomFrame);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::CustomFrame);
+        return setMatrixEffect(RazerLedId::Unspecified, RazerMatrixEffectId::CustomFrame);
     }
+}
+
+bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
+{
+    qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
+    if (!checkFx("custom_frame"))
+        return false;
+    razer_report report, response_report;
+
+    report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
+    if (sendReport(report, &response_report) != 0) {
+        sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+    return true;
 }
 
 bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)

@@ -63,6 +63,22 @@ QString RazerDeviceAdaptor::type() const
     return qvariant_cast< QString >(parent()->property("Type"));
 }
 
+bool RazerDeviceAdaptor::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData)
+{
+    // handle method call io.github.openrazer1.Device.defineCustomFrame
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "defineCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, row), Q_ARG(uchar, startColumn), Q_ARG(uchar, endColumn), Q_ARG(QByteArray, rgbData));
+    return out0;
+}
+
+bool RazerDeviceAdaptor::displayCustomFrame()
+{
+    // handle method call io.github.openrazer1.Device.displayCustomFrame
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "displayCustomFrame", Q_RETURN_ARG(bool, out0));
+    return out0;
+}
+
 uchar RazerDeviceAdaptor::getBrightness(RazerLedId led)
 {
     // handle method call io.github.openrazer1.Device.getBrightness
@@ -148,14 +164,6 @@ bool RazerDeviceAdaptor::setBrightness(RazerLedId led, uchar brightness)
     // handle method call io.github.openrazer1.Device.setBrightness
     bool out0;
     QMetaObject::invokeMethod(parent(), "setBrightness", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(uchar, brightness));
-    return out0;
-}
-
-bool RazerDeviceAdaptor::setCustomFrame(RazerLedId led)
-{
-    // handle method call io.github.openrazer1.Device.setCustomFrame
-    bool out0;
-    QMetaObject::invokeMethod(parent(), "setCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
     return out0;
 }
 

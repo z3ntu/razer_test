@@ -133,10 +133,15 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
                 "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
                 "    </method>\n"
-                "    <method name=\"setCustomFrame\">\n"
+                "    <method name=\"displayCustomFrame\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
-                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
-                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "    </method>\n"
+                "    <method name=\"defineCustomFrame\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"row\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"startColumn\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"endColumn\"/>\n"
+                "      <arg direction=\"in\" type=\"ay\" name=\"rgbData\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setBrightness\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -172,6 +177,8 @@ public: // PROPERTIES
     QString type() const;
 
 public Q_SLOTS: // METHODS
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);
+    bool displayCustomFrame();
     uchar getBrightness(RazerLedId led);
     RazerDPI getDPI();
     QString getFirmwareVersion();
@@ -183,7 +190,6 @@ public Q_SLOTS: // METHODS
     bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2);
     bool setBreathingRandom(RazerLedId led);
     bool setBrightness(RazerLedId led, uchar brightness);
-    bool setCustomFrame(RazerLedId led);
     bool setDPI(RazerDPI dpi);
     bool setNone(RazerLedId led);
     bool setPollRate(ushort poll_rate);

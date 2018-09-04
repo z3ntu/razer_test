@@ -86,6 +86,7 @@ razer_report razer_chroma_standard_get_device_mode();
 razer_report razer_chroma_standard_get_keyboard_layout();
 
 razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect);
+razer_report razer_chroma_standard_matrix_set_custom_frame(uchar row_index, uchar start_col, uchar stop_col, const uchar *rgb_data);
 razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect);
 razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness);
 razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, RazerLedId led_id);

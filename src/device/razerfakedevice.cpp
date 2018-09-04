@@ -124,10 +124,18 @@ bool RazerFakeDevice::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red
     return true;
 }
 
-bool RazerFakeDevice::setCustomFrame(RazerLedId led)
+bool RazerFakeDevice::displayCustomFrame()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!checkLedAndFx(led, "custom_frame"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFx("custom_frame"))
+        return false;
+    return true;
+}
+
+bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
+{
+    qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
+    if (!checkFx("custom_frame"))
         return false;
     return true;
 }

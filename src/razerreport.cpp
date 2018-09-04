@@ -163,6 +163,21 @@ razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect)
     return report;
 }
 
+razer_report razer_chroma_standard_matrix_set_custom_frame(uchar row_index, uchar start_col, uchar stop_col, const uchar *rgb_data)
+{
+    struct razer_report report = get_razer_report(0x03, 0x0B, 0x46);
+    size_t row_length = (size_t) (((stop_col + 1) - start_col) * 3);
+    int index = 4 + (start_col * 3);
+
+    report.arguments[0] = 0xFF; // Frame ID
+    report.arguments[1] = row_index;
+    report.arguments[2] = start_col;
+    report.arguments[3] = stop_col;
+    memcpy(&report.arguments[index], rgb_data, row_length);
+
+    return report;
+}
+
 razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect)
 {
     struct razer_report report = get_razer_report(0x0F, 0x02, 80);

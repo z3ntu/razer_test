@@ -361,6 +361,13 @@ bool RazerDevice::checkLedAndFx(RazerLedId led, QString fxStr)
             sendErrorReply(QDBusError::NotSupported, "Unsupported LED.");
         return false;
     }
+    if (!checkFx(fxStr))
+        return false;
+    return true;
+}
+
+bool RazerDevice::checkFx(QString fxStr)
+{
     if (!fxStr.isEmpty() && !fx.contains(fxStr)) {
         if (calledFromDBus())
             sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");

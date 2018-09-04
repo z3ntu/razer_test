@@ -26,6 +26,7 @@
 #include <QVector>
 #include <QHash>
 #include <QDBusContext>
+#include <QByteArray>
 
 #include "../razerreport.h"
 
@@ -95,9 +96,10 @@ public Q_SLOTS:
     virtual bool setSpectrum(RazerLedId led) = 0;
     virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
     virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setCustomFrame(RazerLedId led) = 0;
-//     virtual bool defineCustomRgb( // TODO
-    // etc
+
+    // Custom frame
+    virtual bool displayCustomFrame() = 0;
+    virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) = 0;
 
     // getDeviceMode, setDeviceMode
 
@@ -122,6 +124,7 @@ protected:
     QHash<RazerLedId, RazerLED *> leds;
 
     bool checkLedAndFx(RazerLedId led, QString fxStr);
+    bool checkFx(QString fxStr);
     bool checkFeature(QString featureStr);
 
     QHash<uchar, QString> keyboardLayoutIds {
