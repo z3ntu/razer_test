@@ -7,7 +7,7 @@
         "pclass": "matrix",
         "leds": [5],
         "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame"],
-        "features": [],
+        "features": ["keyboard_layout"],
         "quirks": []
     }
 ]

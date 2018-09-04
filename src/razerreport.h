@@ -95,4 +95,7 @@ razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_st
 razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, RazerLedId led_id, unsigned char brightness);
 razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, RazerLedId led_id);
 
+razer_report razer_chroma_misc_set_dpi_xy(RazerVarstore variable_storage, ushort dpi_x, ushort dpi_y);
+razer_report razer_chroma_misc_get_dpi_xy(RazerVarstore variable_storage);
+
 #endif // RAZERREPORT_H

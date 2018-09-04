@@ -33,18 +33,6 @@ RazerDeviceAdaptor::~RazerDeviceAdaptor()
     // destructor
 }
 
-QString RazerDeviceAdaptor::firmwareVersion() const
-{
-    // get the value of property FirmwareVersion
-    return qvariant_cast< QString >(parent()->property("FirmwareVersion"));
-}
-
-QString RazerDeviceAdaptor::keyboardLayout() const
-{
-    // get the value of property KeyboardLayout
-    return qvariant_cast< QString >(parent()->property("KeyboardLayout"));
-}
-
 QVector<RazerLedId> RazerDeviceAdaptor::ledIds() const
 {
     // get the value of property LedIds
@@ -57,10 +45,10 @@ QString RazerDeviceAdaptor::name() const
     return qvariant_cast< QString >(parent()->property("Name"));
 }
 
-QString RazerDeviceAdaptor::serial() const
+QStringList RazerDeviceAdaptor::supportedFeatures() const
 {
-    // get the value of property Serial
-    return qvariant_cast< QString >(parent()->property("Serial"));
+    // get the value of property SupportedFeatures
+    return qvariant_cast< QStringList >(parent()->property("SupportedFeatures"));
 }
 
 QStringList RazerDeviceAdaptor::supportedFx() const
@@ -83,11 +71,35 @@ uchar RazerDeviceAdaptor::getBrightness(RazerLedId led)
     return out0;
 }
 
-QVector<int> RazerDeviceAdaptor::getDPI()
+RazerDPI RazerDeviceAdaptor::getDPI()
 {
     // handle method call io.github.openrazer1.Device.getDPI
-    QVector<int> out0;
-    QMetaObject::invokeMethod(parent(), "getDPI", Q_RETURN_ARG(QVector<int>, out0));
+    RazerDPI out0;
+    QMetaObject::invokeMethod(parent(), "getDPI", Q_RETURN_ARG(RazerDPI, out0));
+    return out0;
+}
+
+QString RazerDeviceAdaptor::getFirmwareVersion()
+{
+    // handle method call io.github.openrazer1.Device.getFirmwareVersion
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getFirmwareVersion", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
+QString RazerDeviceAdaptor::getKeyboardLayout()
+{
+    // handle method call io.github.openrazer1.Device.getKeyboardLayout
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getKeyboardLayout", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
+QString RazerDeviceAdaptor::getSerial()
+{
+    // handle method call io.github.openrazer1.Device.getSerial
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getSerial", Q_RETURN_ARG(QString, out0));
     return out0;
 }
 
@@ -139,11 +151,11 @@ bool RazerDeviceAdaptor::setCustomFrame(RazerLedId led)
     return out0;
 }
 
-bool RazerDeviceAdaptor::setDPI(uchar something)
+bool RazerDeviceAdaptor::setDPI(RazerDPI dpi)
 {
     // handle method call io.github.openrazer1.Device.setDPI
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, something));
+    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(RazerDPI, dpi));
     return out0;
 }
 

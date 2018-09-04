@@ -23,7 +23,25 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks)
+// Marshall the RazerDPI data into a D-Bus argument
+QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &razerDPI)
+{
+    argument.beginStructure();
+    argument << razerDPI.dpi_x << razerDPI.dpi_y;
+    argument.endStructure();
+    return argument;
+}
+
+// Retrieve the RazerDPI data from the D-Bus argument
+const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &razerDPI)
+{
+    argument.beginStructure();
+    argument >> razerDPI.dpi_x >> razerDPI.dpi_y;
+    argument.endStructure();
+    return argument;
+}
+
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
@@ -33,6 +51,7 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->pclass = pclass;
     this->ledIds = ledIds;
     this->fx = fx;
+    this->features = features;
     this->quirks = quirks;
 }
 
@@ -168,6 +187,12 @@ QStringList RazerDevice::getSupportedFx()
     return fx;
 }
 
+QStringList RazerDevice::getSupportedFeatures()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    return features;
+}
+
 QString RazerDevice::getSerial()
 {
     qDebug("Called %s", Q_FUNC_INFO);
@@ -199,8 +224,8 @@ QString RazerDevice::getFirmwareVersion()
 QString RazerDevice::getKeyboardLayout()
 {
     qDebug("Called %s", Q_FUNC_INFO);
-//     if(!checkLedAndFx(RazerLedId::Unspecified, "keyboard_layout")) // TODO Fix LED
-//         return "error";
+    if(!checkFeature("keyboard_layout"))
+        return "error";
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_keyboard_layout();
@@ -212,22 +237,44 @@ QString RazerDevice::getKeyboardLayout()
     return keyboardLayoutIds.value(response_report.arguments[0], "unknown");
 }
 
-QVector<int> RazerDevice::getDPI()
+RazerDPI RazerDevice::getDPI()
 {
-    // TODO Implement
-    return {100, 100};
+    qDebug("Called %s", Q_FUNC_INFO);
+    if(!checkFeature("dpi"))
+        return {0, 0};
+    razer_report report, response_report;
+
+    report = razer_chroma_misc_get_dpi_xy(RazerVarstore::STORE);
+    if(sendReport(report, &response_report) != 0) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return {0, 0};
+    }
+    ushort dpi_x = (response_report.arguments[1] << 8) | (response_report.arguments[2] & 0xFF);
+    ushort dpi_y = (response_report.arguments[3] << 8) | (response_report.arguments[4] & 0xFF);
+    return {dpi_x, dpi_y};
 }
 
-bool RazerDevice::setDPI(uchar something)
+bool RazerDevice::setDPI(RazerDPI dpi)
 {
-    // TODO Implement
-    return false;
+    qDebug("Called %s", Q_FUNC_INFO);
+    if(!checkFeature("dpi"))
+        return false;
+    razer_report report, response_report;
+
+    report = razer_chroma_misc_set_dpi_xy(RazerVarstore::STORE, dpi.dpi_x, dpi.dpi_y);
+    if(sendReport(report, &response_report) != 0) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+    return true;
 }
 
 uchar RazerDevice::getBrightness(RazerLedId led)
 {
     // Wrapper as D-Bus can't (easily) handle pointers / multiple return values
-    // TODO: Note: Actually it can, I don't know how to properly implement it though.
+    // TODO: Note: Apparently it can, I don't know how to properly implement it though.
     uchar brightness = 0x00;
     getBrightness(led, &brightness);
     return brightness;
@@ -249,6 +296,16 @@ bool RazerDevice::checkLedAndFx(RazerLedId led, QString fxStr)
     if(!fxStr.isEmpty() && !fx.contains(fxStr)) {
         if(calledFromDBus())
             sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
+        return false;
+    }
+    return true;
+}
+
+bool RazerDevice::checkFeature(QString featureStr)
+{
+    if(!features.contains(featureStr)) {
+        if(calledFromDBus())
+            sendErrorReply(QDBusError::NotSupported, "Unsupported feature.");
         return false;
     }
     return true;

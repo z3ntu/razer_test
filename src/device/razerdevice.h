@@ -34,6 +34,15 @@ enum class RazerDeviceQuirks {
     MatrixBrightness
 };
 
+struct RazerDPI {
+    ushort dpi_x;
+    ushort dpi_y;
+};
+Q_DECLARE_METATYPE(RazerDPI)
+
+QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &razerDPI);
+const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &razerDPI);
+
 /**
  * @todo write docs
  */
@@ -43,14 +52,12 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device")
     Q_PROPERTY(QString Name READ getName)
     Q_PROPERTY(QString Type READ getType)
-    Q_PROPERTY(QString Serial READ getSerial)
-    Q_PROPERTY(QString FirmwareVersion READ getFirmwareVersion)
-    Q_PROPERTY(QString KeyboardLayout READ getKeyboardLayout)
     Q_PROPERTY(QVector<RazerLedId> LedIds READ getLedIds)
     Q_PROPERTY(QStringList SupportedFx READ getSupportedFx)
+    Q_PROPERTY(QStringList SupportedFeatures READ getSupportedFeatures)
 
 public:
-    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks);
+    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks);
     virtual ~RazerDevice();
     virtual bool openDeviceHandle();
     int sendReport(razer_report request_report, razer_report *response_report);
@@ -64,14 +71,16 @@ public:
 
     QVector<RazerLedId> getLedIds();
     QStringList getSupportedFx();
+    QStringList getSupportedFeatures();
 
+public Q_SLOTS:
+    // TODO: CamelCase public functions (at least for D-Bus)
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
     virtual QString getKeyboardLayout();
 
-public Q_SLOTS:
-    virtual QVector<int> getDPI();
-    virtual bool setDPI(uchar something);
+    virtual RazerDPI getDPI();
+    virtual bool setDPI(RazerDPI dpi);
 
     // FX
     virtual bool setNone(RazerLedId led) = 0;
@@ -103,11 +112,13 @@ protected:
     QString pclass;
     QVector<RazerLedId> ledIds;
     QStringList fx;
+    QStringList features;
     QVector<RazerDeviceQuirks> quirks;
 
     QHash<RazerLedId, RazerLED*> leds;
 
     bool checkLedAndFx(RazerLedId led, QString fxStr);
+    bool checkFeature(QString featureStr);
 
     QHash<uchar, QString> keyboardLayoutIds {
         {0x01, "US"},

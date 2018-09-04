@@ -65,7 +65,7 @@ bool getVidPidFromJson(QJsonObject deviceObj, ushort *vid, ushort *pid)
     return true;
 }
 
-bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QVector<RazerDeviceQuirks> *quirks)
+bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks)
 {
     // TODO: Check everything for sanity
     *name = deviceObj["name"].toString();
@@ -76,6 +76,9 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
     }
     foreach(const QJsonValue &fxVal, deviceObj["fx"].toArray()) {
         fx->append(fxVal.toString());
+    }
+    foreach(const QJsonValue &featureVal, deviceObj["features"].toArray()) {
+        features->append(featureVal.toString());
     }
     foreach(const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
         if(quirkVal.toString() == "mouse_matrix") {
@@ -105,19 +108,20 @@ RazerDevice* initializeDevice(QString dev_path, QJsonObject deviceObj)
     QString name, type, pclass;
     QVector<RazerLedId> leds;
     QStringList fx;
+    QStringList features;
     QVector<RazerDeviceQuirks> quirks;
-    if(!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &quirks)) {
+    if(!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks)) {
         qCritical("Failed to get device info from JSON");
         return NULL;
     }
 
     RazerDevice *device;
     if(dev_path == NULL) { // create a fake device
-        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, quirks);
+        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
     } else if(pclass == "classic") {
-        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, quirks);
+        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
     } else if(pclass == "matrix") {
-        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, quirks);
+        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
     } else {
         qCritical("Unknown device class: %s", qUtf8Printable(pclass));
         return NULL;
@@ -159,6 +163,9 @@ int main(int argc, char *argv[])
 
     qRegisterMetaType<WaveDirection>("WaveDirection");
     qDBusRegisterMetaType<WaveDirection>();
+
+    qRegisterMetaType<RazerDPI>("RazerDPI");
+    qDBusRegisterMetaType<RazerDPI>();
 
     // Get the D-Bus session bus
     QDBusConnection connection = QDBusConnection::sessionBus();

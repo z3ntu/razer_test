@@ -3,20 +3,28 @@
   <interface name="io.github.openrazer1.Device">
     <property name="Name" type="s" access="read"/>
     <property name="Type" type="s" access="read"/>
-    <property name="Serial" type="s" access="read"/>
-    <property name="FirmwareVersion" type="s" access="read"/>
-    <property name="KeyboardLayout" type="s" access="read"/>
     <property name="LedIds" type="a(i)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="QVector&lt;RazerLedId&gt;"/>
     </property>
     <property name="SupportedFx" type="as" access="read"/>
+    <property name="SupportedFeatures" type="as" access="read"/>
+    <method name="getSerial">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="getFirmwareVersion">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="getKeyboardLayout">
+      <arg type="s" direction="out"/>
+    </method>
     <method name="getDPI">
-      <arg type="ai" direction="out"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVector&lt;int&gt;"/>
+      <arg type="(qq)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RazerDPI"/>
     </method>
     <method name="setDPI">
       <arg type="b" direction="out"/>
-      <arg name="something" type="y" direction="in"/>
+      <arg name="dpi" type="(qq)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerDPI"/>
     </method>
     <method name="setNone">
       <arg type="b" direction="out"/>

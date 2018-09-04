@@ -191,3 +191,23 @@ razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_
 
     return report;
 }
+
+razer_report razer_chroma_misc_set_dpi_xy(RazerVarstore variable_storage, ushort dpi_x, ushort dpi_y)
+{
+    struct razer_report report = get_razer_report(0x04, 0x05, 0x07);
+    report.arguments[0] = static_cast<uchar>(variable_storage);
+    report.arguments[1] = (dpi_x >> 8) & 0x00FF;
+    report.arguments[2] = dpi_x & 0x00FF;
+    report.arguments[3] = (dpi_y >> 8) & 0x00FF;
+    report.arguments[4] = dpi_y & 0x00FF;
+
+    return report;
+}
+
+razer_report razer_chroma_misc_get_dpi_xy(RazerVarstore variable_storage)
+{
+    struct razer_report report = get_razer_report(0x04, 0x85, 0x07);
+    report.arguments[0] = static_cast<uchar>(variable_storage);
+
+    return report;
+}

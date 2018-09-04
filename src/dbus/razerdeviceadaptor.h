@@ -11,6 +11,7 @@
 
 #ifndef RAZERDEVICEADAPTOR_H
 #define RAZERDEVICEADAPTOR_H
+#include "../device/razerdevice.h"
 #include "../led/razerled.h"
 
 #include <QtCore/QObject>
@@ -35,20 +36,28 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "  <interface name=\"io.github.openrazer1.Device\">\n"
                 "    <property access=\"read\" type=\"s\" name=\"Name\"/>\n"
                 "    <property access=\"read\" type=\"s\" name=\"Type\"/>\n"
-                "    <property access=\"read\" type=\"s\" name=\"Serial\"/>\n"
-                "    <property access=\"read\" type=\"s\" name=\"FirmwareVersion\"/>\n"
-                "    <property access=\"read\" type=\"s\" name=\"KeyboardLayout\"/>\n"
                 "    <property access=\"read\" type=\"a(i)\" name=\"LedIds\">\n"
                 "      <annotation value=\"QVector&lt;RazerLedId&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                 "    </property>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFx\"/>\n"
+                "    <property access=\"read\" type=\"as\" name=\"SupportedFeatures\"/>\n"
+                "    <method name=\"getSerial\">\n"
+                "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
+                "    <method name=\"getFirmwareVersion\">\n"
+                "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
+                "    <method name=\"getKeyboardLayout\">\n"
+                "      <arg direction=\"out\" type=\"s\"/>\n"
+                "    </method>\n"
                 "    <method name=\"getDPI\">\n"
-                "      <arg direction=\"out\" type=\"ai\"/>\n"
-                "      <annotation value=\"QVector&lt;int&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
+                "      <arg direction=\"out\" type=\"(qq)\"/>\n"
+                "      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setDPI\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
-                "      <arg direction=\"in\" type=\"y\" name=\"something\"/>\n"
+                "      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
+                "      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setNone\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -130,20 +139,14 @@ public:
     virtual ~RazerDeviceAdaptor();
 
 public: // PROPERTIES
-    Q_PROPERTY(QString FirmwareVersion READ firmwareVersion)
-    QString firmwareVersion() const;
-
-    Q_PROPERTY(QString KeyboardLayout READ keyboardLayout)
-    QString keyboardLayout() const;
-
     Q_PROPERTY(QVector<RazerLedId> LedIds READ ledIds)
     QVector<RazerLedId> ledIds() const;
 
     Q_PROPERTY(QString Name READ name)
     QString name() const;
 
-    Q_PROPERTY(QString Serial READ serial)
-    QString serial() const;
+    Q_PROPERTY(QStringList SupportedFeatures READ supportedFeatures)
+    QStringList supportedFeatures() const;
 
     Q_PROPERTY(QStringList SupportedFx READ supportedFx)
     QStringList supportedFx() const;
@@ -153,14 +156,17 @@ public: // PROPERTIES
 
 public Q_SLOTS: // METHODS
     uchar getBrightness(RazerLedId led);
-    QVector<int> getDPI();
+    RazerDPI getDPI();
+    QString getFirmwareVersion();
+    QString getKeyboardLayout();
+    QString getSerial();
     bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2);
     bool setBreathingRandom(RazerLedId led);
     bool setBrightness(RazerLedId led, uchar brightness);
     bool setCustomFrame(RazerLedId led);
-    bool setDPI(uchar something);
+    bool setDPI(RazerDPI dpi);
     bool setNone(RazerLedId led);
     bool setSpectrum(RazerLedId led);
     bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
