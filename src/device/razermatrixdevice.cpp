@@ -148,6 +148,18 @@ bool RazerMatrixDevice::setWave(RazerLedId led, WaveDirection direction)
     }
 }
 
+bool RazerMatrixDevice::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+{
+    qDebug("Called %s with params %hhu, %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(speed), red, green, blue);
+    if (!checkLedAndFx(led, "reactive"))
+        return false;
+    if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
+        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Reactive, 0x00, static_cast<uchar>(speed), 0x01, red, green, blue);
+    } else {
+        return setMatrixEffect(led, RazerMatrixEffectId::Reactive, static_cast<uchar>(speed), red, green, blue);
+    }
+}
+
 bool RazerMatrixDevice::setCustomFrame(RazerLedId led)
 {
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));

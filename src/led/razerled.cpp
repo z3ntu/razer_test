@@ -58,6 +58,26 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, WaveDirection &va
     return argument;
 }
 
+// Marshall the ReactiveSpeed data into a D-Bus argument
+QDBusArgument &operator<<(QDBusArgument &argument, const ReactiveSpeed &value)
+{
+    argument.beginStructure();
+    argument << static_cast<int>(value);
+    argument.endStructure();
+    return argument;
+}
+
+// Retrieve the ReactiveSpeed data from the D-Bus argument
+const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSpeed &value)
+{
+    int a;
+    argument.beginStructure();
+    argument >> a;
+    argument.endStructure();
+    value = static_cast<ReactiveSpeed>(a);
+    return argument;
+}
+
 RazerLED::RazerLED(RazerLedId ledId)
 {
     this->ledId = ledId;

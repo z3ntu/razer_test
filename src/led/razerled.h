@@ -54,6 +54,17 @@ Q_DECLARE_METATYPE(WaveDirection)
 QDBusArgument &operator<<(QDBusArgument &argument, const WaveDirection &value);
 const QDBusArgument &operator>>(const QDBusArgument &argument, WaveDirection &value);
 
+enum class ReactiveSpeed : uchar {
+    _500MS = 0x01,
+    _1000MS = 0x02,
+    _1500MS = 0x03,
+    _2000MS = 0x04
+};
+Q_DECLARE_METATYPE(ReactiveSpeed)
+
+QDBusArgument &operator<<(QDBusArgument &argument, const ReactiveSpeed &value);
+const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSpeed &value);
+
 /**
  * @todo write docs
  */

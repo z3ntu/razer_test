@@ -116,6 +116,14 @@ bool RazerFakeDevice::setWave(RazerLedId led, WaveDirection direction)
     return true;
 }
 
+bool RazerFakeDevice::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+{
+    qDebug("Called %s with params %hhu, %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(speed), red, green, blue);
+    if (!checkLedAndFx(led, "reactive"))
+        return false;
+    return true;
+}
+
 bool RazerFakeDevice::setCustomFrame(RazerLedId led)
 {
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
@@ -129,6 +137,7 @@ bool RazerFakeDevice::setBrightness(RazerLedId led, uchar brightness)
     qDebug("Called %s with params %hhu, %i", Q_FUNC_INFO, static_cast<uchar>(led), brightness);
     if (!checkLedAndFx(led, QString::null))
         return false;
+    // TODO: Persist brightness
     return true;
 }
 

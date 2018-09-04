@@ -167,6 +167,9 @@ int main(int argc, char *argv[])
     qRegisterMetaType<RazerDPI>("RazerDPI");
     qDBusRegisterMetaType<RazerDPI>();
 
+    qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
+    qDBusRegisterMetaType<ReactiveSpeed>();
+
     // Get the D-Bus session bus
     QDBusConnection connection = QDBusConnection::sessionBus();
 

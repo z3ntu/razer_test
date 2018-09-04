@@ -166,6 +166,15 @@ bool RazerClassicDevice::setWave(RazerLedId led, WaveDirection direction)
     return false;
 }
 
+bool RazerClassicDevice::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+{
+    qDebug("Called %s with params %hhu, %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(speed), red, green, blue);
+    if (!checkLedAndFx(led, "reactive"))
+        return false;
+    sendErrorReply(QDBusError::NotSupported);
+    return false;
+}
+
 bool RazerClassicDevice::setCustomFrame(RazerLedId led)
 {
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));

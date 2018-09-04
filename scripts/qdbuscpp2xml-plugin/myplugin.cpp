@@ -17,6 +17,9 @@ void MyPlugin::registerMetaTypes()
     qRegisterMetaType<RazerDPI>("RazerDPI");
     qDBusRegisterMetaType<RazerDPI>();
 
+    qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
+    qDBusRegisterMetaType<ReactiveSpeed>();
+
     qDBusRegisterMetaType<QList<QDBusObjectPath>>();
 }
 

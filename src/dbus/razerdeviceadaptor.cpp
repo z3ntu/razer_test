@@ -183,6 +183,14 @@ bool RazerDeviceAdaptor::setPollRate(ushort poll_rate)
     return out0;
 }
 
+bool RazerDeviceAdaptor::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+{
+    // handle method call io.github.openrazer1.Device.setReactive
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setReactive", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(ReactiveSpeed, speed), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    return out0;
+}
+
 bool RazerDeviceAdaptor::setSpectrum(RazerLedId led)
 {
     // handle method call io.github.openrazer1.Device.setSpectrum

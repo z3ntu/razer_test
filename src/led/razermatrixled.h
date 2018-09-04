@@ -24,7 +24,7 @@
 enum class RazerMatrixEffectId : unsigned char {
     Off         = 0x00,
     Wave        = 0x01,
-    Afterglow   = 0x02, // Reactive
+    Reactive    = 0x02, // Afterglow
     Breathing   = 0x03,
     Spectrum    = 0x04,
     CustomFrame = 0x05,

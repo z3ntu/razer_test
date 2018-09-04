@@ -44,6 +44,7 @@ class RazerFakeDevice : public RazerDevice
     virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     virtual bool setSpectrum(RazerLedId led);
     virtual bool setWave(RazerLedId led, WaveDirection direction);
+    virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue);
     virtual bool setCustomFrame(RazerLedId led);
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);

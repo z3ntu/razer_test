@@ -123,6 +123,16 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"(i)\" name=\"direction\"/>\n"
                 "      <annotation value=\"WaveDirection\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
                 "    </method>\n"
+                "    <method name=\"setReactive\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <arg direction=\"in\" type=\"(i)\" name=\"speed\"/>\n"
+                "      <annotation value=\"ReactiveSpeed\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"red\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
+                "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
+                "    </method>\n"
                 "    <method name=\"setCustomFrame\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
@@ -177,6 +187,7 @@ public Q_SLOTS: // METHODS
     bool setDPI(RazerDPI dpi);
     bool setNone(RazerLedId led);
     bool setPollRate(ushort poll_rate);
+    bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue);
     bool setSpectrum(RazerLedId led);
     bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setWave(RazerLedId led, WaveDirection direction);
