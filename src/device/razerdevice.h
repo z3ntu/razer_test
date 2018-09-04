@@ -118,7 +118,7 @@ protected:
     QStringList features;
     QVector<RazerDeviceQuirks> quirks;
 
-    QHash<RazerLedId, RazerLED*> leds;
+    QHash<RazerLedId, RazerLED *> leds;
 
     bool checkLedAndFx(RazerLedId led, QString fxStr);
     bool checkFeature(QString featureStr);

@@ -36,7 +36,7 @@ class DeviceManager : public QObject
     Q_PROPERTY(QString Version READ getVersion)
 
 public:
-    DeviceManager(QVector<RazerDevice*> devices);
+    DeviceManager(QVector<RazerDevice *> devices);
 
     QString getVersion();
     QList<QDBusObjectPath> getDevices();

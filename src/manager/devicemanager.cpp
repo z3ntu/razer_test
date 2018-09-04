@@ -19,9 +19,9 @@
 #include "devicemanager.h"
 #include "config.h"
 
-DeviceManager::DeviceManager(QVector<RazerDevice*> rDevices)
+DeviceManager::DeviceManager(QVector<RazerDevice *> rDevices)
 {
-    foreach(RazerDevice* rDevice, rDevices) {
+    foreach (RazerDevice *rDevice, rDevices) {
         devices.append(rDevice->getObjectPath());
     }
 }

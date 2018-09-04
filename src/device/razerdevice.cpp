@@ -57,13 +57,13 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
 
 RazerDevice::~RazerDevice()
 {
-    if(handle != NULL)
+    if (handle != NULL)
         hid_close(handle);
 }
 
 bool RazerDevice::openDeviceHandle()
 {
-    if(dev_path == NULL) {
+    if (dev_path == NULL) {
         qCritical("dev_path is NULL but openDeviceHandle() was called. This should not happen!");
         return false;
     }
@@ -77,7 +77,7 @@ bool RazerDevice::openDeviceHandle()
 
 int RazerDevice::sendReport(razer_report request_report, razer_report *response_report)
 {
-    if(handle == NULL) {
+    if (handle == NULL) {
         qCritical("sendReport called on an unopened handle. This should not happen!");
         return 1;
     }

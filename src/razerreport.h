@@ -39,11 +39,6 @@ enum RazerStatus {
     NOT_SUPPORTED = 0x05
 };
 
-struct razer_rgb {
-    unsigned char r,g,b;
-};
-
-
 union transaction_id_union {
     unsigned char id;
     struct transaction_parts {

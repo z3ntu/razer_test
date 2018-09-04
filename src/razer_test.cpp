@@ -38,11 +38,11 @@ QJsonArray loadDevicesFromJson()
     datadir.setNameFilters(filters);
 
     QListIterator<QFileInfo> i(datadir.entryInfoList());
-    while(i.hasNext()) {
+    while (i.hasNext()) {
         QFile f(i.next().absoluteFilePath());
         f.open(QFile::ReadOnly);
         QJsonArray a = QJsonDocument::fromJson(f.readAll()).array();
-        foreach(const QJsonValue &value, a) {
+        foreach (const QJsonValue &value, a) {
             devices.append(value);
         }
     }
@@ -53,12 +53,12 @@ bool getVidPidFromJson(QJsonObject deviceObj, ushort *vid, ushort *pid)
 {
     bool ok;
     *vid = deviceObj.value("vid").toString().toUShort(&ok, 16);
-    if(!ok) {
+    if (!ok) {
         qCritical() << "Error converting vid: " << deviceObj.value("vid");
         return false;
     }
     *pid = deviceObj.value("pid").toString().toUShort(&ok, 16);
-    if(!ok) {
+    if (!ok) {
         qCritical() << "Error converting pid: " << deviceObj.value("pid");
         return false;
     }
@@ -71,19 +71,19 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
     *name = deviceObj["name"].toString();
     *type = deviceObj["type"].toString();
     *pclass = deviceObj["pclass"].toString();
-    foreach(const QJsonValue &ledVal, deviceObj["leds"].toArray()) {
+    foreach (const QJsonValue &ledVal, deviceObj["leds"].toArray()) {
         leds->append(static_cast<RazerLedId>(ledVal.toInt()));
     }
-    foreach(const QJsonValue &fxVal, deviceObj["fx"].toArray()) {
+    foreach (const QJsonValue &fxVal, deviceObj["fx"].toArray()) {
         fx->append(fxVal.toString());
     }
-    foreach(const QJsonValue &featureVal, deviceObj["features"].toArray()) {
+    foreach (const QJsonValue &featureVal, deviceObj["features"].toArray()) {
         features->append(featureVal.toString());
     }
-    foreach(const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
-        if(quirkVal.toString() == "mouse_matrix") {
+    foreach (const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
+        if (quirkVal.toString() == "mouse_matrix") {
             quirks->append(RazerDeviceQuirks::MouseMatrix);
-        } else if(quirkVal.toString() == "matrix_brightness") {
+        } else if (quirkVal.toString() == "matrix_brightness") {
             quirks->append(RazerDeviceQuirks::MatrixBrightness);
         } else {
             qCritical("Unhandled quirks string!");
@@ -97,12 +97,12 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
  * If dev_path is NULL, a fake device is created, otherwise the matching device based on the input JSON is created.
  * Returns NULL on error (error message is printed with qCritical), or a valid RazerDevice*.
  */
-RazerDevice* initializeDevice(QString dev_path, QJsonObject deviceObj)
+RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
 {
     qInfo().noquote().nospace() << "Initializing device: " << deviceObj["name"].toString() << " (" << deviceObj["vid"].toString() << ":" << deviceObj["pid"].toString() << ")";
 
     ushort vid, pid;
-    if(!getVidPidFromJson(deviceObj, &vid, &pid))
+    if (!getVidPidFromJson(deviceObj, &vid, &pid))
         return NULL; // Message is printed in that method
 
     QString name, type, pclass;
@@ -110,28 +110,28 @@ RazerDevice* initializeDevice(QString dev_path, QJsonObject deviceObj)
     QStringList fx;
     QStringList features;
     QVector<RazerDeviceQuirks> quirks;
-    if(!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks)) {
+    if (!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks)) {
         qCritical("Failed to get device info from JSON");
         return NULL;
     }
 
     RazerDevice *device;
-    if(dev_path == NULL) { // create a fake device
+    if (dev_path == NULL) { // create a fake device
         device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
-    } else if(pclass == "classic") {
+    } else if (pclass == "classic") {
         device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
-    } else if(pclass == "matrix") {
+    } else if (pclass == "matrix") {
         device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
     } else {
         qCritical("Unknown device class: %s", qUtf8Printable(pclass));
         return NULL;
     }
-    if(!device->openDeviceHandle()) {
+    if (!device->openDeviceHandle()) {
         qCritical("Failed to open device handle");
         delete device;
         return NULL;
     }
-    if(!device->initializeLeds()) {
+    if (!device->initializeLeds()) {
         qCritical("Failed to initialize leds");
         delete device;
         return NULL;
@@ -172,15 +172,15 @@ int main(int argc, char *argv[])
 
     // Load the supported devices from the json files
     QJsonArray supportedDevices = loadDevicesFromJson();
-    if(supportedDevices.isEmpty()) {
+    if (supportedDevices.isEmpty()) {
         qCritical("JSON device definition files were not found. Exiting.");
         return -1;
     }
 
-    QVector<RazerDevice*> devices;
+    QVector<RazerDevice *> devices;
 
     // Use the real devices
-    if(!parser.isSet("fake-devices")) {
+    if (!parser.isSet("fake-devices")) {
         if (hid_init())
             return -1;
 
@@ -194,22 +194,22 @@ int main(int argc, char *argv[])
             // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
 
             // Check if device is already added
-            if(devicesPid.contains(cur_dev->product_id)) {
+            if (devicesPid.contains(cur_dev->product_id)) {
                 cur_dev = cur_dev->next;
                 continue;
             }
 
             // Check if device is supported
-            foreach(const QJsonValue &deviceVal, supportedDevices) {
+            foreach (const QJsonValue &deviceVal, supportedDevices) {
                 QJsonObject deviceObj = deviceVal.toObject();
 
                 ushort vid, pid;
-                if(!getVidPidFromJson(deviceObj, &vid, &pid))
+                if (!getVidPidFromJson(deviceObj, &vid, &pid))
                     break;
 
-                if(cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
+                if (cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
                     RazerDevice *device = initializeDevice(QString(cur_dev->path), deviceObj);
-                    if(device == NULL)
+                    if (device == NULL)
                         break;
 
                     devices.append(device);
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
 
                     // D-Bus
                     new RazerDeviceAdaptor(device);
-                    if(!connection.registerObject(device->getObjectPath().path(), device)) {
+                    if (!connection.registerObject(device->getObjectPath().path(), device)) {
                         qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
                         delete device;
                         break;
@@ -233,18 +233,18 @@ int main(int argc, char *argv[])
         hid_free_enumeration(devs);
     } else { // Handle fake devices
         // Check if device is supported
-        foreach(const QJsonValue &deviceVal, supportedDevices) {
+        foreach (const QJsonValue &deviceVal, supportedDevices) {
             QJsonObject deviceObj = deviceVal.toObject();
 
             RazerDevice *device = initializeDevice(NULL, deviceObj);
-            if(device == NULL)
+            if (device == NULL)
                 continue;
 
             devices.append(device);
 
             // D-Bus
             new RazerDeviceAdaptor(device);
-            if(!connection.registerObject(device->getObjectPath().path(), device)) {
+            if (!connection.registerObject(device->getObjectPath().path(), device)) {
                 qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
                 delete device;
                 continue;
@@ -254,14 +254,14 @@ int main(int argc, char *argv[])
 
     DeviceManager *manager = new DeviceManager(devices);
     new DeviceManagerAdaptor(manager);
-    if(!connection.registerObject("/io/github/openrazer1", manager)) {
+    if (!connection.registerObject("/io/github/openrazer1", manager)) {
         qCritical("Failed to register D-Bus object at \"/io/github/openrazer1\".");
         return 1;
     }
 
 #ifdef DEMO
 
-    if(devices.isEmpty()) {
+    if (devices.isEmpty()) {
         qFatal("No device found. Exiting.");
         return 1;
     }
@@ -273,7 +273,7 @@ int main(int argc, char *argv[])
     // Firmware version
     qDebug() << "Firmware version:" << razerDevice->getFirmwareVersion();
 
-    foreach(RazerLedId id, razerDevice->getLedIds()) {
+    foreach (RazerLedId id, razerDevice->getLedIds()) {
         qDebug() << "LED ID:" << static_cast<uchar>(id);
         razerDevice->setStatic(id, 0xFF, 0xFF, 0x00);
     }
@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
 
 #else
 
-    if(!connection.registerService("io.github.openrazer1")) {
+    if (!connection.registerService("io.github.openrazer1")) {
         qCritical("Failed to register D-Bus service at \"io.github.openrazer1\". Maybe it's already running?");
         return 1;
     }
