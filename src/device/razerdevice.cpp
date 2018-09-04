@@ -112,7 +112,10 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         }
 
         // Wait a bit
-        QThread::usleep(800);
+        if(retryCount == 3)
+            QThread::usleep(800);
+        else
+            QThread::usleep(8000); // let's sleep a bit longer, still only 0.008 seconds
 
         // Read a Feature Report from the device
         res_buf[0] = 0x00; // report number
