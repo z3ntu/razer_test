@@ -178,13 +178,23 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
     }
 
     // Save state into LED variable
-    RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED *>(leds[led]);
-    if (rled == NULL) {
-        qWarning("Error while casting RazerLED into RazerMatrixLED");
-        sendErrorReply(QDBusError::Failed);
-        return false;
+    if (quirks.contains(RazerDeviceQuirks::MatrixBrightness)) {
+        RazerMouseMatrixLED *rled = dynamic_cast<RazerMouseMatrixLED *>(leds[led]);
+        if (rled == NULL) {
+            qWarning("Error while casting RazerLED into RazerMouseMatrixLED");
+            sendErrorReply(QDBusError::Failed);
+            return false;
+        }
+        rled->brightness = brightness;
+    } else {
+        RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED *>(leds[led]);
+        if (rled == NULL) {
+            qWarning("Error while casting RazerLED into RazerMatrixLED");
+            sendErrorReply(QDBusError::Failed);
+            return false;
+        }
+        rled->brightness = brightness;
     }
-    rled->brightness = brightness;
 
     return true;
 }
