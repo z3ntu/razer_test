@@ -95,6 +95,14 @@ QString RazerDeviceAdaptor::getKeyboardLayout()
     return out0;
 }
 
+ushort RazerDeviceAdaptor::getPollRate()
+{
+    // handle method call io.github.openrazer1.Device.getPollRate
+    ushort out0;
+    QMetaObject::invokeMethod(parent(), "getPollRate", Q_RETURN_ARG(ushort, out0));
+    return out0;
+}
+
 QString RazerDeviceAdaptor::getSerial()
 {
     // handle method call io.github.openrazer1.Device.getSerial
@@ -164,6 +172,14 @@ bool RazerDeviceAdaptor::setNone(RazerLedId led)
     // handle method call io.github.openrazer1.Device.setNone
     bool out0;
     QMetaObject::invokeMethod(parent(), "setNone", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led));
+    return out0;
+}
+
+bool RazerDeviceAdaptor::setPollRate(ushort poll_rate)
+{
+    // handle method call io.github.openrazer1.Device.setPollRate
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setPollRate", Q_RETURN_ARG(bool, out0), Q_ARG(ushort, poll_rate));
     return out0;
 }
 

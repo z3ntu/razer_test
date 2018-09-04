@@ -26,6 +26,13 @@
       <arg name="dpi" type="(qq)" direction="in"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerDPI"/>
     </method>
+    <method name="getPollRate">
+      <arg type="q" direction="out"/>
+    </method>
+    <method name="setPollRate">
+      <arg type="b" direction="out"/>
+      <arg name="poll_rate" type="q" direction="in"/>
+    </method>
     <method name="setNone">
       <arg type="b" direction="out"/>
       <arg name="led" type="(i)" direction="in"/>

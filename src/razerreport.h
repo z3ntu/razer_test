@@ -98,4 +98,7 @@ razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_
 razer_report razer_chroma_misc_set_dpi_xy(RazerVarstore variable_storage, ushort dpi_x, ushort dpi_y);
 razer_report razer_chroma_misc_get_dpi_xy(RazerVarstore variable_storage);
 
+razer_report razer_chroma_misc_get_polling_rate();
+razer_report razer_chroma_misc_set_polling_rate(uchar poll_rate_byte);
+
 #endif // RAZERREPORT_H

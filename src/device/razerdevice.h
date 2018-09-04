@@ -82,6 +82,9 @@ public Q_SLOTS:
     virtual RazerDPI getDPI();
     virtual bool setDPI(RazerDPI dpi);
 
+    virtual ushort getPollRate();
+    virtual bool setPollRate(ushort poll_rate);
+
     // FX
     virtual bool setNone(RazerLedId led) = 0;
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;

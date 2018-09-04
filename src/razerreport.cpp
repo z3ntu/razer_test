@@ -211,3 +211,16 @@ razer_report razer_chroma_misc_get_dpi_xy(RazerVarstore variable_storage)
 
     return report;
 }
+
+razer_report razer_chroma_misc_get_polling_rate()
+{
+    return get_razer_report(0x00, 0x85, 0x01);
+}
+
+razer_report razer_chroma_misc_set_polling_rate(uchar poll_rate_byte)
+{
+    struct razer_report report = get_razer_report(0x00, 0x05, 0x01);
+    report.arguments[0] = poll_rate_byte;
+
+    return report;
+}

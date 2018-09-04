@@ -82,8 +82,8 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         return 1;
     }
     int res;
-    unsigned char req_buf[sizeof(razer_report)+1];
-    unsigned char res_buf[sizeof(razer_report)+1];
+    unsigned char req_buf[sizeof(razer_report) + 1];
+    unsigned char res_buf[sizeof(razer_report) + 1];
 
     // Calculate the crc
     request_report.crc = razer_calculate_crc(&request_report);
@@ -94,14 +94,14 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
 
 #ifdef DEBUG
     printf("Request report: ");
-    for (int i = 1; i < sizeof(razer_report)+1; i++)
+    for (int i = 1; i < sizeof(razer_report) + 1; i++)
         printf("%02hhx ", req_buf[i]);
     printf("\n");
 #endif
 
     int retryCount = 3;
 
-    while(retryCount > 0) {
+    while (retryCount > 0) {
 
         // Send the Feature Report to the device
         res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
@@ -125,7 +125,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
 
 #ifdef DEBUG
         printf("Response report: ");
-        for (int i = 1; i < sizeof(razer_report)+1; i++)
+        for (int i = 1; i < sizeof(razer_report) + 1; i++)
             printf("%02hhx ", res_buf[i]);
         printf("\n");
 #endif
@@ -142,10 +142,10 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
                response_report->command_id.id);
 #endif
 
-        if(response_report->status == RazerStatus::NOT_SUPPORTED)
+        if (response_report->status == RazerStatus::NOT_SUPPORTED)
             return 2;
 
-        if(response_report->status != RazerStatus::SUCCESSFUL) {
+        if (response_report->status != RazerStatus::SUCCESSFUL) {
             retryCount--;
             continue;
         } else {
@@ -199,12 +199,12 @@ QString RazerDevice::getSerial()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_serial();
-    if(sendReport(report, &response_report) != 0) {
-        if(calledFromDBus())
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
         return "error";
     }
-    return QString((char*)&response_report.arguments[0]);
+    return QString((char *)&response_report.arguments[0]);
 }
 
 QString RazerDevice::getFirmwareVersion()
@@ -213,8 +213,8 @@ QString RazerDevice::getFirmwareVersion()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_firmware_version();
-    if(sendReport(report, &response_report) != 0) {
-        if(calledFromDBus())
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
         return "error";
     }
@@ -224,13 +224,13 @@ QString RazerDevice::getFirmwareVersion()
 QString RazerDevice::getKeyboardLayout()
 {
     qDebug("Called %s", Q_FUNC_INFO);
-    if(!checkFeature("keyboard_layout"))
+    if (!checkFeature("keyboard_layout"))
         return "error";
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_keyboard_layout();
-    if(sendReport(report, &response_report) != 0) {
-        if(calledFromDBus())
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
         return "error";
     }
@@ -240,13 +240,13 @@ QString RazerDevice::getKeyboardLayout()
 RazerDPI RazerDevice::getDPI()
 {
     qDebug("Called %s", Q_FUNC_INFO);
-    if(!checkFeature("dpi"))
+    if (!checkFeature("dpi"))
         return {0, 0};
     razer_report report, response_report;
 
     report = razer_chroma_misc_get_dpi_xy(RazerVarstore::STORE);
-    if(sendReport(report, &response_report) != 0) {
-        if(calledFromDBus())
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
         return {0, 0};
     }
@@ -258,13 +258,78 @@ RazerDPI RazerDevice::getDPI()
 bool RazerDevice::setDPI(RazerDPI dpi)
 {
     qDebug("Called %s", Q_FUNC_INFO);
-    if(!checkFeature("dpi"))
+    if (!checkFeature("dpi"))
         return false;
     razer_report report, response_report;
 
     report = razer_chroma_misc_set_dpi_xy(RazerVarstore::STORE, dpi.dpi_x, dpi.dpi_y);
-    if(sendReport(report, &response_report) != 0) {
-        if(calledFromDBus())
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+    return true;
+}
+
+ushort RazerDevice::getPollRate()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("poll_rate"))
+        return 0;
+    razer_report report, response_report;
+
+    report = razer_chroma_misc_get_polling_rate();
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return 0;
+    }
+    ushort poll_rate = 0;
+    switch (response_report.arguments[0]) {
+    case 0x01:
+        poll_rate = 1000;
+        break;
+    case 0x02:
+        poll_rate = 500;
+        break;
+    case 0x08:
+        poll_rate = 125;
+        break;
+    default: // something else
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return 0;
+    }
+    return poll_rate;
+}
+
+bool RazerDevice::setPollRate(ushort poll_rate)
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("poll_rate"))
+        return false;
+    razer_report report, response_report;
+
+    uchar poll_rate_byte = 0x00;
+    switch (poll_rate) {
+    case 1000:
+        poll_rate_byte = 0x01;
+        break;
+    case 500:
+        poll_rate_byte = 0x02;
+        break;
+    case 125:
+        poll_rate_byte = 0x08;
+        break;
+    default: // something else
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+
+    report = razer_chroma_misc_set_polling_rate(poll_rate_byte);
+    if (sendReport(report, &response_report) != 0) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
         return false;
     }
@@ -288,13 +353,13 @@ uchar RazerDevice::getBrightness(RazerLedId led)
  */
 bool RazerDevice::checkLedAndFx(RazerLedId led, QString fxStr)
 {
-    if(!ledIds.contains(led)) {
-        if(calledFromDBus())
+    if (!ledIds.contains(led)) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::NotSupported, "Unsupported LED.");
         return false;
     }
-    if(!fxStr.isEmpty() && !fx.contains(fxStr)) {
-        if(calledFromDBus())
+    if (!fxStr.isEmpty() && !fx.contains(fxStr)) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
         return false;
     }
@@ -303,8 +368,8 @@ bool RazerDevice::checkLedAndFx(RazerLedId led, QString fxStr)
 
 bool RazerDevice::checkFeature(QString featureStr)
 {
-    if(!features.contains(featureStr)) {
-        if(calledFromDBus())
+    if (!features.contains(featureStr)) {
+        if (calledFromDBus())
             sendErrorReply(QDBusError::NotSupported, "Unsupported feature.");
         return false;
     }

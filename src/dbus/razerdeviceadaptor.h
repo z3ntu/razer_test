@@ -59,6 +59,13 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
                 "      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "    </method>\n"
+                "    <method name=\"getPollRate\">\n"
+                "      <arg direction=\"out\" type=\"q\"/>\n"
+                "    </method>\n"
+                "    <method name=\"setPollRate\">\n"
+                "      <arg direction=\"out\" type=\"b\"/>\n"
+                "      <arg direction=\"in\" type=\"q\" name=\"poll_rate\"/>\n"
+                "    </method>\n"
                 "    <method name=\"setNone\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
@@ -159,6 +166,7 @@ public Q_SLOTS: // METHODS
     RazerDPI getDPI();
     QString getFirmwareVersion();
     QString getKeyboardLayout();
+    ushort getPollRate();
     QString getSerial();
     bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
@@ -168,6 +176,7 @@ public Q_SLOTS: // METHODS
     bool setCustomFrame(RazerLedId led);
     bool setDPI(RazerDPI dpi);
     bool setNone(RazerLedId led);
+    bool setPollRate(ushort poll_rate);
     bool setSpectrum(RazerLedId led);
     bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setWave(RazerLedId led, WaveDirection direction);
