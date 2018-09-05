@@ -25,22 +25,23 @@ endif
 src = [
     'src/razer_test.cpp',
     'src/razerreport.cpp',
-    'src/led/razerled.cpp',
-    'src/led/razerclassicled.cpp',
+    'src/customeffect/customeffectthread.cpp',
+    'src/dbus/devicemanageradaptor.cpp',
+    'src/dbus/razerdeviceadaptor.cpp',
     'src/device/razerdevice.cpp',
     'src/device/razerclassicdevice.cpp',
-    'src/device/razermatrixdevice.cpp',
     'src/device/razerfakedevice.cpp',
-    'src/dbus/razerdeviceadaptor.cpp',
-    'src/dbus/devicemanageradaptor.cpp',
+    'src/device/razermatrixdevice.cpp',
+    'src/led/razerled.cpp',
     'src/manager/devicemanager.cpp'
 ]
 
 processed = qt5.preprocess(
   moc_headers : [
-    'src/device/razerdevice.h',
-    'src/dbus/razerdeviceadaptor.h',
+    'src/customeffect/customeffectthread.h',
     'src/dbus/devicemanageradaptor.h',
+    'src/dbus/razerdeviceadaptor.h',
+    'src/device/razerdevice.h',
     'src/manager/devicemanager.h'
   ]
 )

@@ -127,6 +127,12 @@ QString RazerDeviceAdaptor::getSerial()
     return out0;
 }
 
+void RazerDeviceAdaptor::pauseCustomEffectThread()
+{
+    // handle method call io.github.openrazer1.Device.pauseCustomEffectThread
+    QMetaObject::invokeMethod(parent(), "pauseCustomEffectThread");
+}
+
 bool RazerDeviceAdaptor::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
 {
     // handle method call io.github.openrazer1.Device.setBlinking
@@ -221,5 +227,11 @@ bool RazerDeviceAdaptor::setWave(RazerLedId led, WaveDirection direction)
     bool out0;
     QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(RazerLedId, led), Q_ARG(WaveDirection, direction));
     return out0;
+}
+
+void RazerDeviceAdaptor::startCustomEffectThread()
+{
+    // handle method call io.github.openrazer1.Device.startCustomEffectThread
+    QMetaObject::invokeMethod(parent(), "startCustomEffectThread");
 }
 

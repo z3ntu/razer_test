@@ -154,6 +154,8 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"(i)\" name=\"led\"/>\n"
                 "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "    </method>\n"
+                "    <method name=\"startCustomEffectThread\"/>\n"
+                "    <method name=\"pauseCustomEffectThread\"/>\n"
                 "  </interface>\n"
                 "")
 public:
@@ -185,6 +187,7 @@ public Q_SLOTS: // METHODS
     QString getKeyboardLayout();
     ushort getPollRate();
     QString getSerial();
+    void pauseCustomEffectThread();
     bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2);
@@ -197,6 +200,7 @@ public Q_SLOTS: // METHODS
     bool setSpectrum(RazerLedId led);
     bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
     bool setWave(RazerLedId led, WaveDirection direction);
+    void startCustomEffectThread();
 Q_SIGNALS: // SIGNALS
 };
 

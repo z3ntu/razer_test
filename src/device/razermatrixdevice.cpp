@@ -119,7 +119,8 @@ bool RazerMatrixDevice::setBlinking(RazerLedId led, uchar red, uchar green, ucha
     qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
     if (!checkLedAndFx(led, "blinking"))
         return false;
-    sendErrorReply(QDBusError::NotSupported);
+    if (calledFromDBus())
+        sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
@@ -177,11 +178,20 @@ bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar en
     qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
     if (!checkFx("custom_frame"))
         return false;
+
+    if (rgbData.size() != ((endColumn + 1 - startColumn) * 3)) {
+        qWarning("defineCustomFrame called with invalid size of rgbData");
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+
     razer_report report, response_report;
 
     report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
     if (sendReport(report, &response_report) != 0) {
-        sendErrorReply(QDBusError::Failed);
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
     return true;
@@ -200,7 +210,8 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
         report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
     }
     if (sendReport(report, &response_report) != 0) {
-        sendErrorReply(QDBusError::Failed);
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
 
@@ -209,7 +220,8 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
         RazerMouseMatrixLED *rled = dynamic_cast<RazerMouseMatrixLED *>(leds[led]);
         if (rled == NULL) {
             qWarning("Error while casting RazerLED into RazerMouseMatrixLED");
-            sendErrorReply(QDBusError::Failed);
+            if (calledFromDBus())
+                sendErrorReply(QDBusError::Failed);
             return false;
         }
         rled->brightness = brightness;
@@ -217,7 +229,8 @@ bool RazerMatrixDevice::setBrightness(RazerLedId led, uchar brightness)
         RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED *>(leds[led]);
         if (rled == NULL) {
             qWarning("Error while casting RazerLED into RazerMatrixLED");
-            sendErrorReply(QDBusError::Failed);
+            if (calledFromDBus())
+                sendErrorReply(QDBusError::Failed);
             return false;
         }
         rled->brightness = brightness;
@@ -282,15 +295,21 @@ bool RazerMatrixDevice::setMatrixEffect(RazerLedId led, RazerMatrixEffectId effe
     report.arguments[8] = arg8;
 
     if (sendReport(report, &response_report) != 0) {
-        sendErrorReply(QDBusError::Failed);
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
+
+    // Don't save state
+    if (led == RazerLedId::Unspecified)
+        return true;
 
     // Save state into LED variable
     RazerMatrixLED *rled = dynamic_cast<RazerMatrixLED *>(leds[led]);
     if (rled == NULL) {
         qWarning("Error while casting RazerLED into RazerMatrixLED");
-        sendErrorReply(QDBusError::Failed);
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
     rled->effect = effect;
@@ -314,15 +333,21 @@ bool RazerMatrixDevice::setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEff
     report.arguments[11] = arg11;
 
     if (sendReport(report, &response_report) != 0) {
-        sendErrorReply(QDBusError::Failed);
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
+
+    // Don't save state
+    if (led == RazerLedId::Unspecified)
+        return true;
 
     // Save state into LED variable
     RazerMouseMatrixLED *rled = dynamic_cast<RazerMouseMatrixLED *>(leds[led]);
     if (rled == NULL) {
         qWarning("Error while casting RazerLED into RazerMouseMatrixLED");
-        sendErrorReply(QDBusError::Failed);
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
     }
     rled->effect = effect;

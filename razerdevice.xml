@@ -121,5 +121,9 @@
       <arg name="led" type="(i)" direction="in"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
+    <method name="startCustomEffectThread">
+    </method>
+    <method name="pauseCustomEffectThread">
+    </method>
   </interface>
 </node>

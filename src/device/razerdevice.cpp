@@ -53,6 +53,10 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->fx = fx;
     this->features = features;
     this->quirks = quirks;
+
+    // Connect CustomEffectThread with the device
+    connect(&thread, &CustomEffectThread::rgbDataReady, this, &RazerDevice::customRgbDataReady);
+    connect(&thread, &CustomEffectThread::frameReady, this, &RazerDevice::customFrameReady);
 }
 
 RazerDevice::~RazerDevice()
@@ -348,6 +352,16 @@ uchar RazerDevice::getBrightness(RazerLedId led)
     return brightness;
 }
 
+void RazerDevice::startCustomEffectThread()
+{
+    thread.startThread();
+}
+
+void RazerDevice::pauseCustomEffectThread()
+{
+    thread.pauseThread();
+}
+
 /**
  * Checks if the device has/supports the given LED & FX.
  * fxStr can be an empty string (e.g. QString::null) to skip the FX check.
@@ -384,4 +398,18 @@ bool RazerDevice::checkFeature(QString featureStr)
         return false;
     }
     return true;
+}
+
+void RazerDevice::customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData)
+{
+    if (!defineCustomFrame(row, startColumn, endColumn, rgbData)) {
+        qWarning("defineCustomFrame went wrong.");
+    }
+}
+
+void RazerDevice::customFrameReady()
+{
+    if (!displayCustomFrame()) {
+        qWarning("displayCustomFrame went wrong.");
+    }
 }

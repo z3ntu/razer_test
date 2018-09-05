@@ -29,6 +29,7 @@
 #include <QByteArray>
 
 #include "../razerreport.h"
+#include "../customeffect/customeffectthread.h"
 
 enum class RazerDeviceQuirks {
     MouseMatrix,
@@ -107,6 +108,9 @@ public Q_SLOTS:
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
     uchar getBrightness(RazerLedId led);
 
+    void startCustomEffectThread();
+    void pauseCustomEffectThread();
+
 protected:
     hid_device *handle = NULL;
 
@@ -120,6 +124,8 @@ protected:
     QStringList fx;
     QStringList features;
     QVector<RazerDeviceQuirks> quirks;
+
+    CustomEffectThread thread;
 
     QHash<RazerLedId, RazerLED *> leds;
 
@@ -138,6 +144,10 @@ protected:
         {0x12, "Portugese"},
         {0x81, "US-mac"}
     };
+
+private slots:
+    void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);
+    void customFrameReady();
 };
 
 #endif // RAZERDEVICE_H
