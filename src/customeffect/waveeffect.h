@@ -16,49 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CUSTOMEFFECTTHREAD_H
-#define CUSTOMEFFECTTHREAD_H
-
-#include <QThread>
-#include <QMutex>
-#include <QWaitCondition>
+#ifndef WAVEEFFECT_H
+#define WAVEEFFECT_H
 
 #include "customeffectbase.h"
 
 /**
  * @todo write docs
  */
-class CustomEffectThread : public QThread
+class WaveEffect : public CustomEffectBase
 {
-    Q_OBJECT
 public:
-    CustomEffectThread(QObject *parent = 0);
-    ~CustomEffectThread();
+    using CustomEffectBase::CustomEffectBase;
 
-    void startThread();
-    void pauseThread();
-
-signals:
-    void rgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);
-    void frameReady();
-
-protected:
-    void run() override;
+    virtual void initialize();
+    virtual void prepareRgbData();
 
 private:
-    QMutex mutex;
-    QWaitCondition condition;
-    bool pause;
-    bool abort;
-
-    // TODO Height and width is device-specific
-    const uchar width = 22;
-    const uchar height = 6;
-
-    CustomEffectBase *customEffect = nullptr;
-
-private slots:
-    void customEffectRgbDataReady(const uchar row, const QByteArray &rgbData);
+    RGBval startVal;
+    SpectrumColor startNextColor;
 };
 
-#endif // CUSTOMEFFECTTHREAD_H
+#endif // WAVEEFFECT_H

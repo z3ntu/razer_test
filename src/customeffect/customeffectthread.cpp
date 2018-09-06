@@ -20,6 +20,7 @@
 #include <QDebug>
 
 #include "customeffectthread.h"
+#include "waveeffect.h"
 
 CustomEffectThread::CustomEffectThread(QObject *parent) : QThread(parent)
 {
@@ -40,9 +41,13 @@ void CustomEffectThread::startThread()
 {
     if (!isRunning()) {
         qDebug("Starting thread");
+        customEffect = new WaveEffect(width, height);
+        connect(customEffect, &CustomEffectBase::rgbDataReady, this, &CustomEffectThread::customEffectRgbDataReady);
+        customEffect->initialize();
         start(LowPriority);
     } else {
         qDebug("Resuming thread?");
+//         initialize();
         pause = false;
         condition.wakeOne();
     }
@@ -55,107 +60,18 @@ void CustomEffectThread::pauseThread()
     mutex.unlock();
 }
 
-uchar increaseByNoOverflow(uchar num, uchar incBy)
-{
-    if ((num + incBy) > 0xFF)
-        return 0xFF;
-    return num + incBy;
-}
-
-uchar decreaseByNoUnderflow(uchar num, uchar decBy)
-{
-    if ((num - decBy) < 0x00)
-        return 0x00;
-    return num - decBy;
-}
-
-enum class SpectrumColor {
-    Red, Yellow, Green, Cyan, Blue, Magenta
-};
-
 void CustomEffectThread::run()
 {
-    const uchar width = 22;
-    const uchar height = 6;
-    QVector<QByteArray> rgbData;
-    // Initialize rgbData
-    // We need height (=6) QByteArrays
-    rgbData.resize(height);
-    foreach (QByteArray arr, rgbData) {
-        // And each needs space for width * 3 bytes of data (RGB)
-        arr.resize(width * 3);
-    }
-
-    RGBval startVal = {0xFF, 0x00, 0x00}; // Red
-    SpectrumColor startNextColor = SpectrumColor::Yellow;
-
     forever {
         if (abort)
             return;
 
-        // Iterate through rows
-        for (uchar i = 0; i < height; i++) {
-            RGBval rowVal = startVal;
-            SpectrumColor nextColor = startNextColor;
-            // Iterate through columns
-            for (int j = 0; j < width * 3; j++) {
-                rgbData[i][j++] = rowVal.red;
-                rgbData[i][j++] = rowVal.green;
-                rgbData[i][j] = rowVal.blue;
+        customEffect->prepareRgbData();
 
-                // FF0000 Red
-                // Increase Green until
-                // FFFF00 Yellow
-                // Decrease Red until
-                // 00FF00 Green
-                // Increase Blue until
-                // 00FFFF Cyan
-                // Decrease Green until
-                // 0000FF Blue
-                // Increase Red until
-                // FF00FF Magenta
-                // Decrease Blue until
-                // FF0000 Red
-                // REPEAT
-                if (nextColor == SpectrumColor::Yellow) {
-                    rowVal.green = increaseByNoOverflow(rowVal.green, 0x40);
-                    if (rowVal.green == 0xFF)
-                        nextColor = SpectrumColor::Green;
-                } else if (nextColor == SpectrumColor::Green) {
-                    rowVal.red = decreaseByNoUnderflow(rowVal.red, 0x40);
-                    if (rowVal.red == 0x00)
-                        nextColor = SpectrumColor::Cyan;
-                } else if (nextColor == SpectrumColor::Cyan) {
-                    rowVal.blue = increaseByNoOverflow(rowVal.blue, 0x40);
-                    if (rowVal.blue == 0xFF)
-                        nextColor = SpectrumColor::Blue;
-                } else if (nextColor == SpectrumColor::Blue) {
-                    rowVal.green = decreaseByNoUnderflow(rowVal.green, 0x40);
-                    if (rowVal.green == 0x00)
-                        nextColor = SpectrumColor::Magenta;
-                } else if (nextColor == SpectrumColor::Magenta) {
-                    rowVal.red = increaseByNoOverflow(rowVal.red, 0x40);
-                    if (rowVal.red == 0xFF)
-                        nextColor = SpectrumColor::Red;
-                } else if (nextColor == SpectrumColor::Red) {
-                    rowVal.blue = decreaseByNoUnderflow(rowVal.blue, 0x40);
-                    if (rowVal.blue == 0x00)
-                        nextColor = SpectrumColor::Yellow;
-                }
-            }
-            // Send data to keyboard
-            emit rgbDataReady(i, 0, width - 1, rgbData[i]);
-
-            // Last row - keep current data for next frame
-            if (i == height - 1) {
-                startVal = rowVal;
-                startNextColor = nextColor;
-            }
-        }
         // Show the frame
         emit frameReady();
 
-        QThread::msleep(100); // 0.1 seconds
+        QThread::msleep(customEffect->msleep);
 
         mutex.lock();
         if (pause)
@@ -163,4 +79,9 @@ void CustomEffectThread::run()
         pause = false;
         mutex.unlock();
     }
+}
+
+void CustomEffectThread::customEffectRgbDataReady(const uchar row, const QByteArray &rgbData)
+{
+    emit rgbDataReady(row, 0, width - 1, rgbData);
 }

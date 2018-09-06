@@ -25,7 +25,9 @@ endif
 src = [
     'src/razer_test.cpp',
     'src/razerreport.cpp',
+    'src/customeffect/customeffectbase.cpp',
     'src/customeffect/customeffectthread.cpp',
+    'src/customeffect/waveeffect.cpp',
     'src/dbus/devicemanageradaptor.cpp',
     'src/dbus/razerdeviceadaptor.cpp',
     'src/device/razerdevice.cpp',
@@ -38,6 +40,7 @@ src = [
 
 processed = qt5.preprocess(
   moc_headers : [
+    'src/customeffect/customeffectbase.h',
     'src/customeffect/customeffectthread.h',
     'src/dbus/devicemanageradaptor.h',
     'src/dbus/razerdeviceadaptor.h',
