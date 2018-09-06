@@ -352,9 +352,14 @@ uchar RazerDevice::getBrightness(RazerLedId led)
     return brightness;
 }
 
-void RazerDevice::startCustomEffectThread()
+bool RazerDevice::startCustomEffectThread(QString effectName)
 {
-    thread.startThread();
+    if (!thread.startThread(effectName)) {
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
+        return false;
+    }
+    return true;
 }
 
 void RazerDevice::pauseCustomEffectThread()

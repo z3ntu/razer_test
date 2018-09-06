@@ -108,7 +108,7 @@ public Q_SLOTS:
     virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
     uchar getBrightness(RazerLedId led);
 
-    void startCustomEffectThread();
+    bool startCustomEffectThread(QString effectName);
     void pauseCustomEffectThread();
 
 protected:

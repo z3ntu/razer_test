@@ -17,9 +17,10 @@
  */
 
 #include <QVector>
-#include <QDebug>
 
 #include "customeffectthread.h"
+
+#include "spectrumeffect.h"
 #include "waveeffect.h"
 
 CustomEffectThread::CustomEffectThread(QObject *parent) : QThread(parent)
@@ -37,20 +38,36 @@ CustomEffectThread::~CustomEffectThread()
     wait();
 }
 
-void CustomEffectThread::startThread()
+bool CustomEffectThread::startThread(QString effectName)
 {
-    if (!isRunning()) {
-        qDebug("Starting thread");
+    if (isRunning() && !pause) {
+        qWarning("Effect thread is already running. Pause it first");
+        return false;
+    }
+
+    // Delete previous effect class
+    // TODO: Maybe check if we want to have the same effect, then don't 'delete' and skip the if block
+    delete customEffect;
+    if (effectName == "spectrum") {
+        customEffect = new SpectrumEffect(width, height);
+    } else if (effectName == "wave") {
         customEffect = new WaveEffect(width, height);
-        connect(customEffect, &CustomEffectBase::rgbDataReady, this, &CustomEffectThread::customEffectRgbDataReady);
-        customEffect->initialize();
+    } else {
+        qWarning("Effect %s unknown.", qUtf8Printable(effectName));
+        return false;
+    }
+    connect(customEffect, &CustomEffectBase::rgbDataReady, this, &CustomEffectThread::customEffectRgbDataReady);
+    customEffect->initialize();
+
+    if (!isRunning()) {
+        qDebug("Starting custom effect thread.");
         start(LowPriority);
     } else {
-        qDebug("Resuming thread?");
-//         initialize();
+        qDebug("Resuming custom effect thread.");
         pause = false;
         condition.wakeOne();
     }
+    return true;
 }
 
 void CustomEffectThread::pauseThread()

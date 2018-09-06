@@ -122,6 +122,8 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
     <method name="startCustomEffectThread">
+      <arg type="b" direction="out"/>
+      <arg name="effectName" type="s" direction="in"/>
     </method>
     <method name="pauseCustomEffectThread">
     </method>

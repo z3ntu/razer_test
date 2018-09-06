@@ -229,9 +229,11 @@ bool RazerDeviceAdaptor::setWave(RazerLedId led, WaveDirection direction)
     return out0;
 }
 
-void RazerDeviceAdaptor::startCustomEffectThread()
+bool RazerDeviceAdaptor::startCustomEffectThread(const QString &effectName)
 {
     // handle method call io.github.openrazer1.Device.startCustomEffectThread
-    QMetaObject::invokeMethod(parent(), "startCustomEffectThread");
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "startCustomEffectThread", Q_RETURN_ARG(bool, out0), Q_ARG(QString, effectName));
+    return out0;
 }
 

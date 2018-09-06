@@ -27,6 +27,7 @@ src = [
     'src/razerreport.cpp',
     'src/customeffect/customeffectbase.cpp',
     'src/customeffect/customeffectthread.cpp',
+    'src/customeffect/spectrumeffect.cpp',
     'src/customeffect/waveeffect.cpp',
     'src/dbus/devicemanageradaptor.cpp',
     'src/dbus/razerdeviceadaptor.cpp',
@@ -42,6 +43,7 @@ processed = qt5.preprocess(
   moc_headers : [
     'src/customeffect/customeffectbase.h',
     'src/customeffect/customeffectthread.h',
+    'src/customeffect/spectrumeffect.h',
     'src/dbus/devicemanageradaptor.h',
     'src/dbus/razerdeviceadaptor.h',
     'src/device/razerdevice.h',
