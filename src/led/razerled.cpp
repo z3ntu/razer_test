@@ -78,11 +78,21 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSpeed &va
     return argument;
 }
 
-RazerLED::RazerLED(RazerLedId ledId)
+RazerLED::RazerLED(RazerDevice *device, RazerLedId ledId)
 {
+    this->device = device;
     this->ledId = ledId;
 }
 
 RazerLED::~RazerLED()
 {
+}
+
+uchar RazerLED::getBrightness(RazerLedId led)
+{
+    // Wrapper as D-Bus can't (easily) handle pointers / multiple return values
+    // TODO: Note: Apparently it can, I don't know how to properly implement it though.
+    uchar brightness = 0x00;
+    getBrightness(led, &brightness);
+    return brightness;
 }

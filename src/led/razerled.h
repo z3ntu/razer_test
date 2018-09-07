@@ -22,6 +22,8 @@
 #include <QMetaType>
 #include <QDBusArgument>
 
+#include "../device/razerdevice.h"
+
 enum class RazerLedId : uchar {
     Unspecified = 0x00,
     ScrollWheelLED = 0x01,
@@ -68,14 +70,36 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSpeed &va
 /**
  * @todo write docs
  */
-class RazerLED
+class RazerLED : public QObject, protected QDBusContext
 {
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device.Led")
+    // TODO Q_PROPERTY something?
+
 public:
-    RazerLED(RazerLedId ledId);
+    RazerLED(RazerDevice *device, RazerLedId ledId);
     virtual ~RazerLED();
+
+    RazerDevice *device;
     RazerLedId ledId;
     uchar brightness;
-    // current (classic) effect & current (classic) state in subclass
+
+    virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
+
+public Q_SLOTS:
+    // FX
+    virtual bool setNone(RazerLedId led) = 0;
+    virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) = 0;
+    virtual bool setBreathingRandom(RazerLedId led) = 0;
+    virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setSpectrum(RazerLedId led) = 0;
+    virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
+    virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue) = 0;
+
+    virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
+    uchar getBrightness(RazerLedId led);
 };
 
 #endif // RAZERLED_H

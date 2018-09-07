@@ -61,16 +61,16 @@ class RazerDevice : public QObject, protected QDBusContext
 public:
     RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks);
     virtual ~RazerDevice();
+    
     virtual bool openDeviceHandle();
+    virtual bool initializeLeds() = 0;
+    
     int sendReport(razer_report request_report, razer_report *response_report);
     QDBusObjectPath getObjectPath();
 
-    virtual bool initializeLeds() = 0;
-    virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
-
+    // Getters behind properties (Q_PROPERTY)
     QString getName();
     QString getType();
-
     QVector<RazerLedId> getLedIds();
     QStringList getSupportedFx();
     QStringList getSupportedFeatures();
@@ -87,26 +87,12 @@ public Q_SLOTS:
     virtual ushort getPollRate();
     virtual bool setPollRate(ushort poll_rate);
 
-    // FX
-    virtual bool setNone(RazerLedId led) = 0;
-    virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) = 0;
-    virtual bool setBreathingRandom(RazerLedId led) = 0;
-    virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setSpectrum(RazerLedId led) = 0;
-    virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
-    virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue) = 0;
-
     // Custom frame
     virtual bool displayCustomFrame() = 0;
     virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) = 0;
 
     // getDeviceMode, setDeviceMode
 
-
-    virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
-    uchar getBrightness(RazerLedId led);
 
     bool startCustomEffectThread(QString effectName);
     void pauseCustomEffectThread();

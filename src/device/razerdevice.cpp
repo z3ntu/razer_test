@@ -343,15 +343,6 @@ bool RazerDevice::setPollRate(ushort poll_rate)
     return true;
 }
 
-uchar RazerDevice::getBrightness(RazerLedId led)
-{
-    // Wrapper as D-Bus can't (easily) handle pointers / multiple return values
-    // TODO: Note: Apparently it can, I don't know how to properly implement it though.
-    uchar brightness = 0x00;
-    getBrightness(led, &brightness);
-    return brightness;
-}
-
 bool RazerDevice::startCustomEffectThread(QString effectName)
 {
     if (!thread.startThread(effectName)) {

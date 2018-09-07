@@ -30,21 +30,8 @@ class RazerMatrixDevice : public RazerDevice
 
     virtual bool initializeLeds();
 
-    virtual bool setNone(RazerLedId led);
-    virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
-    virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
-    virtual bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2);
-    virtual bool setBreathingRandom(RazerLedId led);
-    virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue);
-    virtual bool setSpectrum(RazerLedId led);
-    virtual bool setWave(RazerLedId led, WaveDirection direction);
-    virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue);
-
     virtual bool displayCustomFrame();
     virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData);
-
-    virtual bool setBrightness(RazerLedId led, uchar brightness);
-    virtual bool getBrightness(RazerLedId led, uchar *brightness);
 
 private:
     bool setSpectrumInit(RazerLedId led);
