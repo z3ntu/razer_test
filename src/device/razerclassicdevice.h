@@ -20,7 +20,6 @@
 #define RAZERCLASSICDEVICE_H
 
 #include "razerdevice.h"
-#include "../led/razerled.h"
 
 /**
  * @todo write docs

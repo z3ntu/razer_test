@@ -32,13 +32,6 @@ class RazerMatrixDevice : public RazerDevice
 
     virtual bool displayCustomFrame();
     virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData);
-
-private:
-    bool setSpectrumInit(RazerLedId led);
-    bool setMatrixEffect(RazerLedId led, RazerMatrixEffectId effect,
-                         uchar arg1 = 0x00, uchar arg2 = 0x00, uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00);
-    bool setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEffectId effect,
-                              uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00, uchar arg9 = 0x00, uchar arg10 = 0x00, uchar arg11 = 0x00);
 };
 
 #endif // RAZERMATRIXDEVICE_H

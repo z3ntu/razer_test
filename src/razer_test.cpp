@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
 
     foreach (RazerLedId id, razerDevice->getLedIds()) {
         qDebug() << "LED ID:" << static_cast<uchar>(id);
-        razerDevice->setStatic(id, 0xFF, 0xFF, 0x00);
+//         razerDevice->setStatic(id, 0xFF, 0xFF, 0x00); // FIXME
     }
     return 0;
 

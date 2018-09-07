@@ -21,18 +21,6 @@
 
 #include "razerled.h"
 
-enum RazerClassicLedState {
-    Off = 0x00,
-    On = 0x01
-};
-
-enum RazerClassicEffectId {
-    Static = 0x00,
-    Blinking = 0x01,
-    Breathing = 0x02, // a.k.a. Pulsating
-    Spectrum = 0x04
-};
-
 /**
  * @todo write docs
  */
@@ -59,8 +47,7 @@ public:
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
     virtual bool getBrightness(RazerLedId led, uchar *brightness);
-    
-private:
+
     bool setLedState(RazerLedId led, RazerClassicLedState state);
     bool getLedState(RazerLedId led, RazerClassicLedState *state);
     bool ensureLedStateOn(RazerLedId led);

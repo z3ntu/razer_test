@@ -19,25 +19,8 @@
 #ifndef RAZERREPORT_H
 #define RAZERREPORT_H
 
-#include "led/razerled.h"
-#include "led/razerclassicled.h"
-#include "led/razermatrixled.h"
-#include "led/razermousematrixled.h"
-
-enum class RazerVarstore : uchar {
-    NOSTORE = 0x00,
-    STORE = 0x01
-};
-
-// TODO: Convert to enum class
-enum RazerStatus {
-    NEW = 0x00,
-    BUSY = 0x01,
-    SUCCESSFUL = 0x02,
-    FAILURE = 0x03,
-    NO_RESPONSE_TIMEOUT = 0x04,
-    NOT_SUPPORTED = 0x05
-};
+#include "razer_test.h"
+#include "razer_test_private.h"
 
 union transaction_id_union {
     unsigned char id;

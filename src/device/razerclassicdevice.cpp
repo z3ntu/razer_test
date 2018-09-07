@@ -18,31 +18,33 @@
 
 #include "razerclassicdevice.h"
 
+#include "../led/razerclassicled.h"
+
 bool RazerClassicDevice::initializeLeds()
 {
     foreach (RazerLedId ledId, ledIds) {
-        RazerClassicLED *rled = new RazerClassicLED(ledId);
+        RazerClassicLED *rled = new RazerClassicLED(this, ledId);
         bool ok;
         uchar brightness;
         RazerClassicEffectId effect;
         RazerClassicLedState state;
         uchar red, green, blue;
-        ok = getBrightness(ledId, &brightness);
+        ok = rled->getBrightness(ledId, &brightness);
         if (!ok) {
             qWarning("Error during getBrightness()");
             return false;
         }
-        ok = getLedEffect(ledId, &effect);
+        ok = rled->getLedEffect(ledId, &effect);
         if (!ok) {
             qWarning("Error during getLedEffect()");
             return false;
         }
-        ok = getLedState(ledId, &state);
+        ok = rled->getLedState(ledId, &state);
         if (!ok) {
             qWarning("Error during getLedState()");
             return false;
         }
-        ok = getLedRgb(ledId, &red, &green, &blue);
+        ok = rled->getLedRgb(ledId, &red, &green, &blue);
         if (!ok) {
             qWarning("Error during getLedRgb()");
             return false;

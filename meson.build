@@ -35,7 +35,9 @@ src = [
     'src/device/razerclassicdevice.cpp',
     'src/device/razerfakedevice.cpp',
     'src/device/razermatrixdevice.cpp',
+    'src/led/razerclassicled.cpp',
     'src/led/razerled.cpp',
+    'src/led/razermatrixled.cpp',
     'src/manager/devicemanager.cpp'
 ]
 
@@ -47,6 +49,7 @@ processed = qt5.preprocess(
     'src/dbus/devicemanageradaptor.h',
     'src/dbus/razerdeviceadaptor.h',
     'src/device/razerdevice.h',
+    'src/led/razerled.h',
     'src/manager/devicemanager.h'
   ]
 )

@@ -21,17 +21,6 @@
 
 #include "razerled.h"
 
-enum class RazerMouseMatrixEffectId : unsigned char {
-    Off          = 0x00,
-    Static       = 0x01,
-    Breathing    = 0x02,
-    Spectrum     = 0x03,
-    Wave         = 0x04,
-    Reactive     = 0x05,
-    Starlight    = 0x07,
-    CustomFrame  = 0x08
-};
-
 /**
  * @todo write docs
  */

@@ -21,51 +21,9 @@
 
 #include <QMetaType>
 #include <QDBusArgument>
+#include <QDBusContext>
 
 #include "../device/razerdevice.h"
-
-enum class RazerLedId : uchar {
-    Unspecified = 0x00,
-    ScrollWheelLED = 0x01,
-    BatteryLED = 0x03,
-    LogoLED = 0x04,
-    BacklightLED = 0x05,
-    MacroRecordingLED = 0x07,
-    GameModeLED = 0x08,
-    KeymapRedLED = 0x0C,
-    KeymapGreenLED = 0x0D,
-    KeymapBlueLED = 0x0E,
-    RightSideLED = 0x10,
-    LeftSideLED = 0x11
-};
-Q_DECLARE_METATYPE(RazerLedId)
-
-QDBusArgument &operator<<(QDBusArgument &argument, const RazerLedId &value);
-const QDBusArgument &operator>>(const QDBusArgument &argument, RazerLedId &value);
-inline uint qHash(RazerLedId key, uint seed)
-{
-    return ::qHash(static_cast<uchar>(key), seed);
-}
-
-enum class WaveDirection : uchar {
-    LEFT_TO_RIGHT = 0x01,
-    RIGHT_TO_LEFT = 0x02
-};
-Q_DECLARE_METATYPE(WaveDirection)
-
-QDBusArgument &operator<<(QDBusArgument &argument, const WaveDirection &value);
-const QDBusArgument &operator>>(const QDBusArgument &argument, WaveDirection &value);
-
-enum class ReactiveSpeed : uchar {
-    _500MS = 0x01,
-    _1000MS = 0x02,
-    _1500MS = 0x03,
-    _2000MS = 0x04
-};
-Q_DECLARE_METATYPE(ReactiveSpeed)
-
-QDBusArgument &operator<<(QDBusArgument &argument, const ReactiveSpeed &value);
-const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSpeed &value);
 
 /**
  * @todo write docs

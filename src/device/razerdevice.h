@@ -28,22 +28,11 @@
 #include <QDBusContext>
 #include <QByteArray>
 
+#include "../razer_test.h"
 #include "../razerreport.h"
 #include "../customeffect/customeffectthread.h"
 
-enum class RazerDeviceQuirks {
-    MouseMatrix,
-    MatrixBrightness
-};
-
-struct RazerDPI {
-    ushort dpi_x;
-    ushort dpi_y;
-};
-Q_DECLARE_METATYPE(RazerDPI)
-
-QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &razerDPI);
-const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &razerDPI);
+class RazerLED;
 
 /**
  * @todo write docs
@@ -61,10 +50,10 @@ class RazerDevice : public QObject, protected QDBusContext
 public:
     RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks);
     virtual ~RazerDevice();
-    
+
     virtual bool openDeviceHandle();
     virtual bool initializeLeds() = 0;
-    
+
     int sendReport(razer_report request_report, razer_report *response_report);
     QDBusObjectPath getObjectPath();
 
@@ -74,6 +63,12 @@ public:
     QVector<RazerLedId> getLedIds();
     QStringList getSupportedFx();
     QStringList getSupportedFeatures();
+
+    // TODO: Make protected again
+    QVector<RazerDeviceQuirks> quirks;
+
+    // TODO: Deprecate this method, checkFx is better
+    bool checkLedAndFx(RazerLedId led, QString fxStr);
 
 public Q_SLOTS:
     // TODO: CamelCase public functions (at least for D-Bus)
@@ -93,7 +88,6 @@ public Q_SLOTS:
 
     // getDeviceMode, setDeviceMode
 
-
     bool startCustomEffectThread(QString effectName);
     void pauseCustomEffectThread();
 
@@ -109,13 +103,11 @@ protected:
     QVector<RazerLedId> ledIds;
     QStringList fx;
     QStringList features;
-    QVector<RazerDeviceQuirks> quirks;
 
     CustomEffectThread thread;
 
     QHash<RazerLedId, RazerLED *> leds;
 
-    bool checkLedAndFx(RazerLedId led, QString fxStr);
     bool checkFx(QString fxStr);
     bool checkFeature(QString featureStr);
 

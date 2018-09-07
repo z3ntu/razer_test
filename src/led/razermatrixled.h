@@ -20,17 +20,7 @@
 #define RAZERMATRIXLED_H
 
 #include "razerled.h"
-
-enum class RazerMatrixEffectId : unsigned char {
-    Off         = 0x00,
-    Wave        = 0x01,
-    Reactive    = 0x02, // Afterglow
-    Breathing   = 0x03,
-    Spectrum    = 0x04,
-    CustomFrame = 0x05,
-    Static      = 0x06,
-    Starlight   = 0x19
-};
+#include "razermousematrixled.h" // TODO What to do here?? Merge them?
 
 /**
  * @todo write docs
@@ -41,7 +31,7 @@ public:
     using RazerLED::RazerLED;
 
     RazerMatrixEffectId effect;
-    
+
     virtual bool setNone(RazerLedId led);
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
     virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue);
@@ -54,6 +44,14 @@ public:
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
     virtual bool getBrightness(RazerLedId led, uchar *brightness);
+
+    bool setSpectrumInit(RazerLedId led);
+
+private:
+    bool setMatrixEffect(RazerLedId led, RazerMatrixEffectId effect,
+                         uchar arg1 = 0x00, uchar arg2 = 0x00, uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00);
+    bool setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEffectId effect,
+                              uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00, uchar arg9 = 0x00, uchar arg10 = 0x00, uchar arg11 = 0x00);
 };
 
 #endif // RAZERMATRIXLED_H
