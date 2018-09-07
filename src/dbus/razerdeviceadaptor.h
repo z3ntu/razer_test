@@ -11,8 +11,7 @@
 
 #ifndef RAZERDEVICEADAPTOR_H
 #define RAZERDEVICEADAPTOR_H
-#include "../device/razerdevice.h"
-#include "../led/razerled.h"
+#include "../razer_test.h"
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>

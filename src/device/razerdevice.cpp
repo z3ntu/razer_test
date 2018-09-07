@@ -61,6 +61,11 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
 
 RazerDevice::~RazerDevice()
 {
+    // Destroy LEDs
+    foreach (RazerLED *led, leds) {
+        delete led;
+    }
+    // Close hidapi handle
     if (handle != NULL)
         hid_close(handle);
 }
@@ -198,6 +203,11 @@ QStringList RazerDevice::getSupportedFeatures()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     return features;
+}
+
+QHash<RazerLedId, RazerLED *> RazerDevice::getLeds()
+{
+    return leds;
 }
 
 QString RazerDevice::getSerial()

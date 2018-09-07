@@ -29,22 +29,22 @@ bool RazerClassicDevice::initializeLeds()
         RazerClassicEffectId effect;
         RazerClassicLedState state;
         uchar red, green, blue;
-        ok = rled->getBrightness(ledId, &brightness);
+        ok = rled->getBrightness(&brightness);
         if (!ok) {
             qWarning("Error during getBrightness()");
             return false;
         }
-        ok = rled->getLedEffect(ledId, &effect);
+        ok = rled->getLedEffect(&effect);
         if (!ok) {
             qWarning("Error during getLedEffect()");
             return false;
         }
-        ok = rled->getLedState(ledId, &state);
+        ok = rled->getLedState(&state);
         if (!ok) {
             qWarning("Error during getLedState()");
             return false;
         }
-        ok = rled->getLedRgb(ledId, &red, &green, &blue);
+        ok = rled->getLedRgb(&red, &green, &blue);
         if (!ok) {
             qWarning("Error during getLedRgb()");
             return false;

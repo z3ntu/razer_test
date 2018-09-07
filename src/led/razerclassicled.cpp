@@ -19,127 +19,127 @@
 #include "razerclassicled.h"
 #include "../src/razerreport.h"
 
-bool RazerClassicLED::setNone(RazerLedId led)
+bool RazerClassicLED::setNone()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, "off"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx("off"))
         return false;
-    return setLedState(led, RazerClassicLedState::Off);
+    return setLedState(RazerClassicLedState::Off);
 }
 
-bool RazerClassicLED::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerClassicLED::setStatic(uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!device->checkLedAndFx(led, "static"))
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    if (!device->checkFx("static"))
         return false;
 
-    if (!ensureLedStateOn(led))
+    if (!ensureLedStateOn())
         return false;
 
-    if (!setLedRgb(led, red, green, blue))
+    if (!setLedRgb(red, green, blue))
         return false;
 
-    if (!setLedEffect(led, RazerClassicEffectId::Static))
+    if (!setLedEffect(RazerClassicEffectId::Static))
         return false;
 
     return true;
 }
 
-bool RazerClassicLED::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerClassicLED::setBreathing(uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!device->checkLedAndFx(led, "breathing"))
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    if (!device->checkFx("breathing"))
         return false;
 
-    if (!ensureLedStateOn(led))
+    if (!ensureLedStateOn())
         return false;
 
-    if (!setLedRgb(led, red, green, blue))
+    if (!setLedRgb(red, green, blue))
         return false;
 
-    if (!setLedEffect(led, RazerClassicEffectId::Breathing))
+    if (!setLedEffect(RazerClassicEffectId::Breathing))
         return false;
 
     return true;
 }
 
-bool RazerClassicLED::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+bool RazerClassicLED::setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue, red2, green2, blue2);
-    if (!device->checkLedAndFx(led, "breathing_dual"))
+    qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, red, green, blue, red2, green2, blue2);
+    if (!device->checkFx("breathing_dual"))
         return false;
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
-bool RazerClassicLED::setBreathingRandom(RazerLedId led)
+bool RazerClassicLED::setBreathingRandom()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, "breathing_random"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx("breathing_random"))
         return false;
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
-bool RazerClassicLED::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerClassicLED::setBlinking(uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!device->checkLedAndFx(led, "blinking"))
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    if (!device->checkFx("blinking"))
         return false;
 
-    if (!ensureLedStateOn(led))
+    if (!ensureLedStateOn())
         return false;
 
-    if (!setLedRgb(led, red, green, blue))
+    if (!setLedRgb(red, green, blue))
         return false;
 
-    if (!setLedEffect(led, RazerClassicEffectId::Blinking))
+    if (!setLedEffect(RazerClassicEffectId::Blinking))
         return false;
 
     return true;
 }
 
-bool RazerClassicLED::setSpectrum(RazerLedId led)
+bool RazerClassicLED::setSpectrum()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, "spectrum"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx("spectrum"))
         return false;
 
-    if (!ensureLedStateOn(led))
+    if (!ensureLedStateOn())
         return false;
 
-    if (!setLedEffect(led, RazerClassicEffectId::Spectrum))
+    if (!setLedEffect(RazerClassicEffectId::Spectrum))
         return false;
 
     return true;
 }
 
-bool RazerClassicLED::setWave(RazerLedId led, WaveDirection direction)
+bool RazerClassicLED::setWave(WaveDirection direction)
 {
-    qDebug("Called %s with params %hhu, %hhu", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(direction));
-    if (!device->checkLedAndFx(led, "wave"))
+    qDebug("Called %s with params %hhu", Q_FUNC_INFO, static_cast<uchar>(direction));
+    if (!device->checkFx("wave"))
         return false;
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
-bool RazerClassicLED::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+bool RazerClassicLED::setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(speed), red, green, blue);
-    if (!device->checkLedAndFx(led, "reactive"))
+    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), red, green, blue);
+    if (!device->checkFx("reactive"))
         return false;
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
-bool RazerClassicLED::setBrightness(RazerLedId led, uchar brightness)
+bool RazerClassicLED::setBrightness(uchar brightness)
 {
-    qDebug("Called %s with params %hhu, %i", Q_FUNC_INFO, static_cast<uchar>(led), brightness);
-    if (!device->checkLedAndFx(led, QString::null))
+    qDebug("Called %s with params %i", Q_FUNC_INFO, brightness);
+    if (!device->checkFx(QString::null))
         return false;
     razer_report report, response_report;
 
-    report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
+    report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, this->ledId, brightness);
     if (device->sendReport(report, &response_report) != 0) {
         sendErrorReply(QDBusError::Failed);
         return false;
@@ -151,14 +151,14 @@ bool RazerClassicLED::setBrightness(RazerLedId led, uchar brightness)
     return true;
 }
 
-bool RazerClassicLED::getBrightness(RazerLedId led, uchar *brightness)
+bool RazerClassicLED::getBrightness(uchar *brightness)
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, QString::null))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx(QString::null)) // TODO ???
         return false;
     razer_report report, response_report;
 
-    report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
+    report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, this->ledId);
     if (device->sendReport(report, &response_report) != 0) {
         if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
@@ -172,11 +172,11 @@ bool RazerClassicLED::getBrightness(RazerLedId led, uchar *brightness)
 
 /* --------------------- PRIVATE METHODS --------------------- */
 
-bool RazerClassicLED::setLedState(RazerLedId led, RazerClassicLedState state)
+bool RazerClassicLED::setLedState(RazerClassicLedState state)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_set_led_state(RazerVarstore::STORE, led, state);
+    report = razer_chroma_standard_set_led_state(RazerVarstore::STORE, this->ledId, state);
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }
@@ -187,11 +187,11 @@ bool RazerClassicLED::setLedState(RazerLedId led, RazerClassicLedState state)
     return true;
 }
 
-bool RazerClassicLED::getLedState(RazerLedId led, RazerClassicLedState *state)
+bool RazerClassicLED::getLedState(RazerClassicLedState *state)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_get_led_state(RazerVarstore::STORE, led);
+    report = razer_chroma_standard_get_led_state(RazerVarstore::STORE, this->ledId);
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }
@@ -206,19 +206,19 @@ bool RazerClassicLED::getLedState(RazerLedId led, RazerClassicLedState *state)
     return true;
 }
 
-bool RazerClassicLED::ensureLedStateOn(RazerLedId led)
+bool RazerClassicLED::ensureLedStateOn()
 {
     if (this->state == RazerClassicLedState::Off) {
-        return setLedState(led, RazerClassicLedState::On);
+        return setLedState(RazerClassicLedState::On);
     }
     return true;
 }
 
-bool RazerClassicLED::setLedEffect(RazerLedId led, RazerClassicEffectId effect)
+bool RazerClassicLED::setLedEffect(RazerClassicEffectId effect)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_set_led_effect(RazerVarstore::STORE, led, effect);
+    report = razer_chroma_standard_set_led_effect(RazerVarstore::STORE, this->ledId, effect);
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }
@@ -229,11 +229,11 @@ bool RazerClassicLED::setLedEffect(RazerLedId led, RazerClassicEffectId effect)
     return true;
 }
 
-bool RazerClassicLED::getLedEffect(RazerLedId led, RazerClassicEffectId *effect)
+bool RazerClassicLED::getLedEffect(RazerClassicEffectId *effect)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_get_led_effect(RazerVarstore::STORE, led);
+    report = razer_chroma_standard_get_led_effect(RazerVarstore::STORE, this->ledId);
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }
@@ -248,11 +248,11 @@ bool RazerClassicLED::getLedEffect(RazerLedId led, RazerClassicEffectId *effect)
     return true;
 }
 
-bool RazerClassicLED::setLedRgb(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerClassicLED::setLedRgb(uchar red, uchar green, uchar blue)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_set_led_rgb(RazerVarstore::STORE, led, red, green, blue);
+    report = razer_chroma_standard_set_led_rgb(RazerVarstore::STORE, this->ledId, red, green, blue);
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }
@@ -265,11 +265,11 @@ bool RazerClassicLED::setLedRgb(RazerLedId led, uchar red, uchar green, uchar bl
     return true;
 }
 
-bool RazerClassicLED::getLedRgb(RazerLedId led, uchar *red, uchar *green, uchar *blue)
+bool RazerClassicLED::getLedRgb(uchar *red, uchar *green, uchar *blue)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_standard_get_led_rgb(RazerVarstore::STORE, led);
+    report = razer_chroma_standard_get_led_rgb(RazerVarstore::STORE, this->ledId);
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }

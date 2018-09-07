@@ -33,12 +33,12 @@ bool RazerMatrixDevice::initializeLeds()
         }
         bool ok;
         uchar brightness;
-        ok = rled->getBrightness(ledId, &brightness);
+        ok = rled->getBrightness(&brightness);
         if (!ok) {
             qWarning("Error during getBrightness()");
             return false;
         }
-        if (!rled->setSpectrumInit(ledId)) {
+        if (!rled->setSpectrumInit()) {
             qWarning("Error during setSpectrumInit()");
             return false;
         }

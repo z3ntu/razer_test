@@ -88,11 +88,16 @@ RazerLED::~RazerLED()
 {
 }
 
-uchar RazerLED::getBrightness(RazerLedId led)
+QDBusObjectPath RazerLED::getObjectPath()
+{
+    return QDBusObjectPath(QString("/io/github/openrazer1/devices/%1/led/%2").arg(device->getSerial()).arg(static_cast<uchar>(ledId)));
+}
+
+uchar RazerLED::getBrightness()
 {
     // Wrapper as D-Bus can't (easily) handle pointers / multiple return values
     // TODO: Note: Apparently it can, I don't know how to properly implement it though.
     uchar brightness = 0x00;
-    getBrightness(led, &brightness);
+    getBrightness(&brightness);
     return brightness;
 }

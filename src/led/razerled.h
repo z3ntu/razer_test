@@ -23,7 +23,12 @@
 #include <QDBusArgument>
 #include <QDBusContext>
 
-#include "../device/razerdevice.h"
+#include "../razer_test.h"
+#include "../razer_test_private.h"
+
+// Forward-declare RazerDevice and resolve it at the bottom of this file.
+// Resolves a circular dependency between RazerLED and RazerDevice.
+class RazerDevice;
 
 /**
  * @todo write docs
@@ -42,22 +47,26 @@ public:
     RazerLedId ledId;
     uchar brightness;
 
-    virtual bool getBrightness(RazerLedId led, uchar *brightness) = 0;
+    QDBusObjectPath getObjectPath();
+
+    virtual bool getBrightness(uchar *brightness) = 0;
 
 public Q_SLOTS:
     // FX
-    virtual bool setNone(RazerLedId led) = 0;
-    virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setBreathing(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) = 0;
-    virtual bool setBreathingRandom(RazerLedId led) = 0;
-    virtual bool setBlinking(RazerLedId led, uchar red, uchar green, uchar blue) = 0;
-    virtual bool setSpectrum(RazerLedId led) = 0;
-    virtual bool setWave(RazerLedId led, WaveDirection direction) = 0;
-    virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setNone() = 0;
+    virtual bool setStatic(uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBreathing(uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) = 0;
+    virtual bool setBreathingRandom() = 0;
+    virtual bool setBlinking(uchar red, uchar green, uchar blue) = 0;
+    virtual bool setSpectrum() = 0;
+    virtual bool setWave(WaveDirection direction) = 0;
+    virtual bool setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue) = 0;
 
-    virtual bool setBrightness(RazerLedId led, uchar brightness) = 0;
-    uchar getBrightness(RazerLedId led);
+    virtual bool setBrightness(uchar brightness) = 0;
+    uchar getBrightness();
 };
+
+#include "../device/razerdevice.h"
 
 #endif // RAZERLED_H

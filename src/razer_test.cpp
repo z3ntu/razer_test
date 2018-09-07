@@ -24,6 +24,7 @@
 #include "led/razerclassicled.h"
 #include "dbus/razerdeviceadaptor.h"
 #include "dbus/devicemanageradaptor.h"
+#include "dbus/razerledadaptor.h"
 #include "manager/devicemanager.h"
 #include "config.h"
 
@@ -225,6 +226,19 @@ int main(int argc, char *argv[])
                         delete device;
                         break;
                     }
+                    bool success = true;
+                    foreach (RazerLED *led, device->getLeds()) {
+                        new RazerLEDAdaptor(led);
+                        if (!connection.registerObject(led->getObjectPath().path(), led)) {
+                            qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(led->getObjectPath().path()));
+                            success = false;
+                            break;
+                        }
+                    }
+                    if (!success) {
+                        delete device;
+                        break;
+                    }
 
                     break;
                 }
@@ -252,6 +266,8 @@ int main(int argc, char *argv[])
                 delete device;
                 continue;
             }
+            // TODO: Register LEDs
+            // TODO: Commonize registration?
         }
     }
 
@@ -276,9 +292,10 @@ int main(int argc, char *argv[])
     // Firmware version
     qDebug() << "Firmware version:" << razerDevice->getFirmwareVersion();
 
-    foreach (RazerLedId id, razerDevice->getLedIds()) {
-        qDebug() << "LED ID:" << static_cast<uchar>(id);
-//         razerDevice->setStatic(id, 0xFF, 0xFF, 0x00); // FIXME
+    foreach (RazerLED *led, razerDevice->getLeds()) {
+//         qDebug() << "LED ID:" << static_cast<uchar>(id);
+        qDebug() << "LED object path:" << led->getObjectPath().path();
+        led->setStatic(0xFF, 0xFF, 0x00);
     }
     return 0;
 

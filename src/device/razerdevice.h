@@ -31,8 +31,9 @@
 #include "../razer_test.h"
 #include "../razerreport.h"
 #include "../customeffect/customeffectthread.h"
+#include "../led/razerled.h"
 
-class RazerLED;
+// class RazerLED;
 
 /**
  * @todo write docs
@@ -64,11 +65,14 @@ public:
     QStringList getSupportedFx();
     QStringList getSupportedFeatures();
 
+    QHash<RazerLedId, RazerLED *> getLeds();
+
     // TODO: Make protected again
     QVector<RazerDeviceQuirks> quirks;
 
     // TODO: Deprecate this method, checkFx is better
     bool checkLedAndFx(RazerLedId led, QString fxStr);
+    bool checkFx(QString fxStr);
 
 public Q_SLOTS:
     // TODO: CamelCase public functions (at least for D-Bus)
@@ -108,7 +112,6 @@ protected:
 
     QHash<RazerLedId, RazerLED *> leds;
 
-    bool checkFx(QString fxStr);
     bool checkFeature(QString featureStr);
 
     QHash<uchar, QString> keyboardLayoutIds {

@@ -18,124 +18,124 @@
 
 #include "razermatrixled.h"
 
-bool RazerMatrixLED::setNone(RazerLedId led)
+bool RazerMatrixLED::setNone()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, "off"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx("off"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Off);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Off);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Off);
+        return setMatrixEffect(RazerMatrixEffectId::Off);
     }
 }
 
-bool RazerMatrixLED::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setStatic(uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!device->checkLedAndFx(led, "static"))
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    if (!device->checkFx("static"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Static, 0x00, 0x00, 0x01, red, green, blue);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Static, 0x00, 0x00, 0x01, red, green, blue);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Static, red, green, blue);
+        return setMatrixEffect(RazerMatrixEffectId::Static, red, green, blue);
     }
 }
 
-bool RazerMatrixLED::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setBreathing(uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!device->checkLedAndFx(led, "breathing"))
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    if (!device->checkFx("breathing"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Breathing, 0x01, 0x00, 0x01, red, green, blue);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing, 0x01, 0x00, 0x01, red, green, blue);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
+        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
     }
 }
 
-bool RazerMatrixLED::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+bool RazerMatrixLED::setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue, red2, green2, blue2);
-    if (!device->checkLedAndFx(led, "breathing_dual"))
+    qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, red, green, blue, red2, green2, blue2);
+    if (!device->checkFx("breathing_dual"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Breathing, 0x02, 0x00, 0x02, red, green, blue, red2, green2, blue2);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing, 0x02, 0x00, 0x02, red, green, blue, red2, green2, blue2);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
+        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
     }
 }
 
-bool RazerMatrixLED::setBreathingRandom(RazerLedId led)
+bool RazerMatrixLED::setBreathingRandom()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, "breathing_random"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx("breathing_random"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Breathing);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Breathing, 0x03);
+        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x03);
     }
 }
 
-bool RazerMatrixLED::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setBlinking(uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!device->checkLedAndFx(led, "blinking"))
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    if (!device->checkFx("blinking"))
         return false;
     if (calledFromDBus())
         sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
-bool RazerMatrixLED::setSpectrum(RazerLedId led)
+bool RazerMatrixLED::setSpectrum()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, "spectrum"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx("spectrum"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Spectrum);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Spectrum);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Spectrum);
+        return setMatrixEffect(RazerMatrixEffectId::Spectrum);
     }
 }
 
-bool RazerMatrixLED::setWave(RazerLedId led, WaveDirection direction)
+bool RazerMatrixLED::setWave(WaveDirection direction)
 {
-    qDebug("Called %s with params %hhu, %hhu", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(direction));
-    if (!device->checkLedAndFx(led, "wave"))
+    qDebug("Called %s with params %hhu", Q_FUNC_INFO, static_cast<uchar>(direction));
+    if (!device->checkFx("wave"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
         // Wave direction is 0x00 / 0x01 instead of 0x01 / 0x02 for mouse_matrix, so subtract one
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Wave, static_cast<uchar>(direction) - 0x01, 0x28);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Wave, static_cast<uchar>(direction) - 0x01, 0x28);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
+        return setMatrixEffect(RazerMatrixEffectId::Wave, static_cast<uchar>(direction));
     }
 }
 
-bool RazerMatrixLED::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue)
 {
-    qDebug("Called %s with params %hhu, %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(speed), red, green, blue);
-    if (!device->checkLedAndFx(led, "reactive"))
+    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), red, green, blue);
+    if (!device->checkFx("reactive"))
         return false;
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(led, RazerMouseMatrixEffectId::Reactive, 0x00, static_cast<uchar>(speed), 0x01, red, green, blue);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Reactive, 0x00, static_cast<uchar>(speed), 0x01, red, green, blue);
     } else {
-        return setMatrixEffect(led, RazerMatrixEffectId::Reactive, static_cast<uchar>(speed), red, green, blue);
+        return setMatrixEffect(RazerMatrixEffectId::Reactive, static_cast<uchar>(speed), red, green, blue);
     }
 }
 
-bool RazerMatrixLED::setBrightness(RazerLedId led, uchar brightness)
+bool RazerMatrixLED::setBrightness(uchar brightness)
 {
-    qDebug("Called %s with params %hhu, %i", Q_FUNC_INFO, static_cast<uchar>(led), brightness);
-    if (!device->checkLedAndFx(led, QString::null))
+    qDebug("Called %s with params %i", Q_FUNC_INFO, brightness);
+    if (!device->checkFx(QString::null))
         return false;
     razer_report report, response_report;
 
     if (device->quirks.contains(RazerDeviceQuirks::MatrixBrightness)) {
-        report = razer_chroma_extended_matrix_set_brightness(RazerVarstore::STORE, led, brightness);
+        report = razer_chroma_extended_matrix_set_brightness(RazerVarstore::STORE, this->ledId, brightness);
     } else {
-        report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, led, brightness);
+        report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, this->ledId, brightness);
     }
     if (device->sendReport(report, &response_report) != 0) {
         if (calledFromDBus())
@@ -149,17 +149,17 @@ bool RazerMatrixLED::setBrightness(RazerLedId led, uchar brightness)
     return true;
 }
 
-bool RazerMatrixLED::getBrightness(RazerLedId led, uchar *brightness)
+bool RazerMatrixLED::getBrightness(uchar *brightness)
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!device->checkLedAndFx(led, QString::null))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!device->checkFx(QString::null))
         return false;
     razer_report report, response_report;
 
     if (device->quirks.contains(RazerDeviceQuirks::MatrixBrightness)) {
-        report = razer_chroma_extended_matrix_get_brightness(RazerVarstore::STORE, led);
+        report = razer_chroma_extended_matrix_get_brightness(RazerVarstore::STORE, this->ledId);
     } else {
-        report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, led);
+        report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, this->ledId);
     }
     if (device->sendReport(report, &response_report) != 0) {
         if (calledFromDBus())
@@ -174,12 +174,12 @@ bool RazerMatrixLED::getBrightness(RazerLedId led, uchar *brightness)
 
 /* --------------------- PRIVATE METHODS --------------------- */
 
-bool RazerMatrixLED::setSpectrumInit(RazerLedId led)
+bool RazerMatrixLED::setSpectrumInit()
 {
     razer_report report, response_report;
 
     if (device->quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, led, RazerMouseMatrixEffectId::Spectrum);
+        report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, this->ledId, RazerMouseMatrixEffectId::Spectrum);
     } else {
         report = razer_chroma_standard_matrix_effect(RazerMatrixEffectId::Spectrum);
     }
@@ -190,7 +190,7 @@ bool RazerMatrixLED::setSpectrumInit(RazerLedId led)
     return true;
 }
 
-bool RazerMatrixLED::setMatrixEffect(RazerLedId led, RazerMatrixEffectId effect, uchar arg1, uchar arg2, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8)
+bool RazerMatrixLED::setMatrixEffect(RazerMatrixEffectId effect, uchar arg1, uchar arg2, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8)
 {
     razer_report report, response_report;
 
@@ -210,21 +210,17 @@ bool RazerMatrixLED::setMatrixEffect(RazerLedId led, RazerMatrixEffectId effect,
         return false;
     }
 
-    // Don't save state
-    if (led == RazerLedId::Unspecified)
-        return true;
-
     // Save state into LED variable
     this->effect = effect;
 
     return true;
 }
 
-bool RazerMatrixLED::setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEffectId effect, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8, uchar arg9, uchar arg10, uchar arg11)
+bool RazerMatrixLED::setMouseMatrixEffect(RazerMouseMatrixEffectId effect, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8, uchar arg9, uchar arg10, uchar arg11)
 {
     razer_report report, response_report;
 
-    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, led, effect);
+    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, this->ledId, effect);
     report.arguments[3] = arg3;
     report.arguments[4] = arg4;
     report.arguments[5] = arg5;
@@ -240,10 +236,6 @@ bool RazerMatrixLED::setMouseMatrixEffect(RazerLedId led, RazerMouseMatrixEffect
             sendErrorReply(QDBusError::Failed);
         return false;
     }
-
-    // Don't save state
-    if (led == RazerLedId::Unspecified)
-        return true;
 
     // Save state into LED variable
 //     this->effect = effect; // FIXME

@@ -31,6 +31,7 @@ src = [
     'src/customeffect/waveeffect.cpp',
     'src/dbus/devicemanageradaptor.cpp',
     'src/dbus/razerdeviceadaptor.cpp',
+    'src/dbus/razerledadaptor.cpp',
     'src/device/razerdevice.cpp',
     'src/device/razerclassicdevice.cpp',
     'src/device/razerfakedevice.cpp',
@@ -48,6 +49,7 @@ processed = qt5.preprocess(
     'src/customeffect/spectrumeffect.h',
     'src/dbus/devicemanageradaptor.h',
     'src/dbus/razerdeviceadaptor.h',
+    'src/dbus/razerledadaptor.h',
     'src/device/razerdevice.h',
     'src/led/razerled.h',
     'src/manager/devicemanager.h'

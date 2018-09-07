@@ -12,3 +12,7 @@ env QT_PLUGIN_PATH=scripts/qdbuscpp2xml-plugin/builddir/ \
 env QT_PLUGIN_PATH=scripts/qdbuscpp2xml-plugin/builddir/ \
     /mnt/hdd/qt/qtbase/bin/qdbuscpp2xml -x qdbuscpp2xml-plugin \
     src/manager/devicemanager.h -o devicemanager.xml
+
+env QT_PLUGIN_PATH=scripts/qdbuscpp2xml-plugin/builddir/ \
+    /mnt/hdd/qt/qtbase/bin/qdbuscpp2xml -x qdbuscpp2xml-plugin \
+    src/led/razerled.h -o razerled.xml
