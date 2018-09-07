@@ -33,73 +33,6 @@
       <arg type="b" direction="out"/>
       <arg name="poll_rate" type="q" direction="in"/>
     </method>
-    <method name="setNone">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-    </method>
-    <method name="setStatic">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
-    </method>
-    <method name="setBreathing">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
-    </method>
-    <method name="setBreathingDual">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
-      <arg name="red2" type="y" direction="in"/>
-      <arg name="green2" type="y" direction="in"/>
-      <arg name="blue2" type="y" direction="in"/>
-    </method>
-    <method name="setBreathingRandom">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-    </method>
-    <method name="setBlinking">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
-    </method>
-    <method name="setSpectrum">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-    </method>
-    <method name="setWave">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="direction" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="WaveDirection"/>
-    </method>
-    <method name="setReactive">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="speed" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="ReactiveSpeed"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
-    </method>
     <method name="displayCustomFrame">
       <arg type="b" direction="out"/>
     </method>
@@ -109,17 +42,6 @@
       <arg name="startColumn" type="y" direction="in"/>
       <arg name="endColumn" type="y" direction="in"/>
       <arg name="rgbData" type="ay" direction="in"/>
-    </method>
-    <method name="setBrightness">
-      <arg type="b" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
-      <arg name="brightness" type="y" direction="in"/>
-    </method>
-    <method name="getBrightness">
-      <arg type="y" direction="out"/>
-      <arg name="led" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerLedId"/>
     </method>
     <method name="startCustomEffectThread">
       <arg type="b" direction="out"/>
