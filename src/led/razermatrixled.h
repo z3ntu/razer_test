@@ -20,7 +20,6 @@
 #define RAZERMATRIXLED_H
 
 #include "razerled.h"
-#include "razermousematrixled.h" // TODO What to do here?? Merge them?
 
 /**
  * @todo write docs
@@ -31,6 +30,7 @@ public:
     using RazerLED::RazerLED;
 
     RazerMatrixEffectId effect;
+    RazerMouseMatrixEffectId mouseMatrixEffect;
 
     virtual bool setNone();
     virtual bool setStatic(uchar red, uchar green, uchar blue);
@@ -47,7 +47,6 @@ public:
 
     bool setSpectrumInit();
 
-private:
     bool setMatrixEffect(RazerMatrixEffectId effect,
                          uchar arg1 = 0x00, uchar arg2 = 0x00, uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00);
     bool setMouseMatrixEffect(RazerMouseMatrixEffectId effect,

@@ -220,7 +220,10 @@ bool RazerMatrixLED::setMouseMatrixEffect(RazerMouseMatrixEffectId effect, uchar
 {
     razer_report report, response_report;
 
-    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, this->ledId, effect);
+    // Custom Frame uses 0x00 LED ID
+    RazerLedId ledId = effect == RazerMouseMatrixEffectId::CustomFrame ? RazerLedId::Unspecified : this->ledId;
+
+    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, ledId, effect);
     report.arguments[3] = arg3;
     report.arguments[4] = arg4;
     report.arguments[5] = arg5;
@@ -238,7 +241,7 @@ bool RazerMatrixLED::setMouseMatrixEffect(RazerMouseMatrixEffectId effect, uchar
     }
 
     // Save state into LED variable
-//     this->effect = effect; // FIXME
+    this->mouseMatrixEffect = effect;
 
     return true;
 }

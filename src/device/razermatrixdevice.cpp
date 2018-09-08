@@ -23,14 +23,7 @@
 bool RazerMatrixDevice::initializeLeds()
 {
     foreach (RazerLedId ledId, ledIds) {
-        // TODO Create RazerMouseMatrixLED if(quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-        RazerMatrixLED *rled;
-        if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-//             rled = new RazerMouseMatrixLED(this, ledId);
-            rled = nullptr; // FIXME
-        } else {
-            rled = new RazerMatrixLED(this, ledId);
-        }
+        RazerMatrixLED *rled = new RazerMatrixLED(this, ledId);
         bool ok;
         uchar brightness;
         ok = rled->getBrightness(&brightness);
@@ -44,9 +37,9 @@ bool RazerMatrixDevice::initializeLeds()
         }
         rled->brightness = brightness;
         if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-//             static_cast<RazerMouseMatrixLED *>(rled)->effect = RazerMouseMatrixEffectId::Spectrum; // FIXME
+            rled->mouseMatrixEffect = RazerMouseMatrixEffectId::Spectrum;
         } else {
-            static_cast<RazerMatrixLED *>(rled)->effect = RazerMatrixEffectId::Spectrum;
+            rled->effect = RazerMatrixEffectId::Spectrum;
         }
         leds.insert(ledId, rled);
     }
@@ -60,12 +53,13 @@ bool RazerMatrixDevice::displayCustomFrame()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("custom_frame"))
         return false;
+
+    RazerMatrixLED *led = static_cast<RazerMatrixLED *>(leds.values().first());
     if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-//         return leds[0]->setMouseMatrixEffect(RazerLedId::Unspecified, RazerMouseMatrixEffectId::CustomFrame); // FIXME
+        return led->setMouseMatrixEffect(RazerMouseMatrixEffectId::CustomFrame);
     } else {
-//         return setMatrixEffect(RazerLedId::Unspecified, RazerMatrixEffectId::CustomFrame); // FIXME
+        return led->setMatrixEffect(RazerMatrixEffectId::CustomFrame);
     }
-    return false; // FIXME
 }
 
 bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
