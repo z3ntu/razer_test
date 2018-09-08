@@ -36,7 +36,7 @@ class RazerDevice;
 class RazerLED : public QObject, protected QDBusContext
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device.Led")
+    Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
     // TODO Q_PROPERTY something?
 
 public:

@@ -39,6 +39,12 @@ QVector<RazerLedId> RazerDeviceAdaptor::ledIds() const
     return qvariant_cast< QVector<RazerLedId> >(parent()->property("LedIds"));
 }
 
+QList<QDBusObjectPath> RazerDeviceAdaptor::leds() const
+{
+    // get the value of property Leds
+    return qvariant_cast< QList<QDBusObjectPath> >(parent()->property("Leds"));
+}
+
 QString RazerDeviceAdaptor::name() const
 {
     // get the value of property Name

@@ -38,6 +38,7 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "    <property access=\"read\" type=\"a(i)\" name=\"LedIds\">\n"
                 "      <annotation value=\"QVector&lt;RazerLedId&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                 "    </property>\n"
+                "    <property access=\"read\" type=\"ao\" name=\"Leds\"/>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFx\"/>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFeatures\"/>\n"
                 "    <method name=\"getSerial\">\n"
@@ -89,6 +90,9 @@ public:
 public: // PROPERTIES
     Q_PROPERTY(QVector<RazerLedId> LedIds READ ledIds)
     QVector<RazerLedId> ledIds() const;
+
+    Q_PROPERTY(QList<QDBusObjectPath> Leds READ leds)
+    QList<QDBusObjectPath> leds() const;
 
     Q_PROPERTY(QString Name READ name)
     QString name() const;

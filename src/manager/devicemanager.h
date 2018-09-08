@@ -40,6 +40,7 @@ public:
 
     QString getVersion();
     QList<QDBusObjectPath> getDevices();
+    QDBusObjectPath getObjectPath();
 
 private:
     QVector<QDBusObjectPath> devices;

@@ -25,14 +25,14 @@ class QVariant;
 QT_END_NAMESPACE
 
 /*
- * Adaptor class for interface io.github.openrazer1.Device.Led
+ * Adaptor class for interface io.github.openrazer1.Led
  */
 class RazerLEDAdaptor: public QDBusAbstractAdaptor
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device.Led")
+    Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
     Q_CLASSINFO("D-Bus Introspection", ""
-                "  <interface name=\"io.github.openrazer1.Device.Led\">\n"
+                "  <interface name=\"io.github.openrazer1.Led\">\n"
                 "    <method name=\"setNone\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "    </method>\n"

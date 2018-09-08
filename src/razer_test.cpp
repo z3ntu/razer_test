@@ -273,8 +273,8 @@ int main(int argc, char *argv[])
 
     DeviceManager *manager = new DeviceManager(devices);
     new DeviceManagerAdaptor(manager);
-    if (!connection.registerObject("/io/github/openrazer1", manager)) {
-        qCritical("Failed to register D-Bus object at \"/io/github/openrazer1\".");
+    if (!connection.registerObject(manager->getObjectPath().path(), manager)) {
+        qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
         return 1;
     }
 

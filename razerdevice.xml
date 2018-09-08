@@ -6,6 +6,7 @@
     <property name="LedIds" type="a(i)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="QVector&lt;RazerLedId&gt;"/>
     </property>
+    <property name="Leds" type="ao" access="read"/>
     <property name="SupportedFx" type="as" access="read"/>
     <property name="SupportedFeatures" type="as" access="read"/>
     <method name="getSerial">

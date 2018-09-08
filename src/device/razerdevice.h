@@ -44,7 +44,8 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device")
     Q_PROPERTY(QString Name READ getName)
     Q_PROPERTY(QString Type READ getType)
-    Q_PROPERTY(QVector<RazerLedId> LedIds READ getLedIds)
+    Q_PROPERTY(QVector<RazerLedId> LedIds READ getLedIds) // TODO: Remove
+    Q_PROPERTY(QList<QDBusObjectPath> Leds READ getLedObjectPaths)
     Q_PROPERTY(QStringList SupportedFx READ getSupportedFx)
     Q_PROPERTY(QStringList SupportedFeatures READ getSupportedFeatures)
 
@@ -66,6 +67,7 @@ public:
     QStringList getSupportedFeatures();
 
     QHash<RazerLedId, RazerLED *> getLeds();
+    QList<QDBusObjectPath> getLedObjectPaths();
 
     // TODO: Make protected again
     QVector<RazerDeviceQuirks> quirks;

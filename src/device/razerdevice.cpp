@@ -210,6 +210,15 @@ QHash<RazerLedId, RazerLED *> RazerDevice::getLeds()
     return leds;
 }
 
+QList<QDBusObjectPath> RazerDevice::getLedObjectPaths()
+{
+    QList<QDBusObjectPath> paths;
+    foreach (RazerLED *led, leds) {
+        paths.append(led->getObjectPath());
+    }
+    return paths;
+}
+
 QString RazerDevice::getSerial()
 {
     qDebug("Called %s", Q_FUNC_INFO);

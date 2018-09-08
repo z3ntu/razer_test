@@ -35,3 +35,8 @@ QList<QDBusObjectPath> DeviceManager::getDevices()
 {
     return devices.toList();
 }
+
+QDBusObjectPath DeviceManager::getObjectPath()
+{
+    return QDBusObjectPath("/io/github/openrazer1");
+}
