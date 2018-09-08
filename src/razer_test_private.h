@@ -72,7 +72,8 @@ enum class RazerMouseMatrixEffectId : uchar {
 
 enum class RazerDeviceQuirks {
     MouseMatrix,
-    MatrixBrightness
+    MatrixBrightness,
+    FireflyCustomFrame
 };
 
 #endif // RAZERTESTPRIVATE_H

@@ -106,6 +106,8 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
             quirks->append(RazerDeviceQuirks::MouseMatrix);
         } else if (quirkVal.toString() == "matrix_brightness") {
             quirks->append(RazerDeviceQuirks::MatrixBrightness);
+        } else if (quirkVal.toString() == "firefly_custom_frame") {
+            quirks->append(RazerDeviceQuirks::FireflyCustomFrame);
         } else {
             qCritical("Unhandled quirks string!");
         }

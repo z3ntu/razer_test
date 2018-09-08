@@ -77,7 +77,11 @@ bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar en
 
     razer_report report, response_report;
 
-    report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
+    if (quirks.contains(RazerDeviceQuirks::FireflyCustomFrame)) {
+        report = razer_chroma_misc_one_row_set_custom_frame(startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
+    } else {
+        report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
+    }
     if (sendReport(report, &response_report) != 0) {
         if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
