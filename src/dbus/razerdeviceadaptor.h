@@ -12,6 +12,7 @@
 #ifndef RAZERDEVICEADAPTOR_H
 #define RAZERDEVICEADAPTOR_H
 #include "../razer_test.h"
+using namespace razer_test;
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -35,9 +36,6 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "  <interface name=\"io.github.openrazer1.Device\">\n"
                 "    <property access=\"read\" type=\"s\" name=\"Name\"/>\n"
                 "    <property access=\"read\" type=\"s\" name=\"Type\"/>\n"
-                "    <property access=\"read\" type=\"a(i)\" name=\"LedIds\">\n"
-                "      <annotation value=\"QVector&lt;RazerLedId&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
-                "    </property>\n"
                 "    <property access=\"read\" type=\"ao\" name=\"Leds\"/>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFx\"/>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFeatures\"/>\n"
@@ -57,7 +55,7 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "    <method name=\"setDPI\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
-                "      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <annotation value=\"razer_test::RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "    </method>\n"
                 "    <method name=\"getPollRate\">\n"
                 "      <arg direction=\"out\" type=\"q\"/>\n"
@@ -88,9 +86,6 @@ public:
     virtual ~RazerDeviceAdaptor();
 
 public: // PROPERTIES
-    Q_PROPERTY(QVector<RazerLedId> LedIds READ ledIds)
-    QVector<RazerLedId> ledIds() const;
-
     Q_PROPERTY(QList<QDBusObjectPath> Leds READ leds)
     QList<QDBusObjectPath> leds() const;
 
@@ -115,7 +110,7 @@ public Q_SLOTS: // METHODS
     ushort getPollRate();
     QString getSerial();
     void pauseCustomEffectThread();
-    bool setDPI(RazerDPI dpi);
+    bool setDPI(razer_test::RazerDPI dpi);
     bool setPollRate(ushort poll_rate);
     bool startCustomEffectThread(const QString &effectName);
 Q_SIGNALS: // SIGNALS

@@ -159,8 +159,6 @@ int main(int argc, char *argv[])
     // Register the enums with the Qt system
     qRegisterMetaType<RazerLedId>("RazerLedId");
     qDBusRegisterMetaType<RazerLedId>();
-    // Register QVector<RazerLedId> as well as otherwise getLedIds() returns nothing.
-    qDBusRegisterMetaType<QVector<RazerLedId>>();
 
     qRegisterMetaType<WaveDirection>("WaveDirection");
     qDBusRegisterMetaType<WaveDirection>();

@@ -26,6 +26,8 @@
 #include "../razer_test.h"
 #include "../razer_test_private.h"
 
+using namespace razer_test;
+
 // Forward-declare RazerDevice and resolve it at the bottom of this file.
 // Resolves a circular dependency between RazerLED and RazerDevice.
 class RazerDevice;

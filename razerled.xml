@@ -40,12 +40,12 @@
     <method name="setWave">
       <arg type="b" direction="out"/>
       <arg name="direction" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="WaveDirection"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::WaveDirection"/>
     </method>
     <method name="setReactive">
       <arg type="b" direction="out"/>
       <arg name="speed" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="ReactiveSpeed"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::ReactiveSpeed"/>
       <arg name="red" type="y" direction="in"/>
       <arg name="green" type="y" direction="in"/>
       <arg name="blue" type="y" direction="in"/>

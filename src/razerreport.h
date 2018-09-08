@@ -22,6 +22,8 @@
 #include "razer_test.h"
 #include "razer_test_private.h"
 
+using namespace razer_test;
+
 union transaction_id_union {
     unsigned char id;
     struct transaction_parts {

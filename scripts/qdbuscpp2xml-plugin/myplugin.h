@@ -6,14 +6,6 @@
 
 #include "plugininterface.h"
 
-// Copied from razerdevice.h
-struct RazerDPI {
-    ushort dpi_x;
-    ushort dpi_y;
-};
-Q_DECLARE_METATYPE(RazerDPI)
-// Copied from razerdevice.h
-
 class MyPlugin : public QObject, public QDBusCpp2XmlPlugin
 {
     Q_OBJECT

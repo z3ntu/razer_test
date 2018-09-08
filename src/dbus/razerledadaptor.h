@@ -12,6 +12,7 @@
 #ifndef RAZERLEDADAPTOR_H
 #define RAZERLEDADAPTOR_H
 #include "../razer_test.h"
+using namespace razer_test;
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -72,12 +73,12 @@ class RazerLEDAdaptor: public QDBusAbstractAdaptor
                 "    <method name=\"setWave\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <arg direction=\"in\" type=\"(i)\" name=\"direction\"/>\n"
-                "      <annotation value=\"WaveDirection\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <annotation value=\"razer_test::WaveDirection\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setReactive\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <arg direction=\"in\" type=\"(i)\" name=\"speed\"/>\n"
-                "      <annotation value=\"ReactiveSpeed\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "      <annotation value=\"razer_test::ReactiveSpeed\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                 "      <arg direction=\"in\" type=\"y\" name=\"red\"/>\n"
                 "      <arg direction=\"in\" type=\"y\" name=\"green\"/>\n"
                 "      <arg direction=\"in\" type=\"y\" name=\"blue\"/>\n"
@@ -104,10 +105,10 @@ public Q_SLOTS: // METHODS
     bool setBreathingRandom();
     bool setBrightness(uchar brightness);
     bool setNone();
-    bool setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue);
+    bool setReactive(razer_test::ReactiveSpeed speed, uchar red, uchar green, uchar blue);
     bool setSpectrum();
     bool setStatic(uchar red, uchar green, uchar blue);
-    bool setWave(WaveDirection direction);
+    bool setWave(razer_test::WaveDirection direction);
 Q_SIGNALS: // SIGNALS
 };
 

@@ -33,12 +33,6 @@ RazerDeviceAdaptor::~RazerDeviceAdaptor()
     // destructor
 }
 
-QVector<RazerLedId> RazerDeviceAdaptor::ledIds() const
-{
-    // get the value of property LedIds
-    return qvariant_cast< QVector<RazerLedId> >(parent()->property("LedIds"));
-}
-
 QList<QDBusObjectPath> RazerDeviceAdaptor::leds() const
 {
     // get the value of property Leds
@@ -131,11 +125,11 @@ void RazerDeviceAdaptor::pauseCustomEffectThread()
     QMetaObject::invokeMethod(parent(), "pauseCustomEffectThread");
 }
 
-bool RazerDeviceAdaptor::setDPI(RazerDPI dpi)
+bool RazerDeviceAdaptor::setDPI(razer_test::RazerDPI dpi)
 {
     // handle method call io.github.openrazer1.Device.setDPI
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(RazerDPI, dpi));
+    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RazerDPI, dpi));
     return out0;
 }
 

@@ -23,24 +23,6 @@
 
 #include "razerdevice.h"
 
-// Marshall the RazerDPI data into a D-Bus argument
-QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &razerDPI)
-{
-    argument.beginStructure();
-    argument << razerDPI.dpi_x << razerDPI.dpi_y;
-    argument.endStructure();
-    return argument;
-}
-
-// Retrieve the RazerDPI data from the D-Bus argument
-const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &razerDPI)
-{
-    argument.beginStructure();
-    argument >> razerDPI.dpi_x >> razerDPI.dpi_y;
-    argument.endStructure();
-    return argument;
-}
-
 RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks)
 {
     this->dev_path = dev_path;
@@ -185,12 +167,6 @@ QString RazerDevice::getType()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     return type;
-}
-
-QVector<RazerLedId> RazerDevice::getLedIds()
-{
-    qDebug("Called %s", Q_FUNC_INFO);
-    return ledIds;
 }
 
 QStringList RazerDevice::getSupportedFx()

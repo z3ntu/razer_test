@@ -3,9 +3,6 @@
   <interface name="io.github.openrazer1.Device">
     <property name="Name" type="s" access="read"/>
     <property name="Type" type="s" access="read"/>
-    <property name="LedIds" type="a(i)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="QVector&lt;RazerLedId&gt;"/>
-    </property>
     <property name="Leds" type="ao" access="read"/>
     <property name="SupportedFx" type="as" access="read"/>
     <property name="SupportedFeatures" type="as" access="read"/>
@@ -25,7 +22,7 @@
     <method name="setDPI">
       <arg type="b" direction="out"/>
       <arg name="dpi" type="(qq)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="RazerDPI"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RazerDPI"/>
     </method>
     <method name="getPollRate">
       <arg type="q" direction="out"/>
