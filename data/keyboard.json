@@ -6,7 +6,7 @@
         "type": "keyboard",
         "pclass": "matrix",
         "leds": [5],
-        "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame"],
+        "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"],
         "features": ["keyboard_layout"],
         "quirks": []
     }

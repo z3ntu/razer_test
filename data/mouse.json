@@ -6,7 +6,7 @@
         "type": "mouse",
         "pclass": "classic",
         "leds": [1, 4],
-        "fx": ["off", "static", "blinking", "breathing", "spectrum"],
+        "fx": ["off", "static", "blinking", "breathing", "spectrum", "brightness"],
         "features": ["dpi", "poll_rate"],
         "quirks": []
     },
@@ -17,7 +17,7 @@
         "type": "mouse",
         "pclass": "matrix",
         "leds": [1, 4, 16, 17],
-        "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave"],
+        "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "brightness"],
         "features": ["dpi", "poll_rate"],
         "quirks": ["mouse_matrix", "matrix_brightness"]
     }

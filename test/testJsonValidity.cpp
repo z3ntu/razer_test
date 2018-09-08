@@ -31,7 +31,7 @@ private:
 
     QStringList validType = {"core", "headset", "keyboard", "keypad", "mouse", "mousepad", "mug"};
     QStringList validPclass = {"classic", "matrix"};
-    QStringList validFx = {"off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame"};
+    QStringList validFx = {"off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"};
     QStringList validFeatures = {"keyboard_layout", "dpi", "poll_rate"};
     QStringList validQuirks = {"mouse_matrix", "matrix_brightness"};
 

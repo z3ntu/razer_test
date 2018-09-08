@@ -66,6 +66,26 @@ bool getVidPidFromJson(QJsonObject deviceObj, ushort *vid, ushort *pid)
     return true;
 }
 
+bool registerDeviceOnDBus(RazerDevice *device, QDBusConnection &connection)
+{
+    // D-Bus
+    new RazerDeviceAdaptor(device);
+    if (!connection.registerObject(device->getObjectPath().path(), device)) {
+        qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
+        delete device;
+        return false;
+    }
+    foreach (RazerLED *led, device->getLeds()) {
+        new RazerLEDAdaptor(led);
+        if (!connection.registerObject(led->getObjectPath().path(), led)) {
+            qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(led->getObjectPath().path()));
+            delete device;
+            return false;
+        }
+    }
+    return true;
+}
+
 bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks)
 {
     // TODO: Check everything for sanity
@@ -190,13 +210,13 @@ int main(int argc, char *argv[])
         devs = hid_enumerate(0x1532, 0x0000);
         cur_dev = devs;
 
-        QVector<ushort> devicesPid;
+        QVector<ushort> alreadyAddedPids;
 
         while (cur_dev) {
             // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
 
             // Check if device is already added
-            if (devicesPid.contains(cur_dev->product_id)) {
+            if (alreadyAddedPids.contains(cur_dev->product_id)) {
                 cur_dev = cur_dev->next;
                 continue;
             }
@@ -215,28 +235,10 @@ int main(int argc, char *argv[])
                         break;
 
                     devices.append(device);
-                    devicesPid.append(cur_dev->product_id);
+                    alreadyAddedPids.append(cur_dev->product_id);
 
                     // D-Bus
-                    new RazerDeviceAdaptor(device);
-                    if (!connection.registerObject(device->getObjectPath().path(), device)) {
-                        qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
-                        delete device;
-                        break;
-                    }
-                    bool success = true;
-                    foreach (RazerLED *led, device->getLeds()) {
-                        new RazerLEDAdaptor(led);
-                        if (!connection.registerObject(led->getObjectPath().path(), led)) {
-                            qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(led->getObjectPath().path()));
-                            success = false;
-                            break;
-                        }
-                    }
-                    if (!success) {
-                        delete device;
-                        break;
-                    }
+                    registerDeviceOnDBus(device, connection);
 
                     break;
                 }
@@ -249,23 +251,14 @@ int main(int argc, char *argv[])
     } else { // Handle fake devices
         // Check if device is supported
         foreach (const QJsonValue &deviceVal, supportedDevices) {
-            QJsonObject deviceObj = deviceVal.toObject();
-
-            RazerDevice *device = initializeDevice(NULL, deviceObj);
+            RazerDevice *device = initializeDevice(NULL, deviceVal.toObject());
             if (device == NULL)
                 continue;
 
             devices.append(device);
 
             // D-Bus
-            new RazerDeviceAdaptor(device);
-            if (!connection.registerObject(device->getObjectPath().path(), device)) {
-                qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(device->getObjectPath().path()));
-                delete device;
-                continue;
-            }
-            // TODO: Register LEDs
-            // TODO: Commonize registration?
+            registerDeviceOnDBus(device, connection);
         }
     }
 

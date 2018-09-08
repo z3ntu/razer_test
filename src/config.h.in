@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #define RAZER_TEST_VERSION "@version@"
+#define RAZER_TEST_DATADIR "@datadir@"
 
 #endif
 

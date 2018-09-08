@@ -4,6 +4,7 @@ project('razer_test', 'cpp',
 
 conf_data = configuration_data()
 conf_data.set('version', meson.project_version())
+conf_data.set('datadir', join_paths(get_option('prefix'), get_option('datadir'), meson.project_name()))
 
 configure_file(input : 'src/config.h.in',
                output : 'config.h',
@@ -56,8 +57,14 @@ processed = qt5.preprocess(
   ]
 )
 
+# Install public header
+install_headers('src/razer_test.h')
+# Install json device files
+install_subdir('data', install_dir : join_paths(get_option('datadir'), meson.project_name()), strip_directory : true)
+
+# Build requested executables
 if get_option('build_daemon')
-  executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep])
+  executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep], install : true)
 endif
 if get_option('build_demo')
   executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep], cpp_args : '-DDEMO')

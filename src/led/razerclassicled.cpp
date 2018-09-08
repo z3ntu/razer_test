@@ -135,7 +135,7 @@ bool RazerClassicLED::setReactive(ReactiveSpeed speed, uchar red, uchar green, u
 bool RazerClassicLED::setBrightness(uchar brightness)
 {
     qDebug("Called %s with params %i", Q_FUNC_INFO, brightness);
-    if (!device->checkFx(QString::null))
+    if (!device->checkFx("brightness"))
         return false;
     razer_report report, response_report;
 
@@ -154,7 +154,7 @@ bool RazerClassicLED::setBrightness(uchar brightness)
 bool RazerClassicLED::getBrightness(uchar *brightness)
 {
     qDebug("Called %s", Q_FUNC_INFO);
-    if (!device->checkFx(QString::null)) // TODO ???
+    if (!device->checkFx("brightness"))
         return false;
     razer_report report, response_report;
 
