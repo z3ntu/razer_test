@@ -27,7 +27,7 @@ private:
     QJsonArray loadJson();
     ushort hexStringToUshort(const QString &str);
 
-    QStringList allowedKeys = {"name", "vid", "pid", "type", "pclass", "leds", "fx", "features", "quirks"};
+    QStringList allowedKeys = {"name", "vid", "pid", "type", "pclass", "leds", "fx", "features", "quirks", "matrix_dimensions", "max_dpi"};
 
     QStringList validType = {"core", "headset", "keyboard", "keypad", "mouse", "mousepad", "mug"};
     QStringList validPclass = {"classic", "matrix"};
@@ -107,13 +107,36 @@ void testJsonValidity::checkJsonDataValidity()
             QVERIFY2(validFeatures.contains(featVal.toString()), "Invalid features.");
         }
         // quirks array - optional
-        if (devObj["quirks"].isArray()) {
+        // Access the value here with .value() and not with [], as the latter will create the value and make the "else if" fail
+        if (devObj.value("quirks").isArray()) {
             foreach (const QJsonValue &quirkVal, devObj["quirks"].toArray()) {
                 qDebug() << "quirks:" << quirkVal.toString();
                 QVERIFY2(validQuirks.contains(quirkVal.toString()), "Invalid quirks.");
             }
         } else if (devObj.contains("quirks")) {
             QFAIL("Invalid quirks - has to be an array.");
+        }
+        // led matrix dimensions - optional
+        if (devObj.value("matrix_dimensions").isArray()) {
+            foreach (const QJsonValue &dimVal, devObj["matrix_dimensions"].toArray()) {
+                qDebug() << "matrix_dimensions:" << dimVal.toInt();
+                QVERIFY2(0 < dimVal.toInt() && dimVal.toInt() <= 25, "Invalid matrix_dimension - has to be 0 < val <= 25");
+            }
+            QVERIFY2(devObj["matrix_dimensions"].toArray().size() == 2, "Invalid matrix_dimensions array size - has to be two (X/Y).");
+        } else if (devObj.contains("matrix_dimensions")) {
+            QFAIL("Invalid matrix_dimensions - has to be an array.");
+        }
+        // led matrix dimensions - optional
+        if (devObj.value("max_dpi").isDouble()) {
+            qDebug() << devObj["max_dpi"].toInt();
+            QVERIFY2(1800 <= devObj["max_dpi"].toInt() && devObj["max_dpi"].toInt() <= 16000, "Invalid max_dpi - has to be 1800 <= dpi <= 16000.");
+        } else if (devObj.contains("max_dpi")) {
+            QFAIL("Invalid max_dpi - has to be an int.");
+        }
+
+        // devices with "dpi" feature must have max_dpi declared
+        if (devObj["features"].toArray().contains("dpi")) {
+            QVERIFY2(devObj.contains("max_dpi"), "Missing max_dpi - devices with \"dpi\" feature must have max_dpi declared.");
         }
 
         // Check that all keys present in the device json are valid.

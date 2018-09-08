@@ -120,19 +120,42 @@ struct RazerDPI {
 };
 
 // Marshall the RazerDPI data into a D-Bus argument
-inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &razerDPI)
+inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &value)
 {
     argument.beginStructure();
-    argument << razerDPI.dpi_x << razerDPI.dpi_y;
+    argument << value.dpi_x << value.dpi_y;
     argument.endStructure();
     return argument;
 }
 
 // Retrieve the RazerDPI data from the D-Bus argument
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &razerDPI)
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &value)
 {
     argument.beginStructure();
-    argument >> razerDPI.dpi_x >> razerDPI.dpi_y;
+    argument >> value.dpi_x >> value.dpi_y;
+    argument.endStructure();
+    return argument;
+}
+
+struct MatrixDimensions {
+    uchar x;
+    uchar y;
+};
+
+// Marshall the MatrixDimensions data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const MatrixDimensions &value)
+{
+    argument.beginStructure();
+    argument << value.x << value.y;
+    argument.endStructure();
+    return argument;
+}
+
+// Retrieve the MatrixDimensions data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, MatrixDimensions &value)
+{
+    argument.beginStructure();
+    argument >> value.x >> value.y;
     argument.endStructure();
     return argument;
 }
@@ -143,5 +166,6 @@ Q_DECLARE_METATYPE(razer_test::RazerLedId)
 Q_DECLARE_METATYPE(razer_test::WaveDirection)
 Q_DECLARE_METATYPE(razer_test::ReactiveSpeed)
 Q_DECLARE_METATYPE(razer_test::RazerDPI)
+Q_DECLARE_METATYPE(razer_test::MatrixDimensions)
 
 #endif // RAZERTEST_H

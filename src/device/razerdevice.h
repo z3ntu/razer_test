@@ -47,9 +47,10 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_PROPERTY(QList<QDBusObjectPath> Leds READ getLedObjectPaths)
     Q_PROPERTY(QStringList SupportedFx READ getSupportedFx)
     Q_PROPERTY(QStringList SupportedFeatures READ getSupportedFeatures)
+    Q_PROPERTY(MatrixDimensions MatrixDimensions READ getMatrixDimensions)
 
 public:
-    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks);
+    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI);
     virtual ~RazerDevice();
 
     virtual bool openDeviceHandle();
@@ -63,6 +64,7 @@ public:
     QString getType();
     QStringList getSupportedFx();
     QStringList getSupportedFeatures();
+    MatrixDimensions getMatrixDimensions();
 
     QHash<RazerLedId, RazerLED *> getLeds();
     QList<QDBusObjectPath> getLedObjectPaths();
@@ -82,6 +84,7 @@ public Q_SLOTS:
 
     virtual RazerDPI getDPI();
     virtual bool setDPI(RazerDPI dpi);
+    ushort getMaxDPI();
 
     virtual ushort getPollRate();
     virtual bool setPollRate(ushort poll_rate);
@@ -107,6 +110,9 @@ protected:
     QVector<RazerLedId> ledIds;
     QStringList fx;
     QStringList features;
+
+    MatrixDimensions matrixDimensions;
+    ushort maxDPI;
 
     CustomEffectThread thread;
 

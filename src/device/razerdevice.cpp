@@ -23,7 +23,7 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
@@ -35,6 +35,8 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->fx = fx;
     this->features = features;
     this->quirks = quirks;
+    this->matrixDimensions = matrixDimensions;
+    this->maxDPI = maxDPI;
 
     // Connect CustomEffectThread with the device
     connect(&thread, &CustomEffectThread::rgbDataReady, this, &RazerDevice::customRgbDataReady);
@@ -273,6 +275,14 @@ bool RazerDevice::setDPI(RazerDPI dpi)
     return true;
 }
 
+ushort RazerDevice::getMaxDPI()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("dpi"))
+        return 0;
+    return maxDPI;
+}
+
 ushort RazerDevice::getPollRate()
 {
     qDebug("Called %s", Q_FUNC_INFO);
@@ -336,6 +346,12 @@ bool RazerDevice::setPollRate(ushort poll_rate)
         return false;
     }
     return true;
+}
+
+MatrixDimensions RazerDevice::getMatrixDimensions()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    return matrixDimensions;
 }
 
 bool RazerDevice::startCustomEffectThread(QString effectName)

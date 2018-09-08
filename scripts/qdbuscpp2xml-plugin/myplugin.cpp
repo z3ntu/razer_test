@@ -19,5 +19,8 @@ void MyPlugin::registerMetaTypes()
     qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
     qDBusRegisterMetaType<ReactiveSpeed>();
 
+    qRegisterMetaType<MatrixDimensions>("MatrixDimensions");
+    qDBusRegisterMetaType<MatrixDimensions>();
+
     qDBusRegisterMetaType<QList<QDBusObjectPath>>();
 }

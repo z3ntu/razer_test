@@ -39,6 +39,9 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "    <property access=\"read\" type=\"ao\" name=\"Leds\"/>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFx\"/>\n"
                 "    <property access=\"read\" type=\"as\" name=\"SupportedFeatures\"/>\n"
+                "    <property access=\"read\" type=\"(yy)\" name=\"MatrixDimensions\">\n"
+                "      <annotation value=\"MatrixDimensions\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                "    </property>\n"
                 "    <method name=\"getSerial\">\n"
                 "      <arg direction=\"out\" type=\"s\"/>\n"
                 "    </method>\n"
@@ -56,6 +59,9 @@ class RazerDeviceAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
                 "      <annotation value=\"razer_test::RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                "    </method>\n"
+                "    <method name=\"getMaxDPI\">\n"
+                "      <arg direction=\"out\" type=\"q\"/>\n"
                 "    </method>\n"
                 "    <method name=\"getPollRate\">\n"
                 "      <arg direction=\"out\" type=\"q\"/>\n"
@@ -89,6 +95,9 @@ public: // PROPERTIES
     Q_PROPERTY(QList<QDBusObjectPath> Leds READ leds)
     QList<QDBusObjectPath> leds() const;
 
+    Q_PROPERTY(MatrixDimensions MatrixDimensions READ matrixDimensions)
+    MatrixDimensions matrixDimensions() const;
+
     Q_PROPERTY(QString Name READ name)
     QString name() const;
 
@@ -107,6 +116,7 @@ public Q_SLOTS: // METHODS
     RazerDPI getDPI();
     QString getFirmwareVersion();
     QString getKeyboardLayout();
+    ushort getMaxDPI();
     ushort getPollRate();
     QString getSerial();
     void pauseCustomEffectThread();

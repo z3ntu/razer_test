@@ -8,6 +8,6 @@
         "leds": [5],
         "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"],
         "features": [],
-        "quirks": []
+        "matrix_dimensions": [1, 15]
     }
 ]

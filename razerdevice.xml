@@ -6,6 +6,9 @@
     <property name="Leds" type="ao" access="read"/>
     <property name="SupportedFx" type="as" access="read"/>
     <property name="SupportedFeatures" type="as" access="read"/>
+    <property name="MatrixDimensions" type="(yy)" access="read">
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="MatrixDimensions"/>
+    </property>
     <method name="getSerial">
       <arg type="s" direction="out"/>
     </method>
@@ -23,6 +26,9 @@
       <arg type="b" direction="out"/>
       <arg name="dpi" type="(qq)" direction="in"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RazerDPI"/>
+    </method>
+    <method name="getMaxDPI">
+      <arg type="q" direction="out"/>
     </method>
     <method name="getPollRate">
       <arg type="q" direction="out"/>

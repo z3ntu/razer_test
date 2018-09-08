@@ -39,6 +39,12 @@ QList<QDBusObjectPath> RazerDeviceAdaptor::leds() const
     return qvariant_cast< QList<QDBusObjectPath> >(parent()->property("Leds"));
 }
 
+MatrixDimensions RazerDeviceAdaptor::matrixDimensions() const
+{
+    // get the value of property MatrixDimensions
+    return qvariant_cast< MatrixDimensions >(parent()->property("MatrixDimensions"));
+}
+
 QString RazerDeviceAdaptor::name() const
 {
     // get the value of property Name
@@ -100,6 +106,14 @@ QString RazerDeviceAdaptor::getKeyboardLayout()
     // handle method call io.github.openrazer1.Device.getKeyboardLayout
     QString out0;
     QMetaObject::invokeMethod(parent(), "getKeyboardLayout", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
+ushort RazerDeviceAdaptor::getMaxDPI()
+{
+    // handle method call io.github.openrazer1.Device.getMaxDPI
+    ushort out0;
+    QMetaObject::invokeMethod(parent(), "getMaxDPI", Q_RETURN_ARG(ushort, out0));
     return out0;
 }
 

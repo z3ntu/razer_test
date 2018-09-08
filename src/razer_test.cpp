@@ -86,7 +86,7 @@ bool registerDeviceOnDBus(RazerDevice *device, QDBusConnection &connection)
     return true;
 }
 
-bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks)
+bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, MatrixDimensions *matrixDimensions, ushort *maxDPI)
 {
     // TODO: Check everything for sanity
     *name = deviceObj["name"].toString();
@@ -110,6 +110,10 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
             qCritical("Unhandled quirks string!");
         }
     }
+    *matrixDimensions = {deviceObj["matrix_dimensions"].toArray()[0].toVariant().value<uchar>(),
+                         deviceObj["matrix_dimensions"].toArray()[1].toVariant().value<uchar>()
+                        };
+    *maxDPI = deviceObj["max_dpi"].toInt();
     return true;
 }
 
@@ -131,18 +135,20 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
     QStringList fx;
     QStringList features;
     QVector<RazerDeviceQuirks> quirks;
-    if (!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks)) {
+    MatrixDimensions matrixDimensions;
+    ushort maxDPI;
+    if (!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks, &matrixDimensions, &maxDPI)) {
         qCritical("Failed to get device info from JSON");
         return NULL;
     }
 
     RazerDevice *device;
     if (dev_path == NULL) { // create a fake device
-        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
+        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else if (pclass == "classic") {
-        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
+        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else if (pclass == "matrix") {
-        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks);
+        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else {
         qCritical("Unknown device class: %s", qUtf8Printable(pclass));
         return NULL;
@@ -183,11 +189,14 @@ int main(int argc, char *argv[])
     qRegisterMetaType<WaveDirection>("WaveDirection");
     qDBusRegisterMetaType<WaveDirection>();
 
+    qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
+    qDBusRegisterMetaType<ReactiveSpeed>();
+
     qRegisterMetaType<RazerDPI>("RazerDPI");
     qDBusRegisterMetaType<RazerDPI>();
 
-    qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
-    qDBusRegisterMetaType<ReactiveSpeed>();
+    qRegisterMetaType<MatrixDimensions>("MatrixDimensions");
+    qDBusRegisterMetaType<MatrixDimensions>();
 
     // Get the D-Bus session bus
     QDBusConnection connection = QDBusConnection::sessionBus();
