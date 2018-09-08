@@ -36,12 +36,12 @@ enum RazerStatus {
     NOT_SUPPORTED = 0x05
 };
 
-enum RazerClassicLedState {
+enum class RazerClassicLedState : uchar {
     Off = 0x00,
     On = 0x01
 };
 
-enum RazerClassicEffectId {
+enum class RazerClassicEffectId : uchar {
     Static = 0x00,
     Blinking = 0x01,
     Breathing = 0x02, // Pulsating
@@ -69,7 +69,6 @@ enum class RazerMouseMatrixEffectId : uchar {
     Starlight    = 0x07,
     CustomFrame  = 0x08
 };
-
 
 enum class RazerDeviceQuirks {
     MouseMatrix,

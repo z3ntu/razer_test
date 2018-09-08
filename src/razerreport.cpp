@@ -82,7 +82,7 @@ razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage
     struct razer_report report = get_razer_report(0x03, 0x02, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = static_cast<uchar>(led_id);
-    report.arguments[2] = led_effect;
+    report.arguments[2] = static_cast<uchar>(led_effect);
 
     return report;
 }
@@ -121,7 +121,7 @@ razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage,
     struct razer_report report = get_razer_report(0x03, 0x00, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = static_cast<uchar>(led_id);
-    report.arguments[2] = led_state;
+    report.arguments[2] = static_cast<uchar>(led_state);
 
     return report;
 }
