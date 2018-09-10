@@ -67,6 +67,9 @@ public Q_SLOTS:
 
     virtual bool setBrightness(uchar brightness) = 0;
     uchar getBrightness();
+
+protected:
+    bool checkFx(QString fxStr);
 };
 
 #include "../device/razerdevice.h"

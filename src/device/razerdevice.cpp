@@ -197,6 +197,16 @@ QList<QDBusObjectPath> RazerDevice::getLedObjectPaths()
     return paths;
 }
 
+bool RazerDevice::hasFx(const QString &fxStr)
+{
+    return fx.contains(fxStr);
+}
+
+bool RazerDevice::hasQuirk(RazerDeviceQuirks quirk)
+{
+    return quirks.contains(quirk);
+}
+
 QString RazerDevice::getSerial()
 {
     qDebug("Called %s", Q_FUNC_INFO);

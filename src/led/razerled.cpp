@@ -41,3 +41,13 @@ uchar RazerLED::getBrightness()
     getBrightness(&brightness);
     return brightness;
 }
+
+bool RazerLED::checkFx(QString fxStr)
+{
+    if (!device->hasFx(fxStr)) {
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
+        return false;
+    }
+    return true;
+}
