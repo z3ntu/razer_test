@@ -33,7 +33,7 @@ QJsonArray loadDevicesFromJson()
 {
     QJsonArray devices;
 
-    QDir datadir("../data");
+    QDir datadir("../data/devices");
     QStringList filters;
     filters << "*.json";
     datadir.setNameFilters(filters);
@@ -200,8 +200,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<MatrixDimensions>("MatrixDimensions");
     qDBusRegisterMetaType<MatrixDimensions>();
 
-    // Get the D-Bus session bus
-    QDBusConnection connection = QDBusConnection::sessionBus();
+    // Get the D-Bus system bus
+    QDBusConnection connection = QDBusConnection::systemBus();
 
     // Load the supported devices from the json files
     QJsonArray supportedDevices = loadDevicesFromJson();

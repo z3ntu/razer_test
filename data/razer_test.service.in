@@ -1,0 +1,11 @@
+[Unit]
+Description=razer_test description
+
+[Service]
+Type=dbus
+BusName=io.github.openrazer1
+ExecStart=@bindir@/razer_test
+Restart=on-abort
+
+[Install]
+Alias=dbus-io.github.openrazer1.service

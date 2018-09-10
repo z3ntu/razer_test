@@ -45,7 +45,7 @@ QJsonArray testJsonValidity::loadJson()
 {
     QJsonArray devices;
 
-    QDir datadir("../data");
+    QDir datadir("../data/devices");
     QStringList filters;
     filters << "*.json";
     datadir.setNameFilters(filters);
@@ -73,7 +73,7 @@ ushort testJsonValidity::hexStringToUshort(const QString &str)
 void testJsonValidity::checkJsonDataValidity()
 {
     QJsonArray devices = loadJson();
-    QVERIFY2(devices.size() > 0, "Couldn't find test data at ../data/. Please adjust your working directory.");
+    QVERIFY2(devices.size() > 0, "Couldn't find test data at ../data/devices. Please adjust your working directory.");
 
     foreach (const QJsonValue &devVal, devices) {
         QJsonObject devObj = devVal.toObject();

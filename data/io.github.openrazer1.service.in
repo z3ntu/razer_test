@@ -1,0 +1,5 @@
+[D-BUS Service]
+Name=io.github.openrazer1
+Exec=@bindir@/razer_test
+User=root
+SystemdService=razer_test.service

@@ -60,7 +60,22 @@ processed = qt5.preprocess(
 # Install public header
 install_headers('src/razer_test.h')
 # Install json device files
-install_subdir('data', install_dir : join_paths(get_option('datadir'), meson.project_name()), strip_directory : true)
+install_subdir('data/devices', install_dir : join_paths(get_option('datadir'), meson.project_name()), strip_directory : true)
+
+config_bindir = configuration_data()
+config_bindir.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
+
+configure_file(input : 'data/razer_test.service.in',
+               output : 'razer_test.service',
+               configuration : config_bindir,
+               install_dir : join_paths(get_option('libdir'), 'systemd', 'system'))
+
+configure_file(input : 'data/io.github.openrazer1.service.in',
+               output : 'io.github.openrazer1.service',
+               configuration : config_bindir,
+               install_dir : join_paths(get_option('datadir'), 'dbus-1', 'system-services'))
+
+install_data('data/io.github.openrazer1.conf', install_dir : join_paths(get_option('datadir'), 'dbus-1', 'system.d'))
 
 # Build requested executables
 if get_option('build_daemon')
