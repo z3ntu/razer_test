@@ -223,7 +223,7 @@ bool RazerMatrixLED::setMouseMatrixEffect(RazerMouseMatrixEffectId effect, uchar
     // Custom Frame uses 0x00 LED ID
     RazerLedId ledId = effect == RazerMouseMatrixEffectId::CustomFrame ? RazerLedId::Unspecified : this->ledId;
 
-    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, ledId, effect);
+    report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::STORE, ledId, effect);
     report.arguments[3] = arg3;
     report.arguments[4] = arg4;
     report.arguments[5] = arg5;
