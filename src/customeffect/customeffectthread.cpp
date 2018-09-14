@@ -45,19 +45,22 @@ bool CustomEffectThread::startThread(QString effectName)
         return false;
     }
 
-    // Delete previous effect class
-    // TODO: Maybe check if we want to have the same effect, then don't 'delete' and skip the if block
-    delete customEffect;
-    if (effectName == "spectrum") {
-        customEffect = new SpectrumEffect(width, height);
-    } else if (effectName == "wave") {
-        customEffect = new WaveEffect(width, height);
-    } else {
-        qWarning("Effect %s unknown.", qUtf8Printable(effectName));
-        return false;
+    // Only recreate instances when the effect has actually changed
+    if(currentEffect != effectName) {
+        // Delete previous effect class
+        delete customEffect;
+        currentEffect = effectName;
+        if (effectName == "spectrum") {
+            customEffect = new SpectrumEffect(width, height);
+        } else if (effectName == "wave") {
+            customEffect = new WaveEffect(width, height);
+        } else {
+            qWarning("Effect %s unknown.", qUtf8Printable(effectName));
+            return false;
+        }
+        connect(customEffect, &CustomEffectBase::rgbDataReady, this, &CustomEffectThread::customEffectRgbDataReady);
+        customEffect->initialize();
     }
-    connect(customEffect, &CustomEffectBase::rgbDataReady, this, &CustomEffectThread::customEffectRgbDataReady);
-    customEffect->initialize();
 
     if (!isRunning()) {
         qDebug("Starting custom effect thread.");

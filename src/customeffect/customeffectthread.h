@@ -56,6 +56,7 @@ private:
     const uchar height = 6;
 
     CustomEffectBase *customEffect = nullptr;
+    QString currentEffect;
 
 private slots:
     void customEffectRgbDataReady(const uchar row, const QByteArray &rgbData);

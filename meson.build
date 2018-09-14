@@ -47,7 +47,6 @@ processed = qt5.preprocess(
   moc_headers : [
     'src/customeffect/customeffectbase.h',
     'src/customeffect/customeffectthread.h',
-    'src/customeffect/spectrumeffect.h',
     'src/dbus/devicemanageradaptor.h',
     'src/dbus/razerdeviceadaptor.h',
     'src/dbus/razerledadaptor.h',
