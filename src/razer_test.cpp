@@ -308,6 +308,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    qInfo("Initialization finished. D-Bus interface is active...");
+
     return app.exec();
 
 #endif
