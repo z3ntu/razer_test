@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include <QThread>
 
@@ -50,13 +50,13 @@ RazerDevice::~RazerDevice()
         delete led;
     }
     // Close hidapi handle
-    if (handle != NULL)
+    if (handle != nullptr)
         hid_close(handle);
 }
 
 bool RazerDevice::openDeviceHandle()
 {
-    if (dev_path == NULL) {
+    if (dev_path == nullptr) {
         qCritical("dev_path is NULL but openDeviceHandle() was called. This should not happen!");
         return false;
     }
@@ -70,7 +70,7 @@ bool RazerDevice::openDeviceHandle()
 
 int RazerDevice::sendReport(razer_report request_report, razer_report *response_report)
 {
-    if (handle == NULL) {
+    if (handle == nullptr) {
         qCritical("sendReport called on an unopened handle. This should not happen!");
         return 1;
     }

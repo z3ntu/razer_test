@@ -51,7 +51,7 @@ class RazerDevice : public QObject, protected QDBusContext
 
 public:
     RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI);
-    virtual ~RazerDevice();
+    ~RazerDevice() override;
 
     virtual bool openDeviceHandle();
     virtual bool initializeLeds() = 0;
@@ -98,7 +98,7 @@ public Q_SLOTS:
     void pauseCustomEffectThread();
 
 protected:
-    hid_device *handle = NULL;
+    hid_device *handle = nullptr;
 
     QString dev_path;
     ushort vendor_id;

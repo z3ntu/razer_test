@@ -25,8 +25,7 @@ RazerLED::RazerLED(RazerDevice *device, RazerLedId ledId)
 }
 
 RazerLED::~RazerLED()
-{
-}
+    = default;
 
 QDBusObjectPath RazerLED::getObjectPath()
 {

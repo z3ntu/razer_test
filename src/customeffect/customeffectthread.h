@@ -32,8 +32,8 @@ class CustomEffectThread : public QThread
 {
     Q_OBJECT
 public:
-    CustomEffectThread(QObject *parent = 0);
-    ~CustomEffectThread();
+    CustomEffectThread(QObject *parent = nullptr);
+    ~CustomEffectThread() override;
 
     bool startThread(QString effectName);
     void pauseThread();

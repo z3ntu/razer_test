@@ -32,18 +32,18 @@ public:
     RazerMatrixEffectId effect;
     RazerMouseMatrixEffectId mouseMatrixEffect;
 
-    virtual bool setNone();
-    virtual bool setStatic(uchar red, uchar green, uchar blue);
-    virtual bool setBreathing(uchar red, uchar green, uchar blue);
-    virtual bool setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2);
-    virtual bool setBreathingRandom();
-    virtual bool setBlinking(uchar red, uchar green, uchar blue);
-    virtual bool setSpectrum();
-    virtual bool setWave(WaveDirection direction);
-    virtual bool setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue);
+    bool setNone() override;
+    bool setStatic(uchar red, uchar green, uchar blue) override;
+    bool setBreathing(uchar red, uchar green, uchar blue) override;
+    bool setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) override;
+    bool setBreathingRandom() override;
+    bool setBlinking(uchar red, uchar green, uchar blue) override;
+    bool setSpectrum() override;
+    bool setWave(WaveDirection direction) override;
+    bool setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue) override;
 
-    virtual bool setBrightness(uchar brightness);
-    virtual bool getBrightness(uchar *brightness);
+    bool setBrightness(uchar brightness) override;
+    bool getBrightness(uchar *brightness) override;
 
     bool setSpectrumInit();
 

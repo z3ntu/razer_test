@@ -23,7 +23,7 @@
 bool RazerClassicDevice::initializeLeds()
 {
     foreach (RazerLedId ledId, ledIds) {
-        RazerClassicLED *rled = new RazerClassicLED(this, ledId);
+        auto *rled = new RazerClassicLED(this, ledId);
         bool ok;
         uchar brightness;
         RazerClassicEffectId effect;

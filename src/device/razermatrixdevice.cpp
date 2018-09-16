@@ -23,7 +23,7 @@
 bool RazerMatrixDevice::initializeLeds()
 {
     foreach (RazerLedId ledId, ledIds) {
-        RazerMatrixLED *rled = new RazerMatrixLED(this, ledId);
+        auto *rled = new RazerMatrixLED(this, ledId);
         bool ok;
         uchar brightness;
         ok = rled->getBrightness(&brightness);

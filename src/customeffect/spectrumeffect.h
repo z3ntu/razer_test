@@ -29,8 +29,8 @@ class SpectrumEffect : public CustomEffectBase
 public:
     using CustomEffectBase::CustomEffectBase;
 
-    virtual void initialize();
-    virtual void prepareRgbData();
+    void initialize() override;
+    void prepareRgbData() override;
 
 private:
     RGBval rgbVal;

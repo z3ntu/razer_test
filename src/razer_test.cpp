@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include <hidapi.h>
 
@@ -34,7 +34,7 @@ QJsonArray loadDevicesFromJson(bool devel)
     QJsonArray devices;
 
     QDir datadir;
-    if(devel)
+    if (devel)
         datadir = QDir("../data/devices");
     else
         datadir = QDir(RAZER_TEST_DATADIR);
@@ -135,7 +135,7 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
 
     ushort vid, pid;
     if (!getVidPidFromJson(deviceObj, &vid, &pid))
-        return NULL; // Message is printed in that method
+        return nullptr; // Message is printed in that method
 
     QString name, type, pclass;
     QVector<RazerLedId> leds;
@@ -146,11 +146,11 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
     ushort maxDPI;
     if (!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks, &matrixDimensions, &maxDPI)) {
         qCritical("Failed to get device info from JSON");
-        return NULL;
+        return nullptr;
     }
 
     RazerDevice *device;
-    if (dev_path == NULL) { // create a fake device
+    if (dev_path == nullptr) { // create a fake device
         device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else if (pclass == "classic") {
         device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
@@ -158,17 +158,17 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
         device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else {
         qCritical("Unknown device class: %s", qUtf8Printable(pclass));
-        return NULL;
+        return nullptr;
     }
     if (!device->openDeviceHandle()) {
         qCritical("Failed to open device handle");
         delete device;
-        return NULL;
+        return nullptr;
     }
     if (!device->initializeLeds()) {
         qCritical("Failed to initialize leds");
         delete device;
-        return NULL;
+        return nullptr;
     }
     return device;
 }
@@ -248,7 +248,7 @@ int main(int argc, char *argv[])
 
                 if (cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
                     RazerDevice *device = initializeDevice(QString(cur_dev->path), deviceObj);
-                    if (device == NULL)
+                    if (device == nullptr)
                         break;
 
                     devices.append(device);
@@ -268,8 +268,8 @@ int main(int argc, char *argv[])
     } else { // Handle fake devices
         // Check if device is supported
         foreach (const QJsonValue &deviceVal, supportedDevices) {
-            RazerDevice *device = initializeDevice(NULL, deviceVal.toObject());
-            if (device == NULL)
+            RazerDevice *device = initializeDevice(nullptr, deviceVal.toObject());
+            if (device == nullptr)
                 continue;
 
             devices.append(device);

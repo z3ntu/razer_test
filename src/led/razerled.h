@@ -43,7 +43,7 @@ class RazerLED : public QObject, protected QDBusContext
 
 public:
     RazerLED(RazerDevice *device, RazerLedId ledId);
-    virtual ~RazerLED();
+    ~RazerLED() override;
 
     RazerDevice *device;
     RazerLedId ledId;

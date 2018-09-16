@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
+#include <cstring>
 
 #include "razerreport.h"
 
@@ -32,7 +32,7 @@ unsigned char razer_calculate_crc(razer_report *report)
     /*second to last byte of report is a simple checksum*/
     /*just xor all bytes up with overflow and you are done*/
     unsigned char crc = 0;
-    unsigned char *_report = (unsigned char *) report;
+    auto *_report = (unsigned char *) report;
 
     unsigned int i;
     for (i = 3; i < 89; i++) {
@@ -166,7 +166,7 @@ razer_report razer_chroma_standard_matrix_effect(RazerMatrixEffectId effect)
 razer_report razer_chroma_standard_matrix_set_custom_frame(uchar row_index, uchar start_col, uchar stop_col, const uchar *rgb_data)
 {
     struct razer_report report = get_razer_report(0x03, 0x0B, 0x46);
-    size_t row_length = (size_t) (((stop_col + 1) - start_col) * 3);
+    auto row_length = (size_t) (((stop_col + 1) - start_col) * 3);
     int index = 4 + (start_col * 3);
 
     report.arguments[0] = 0xFF; // Frame ID
@@ -210,7 +210,7 @@ razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_
 razer_report razer_chroma_misc_one_row_set_custom_frame(uchar start_col, uchar stop_col, const uchar *rgb_data)
 {
     struct razer_report report = get_razer_report(0x03, 0x0C, 0x32);
-    size_t row_length = (size_t) (((stop_col + 1) - start_col) * 3);
+    auto row_length = (size_t) (((stop_col + 1) - start_col) * 3);
     int index = 2 + (start_col * 3);
 
     report.arguments[0] = start_col;

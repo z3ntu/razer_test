@@ -46,7 +46,7 @@ bool CustomEffectThread::startThread(QString effectName)
     }
 
     // Only recreate instances when the effect has actually changed
-    if(currentEffect != effectName) {
+    if (currentEffect != effectName) {
         // Delete previous effect class
         delete customEffect;
         currentEffect = effectName;

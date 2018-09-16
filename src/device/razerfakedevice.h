@@ -28,13 +28,13 @@ class RazerFakeDevice : public RazerDevice
 {
     using RazerDevice::RazerDevice;
 
-    virtual bool openDeviceHandle();
+    bool openDeviceHandle() override;
 
-    virtual bool initializeLeds();
+    bool initializeLeds() override;
 
-    virtual QString getSerial();
-    virtual QString getFirmwareVersion();
-    virtual QString getKeyboardLayout();
+    QString getSerial() override;
+    QString getFirmwareVersion() override;
+    QString getKeyboardLayout() override;
 
     virtual bool setNone(RazerLedId led);
     virtual bool setStatic(RazerLedId led, uchar red, uchar green, uchar blue);
@@ -46,8 +46,8 @@ class RazerFakeDevice : public RazerDevice
     virtual bool setWave(RazerLedId led, WaveDirection direction);
     virtual bool setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue);
 
-    virtual bool displayCustomFrame();
-    virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData);
+    bool displayCustomFrame() override;
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) override;
 
     virtual bool setBrightness(RazerLedId led, uchar brightness);
     virtual bool getBrightness(RazerLedId led, uchar *brightness);

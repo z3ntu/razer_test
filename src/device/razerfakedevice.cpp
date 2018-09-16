@@ -154,5 +154,6 @@ bool RazerFakeDevice::getBrightness(RazerLedId led, uchar *brightness)
     qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
     if (!checkLedAndFx(led, QString::null))
         return false;
-    return 100;
+    *brightness = 255;
+    return true;
 }
