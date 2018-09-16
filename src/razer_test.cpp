@@ -29,11 +29,16 @@
 #include "config.h"
 
 
-QJsonArray loadDevicesFromJson()
+QJsonArray loadDevicesFromJson(bool devel)
 {
     QJsonArray devices;
 
-    QDir datadir("../data/devices");
+    QDir datadir;
+    if(devel)
+        datadir = QDir("../data/devices");
+    else
+        datadir = QDir(RAZER_TEST_DATADIR);
+
     QStringList filters;
     filters << "*.json";
     datadir.setNameFilters(filters);
@@ -180,6 +185,7 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption({"fake-devices", "Adds fake devices instead of real ones."});
+    parser.addOption({"devel", QString("Uses data files at ../data/devices instead of %1.").arg(RAZER_TEST_DATADIR)});
     parser.process(app);
 
     qInfo("razer_test - version %s", RAZER_TEST_VERSION);
@@ -204,7 +210,7 @@ int main(int argc, char *argv[])
     QDBusConnection connection = QDBusConnection::systemBus();
 
     // Load the supported devices from the json files
-    QJsonArray supportedDevices = loadDevicesFromJson();
+    QJsonArray supportedDevices = loadDevicesFromJson(parser.isSet("devel"));
     if (supportedDevices.isEmpty()) {
         qCritical("JSON device definition files were not found. Exiting.");
         return -1;
