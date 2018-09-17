@@ -18,17 +18,24 @@
 
 #include "razerfakedevice.h"
 
+#include "../led/razerfakeled.h"
+
 int RazerFakeDevice::serialCounter = 1000;
 
 bool RazerFakeDevice::openDeviceHandle()
 {
     serial = QString("FAKE%1").arg(serialCounter++);
-    fwVersion = "v99.99";
     return true;
 }
 
 bool RazerFakeDevice::initializeLeds()
 {
+    foreach (RazerLedId ledId, ledIds) {
+        auto *rled = new RazerFakeLED(this, ledId);
+        rled->brightness = 255;
+        rled->effect = RazerEffect::Spectrum;
+        leds.insert(ledId, rled);
+    }
     return true;
 }
 
@@ -52,75 +59,48 @@ QString RazerFakeDevice::getKeyboardLayout()
     return keyboardLayoutIds.value(0x01, "unknown"); // en_US
 }
 
-bool RazerFakeDevice::setNone(RazerLedId led)
+RazerDPI RazerFakeDevice::getDPI()
 {
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!checkLedAndFx(led, "off"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("dpi"))
+        return {0, 0};
+
+    return dpi;
+}
+
+bool RazerFakeDevice::setDPI(RazerDPI dpi)
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("dpi"))
         return false;
+
+    this->dpi = dpi;
+
     return true;
 }
 
-bool RazerFakeDevice::setStatic(RazerLedId led, uchar red, uchar green, uchar blue)
+ushort RazerFakeDevice::getPollRate()
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!checkLedAndFx(led, "static"))
-        return false;
-    return true;
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("poll_rate"))
+        return 0;
+
+    return poll_rate;
 }
 
-bool RazerFakeDevice::setBreathing(RazerLedId led, uchar red, uchar green, uchar blue)
+bool RazerFakeDevice::setPollRate(ushort poll_rate)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!checkLedAndFx(led, "breathing"))
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("poll_rate"))
         return false;
-    return true;
-}
 
-bool RazerFakeDevice::setBreathingDual(RazerLedId led, uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
-{
-    qDebug("Called %s with params %hhu, %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue, red2, green2, blue2);
-    if (!checkLedAndFx(led, "breathing_dual"))
+    if (poll_rate == 1000 || poll_rate == 500 || poll_rate == 125) {
+        this->poll_rate = poll_rate;
+    } else {
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed);
         return false;
-    return true;
-}
-
-bool RazerFakeDevice::setBreathingRandom(RazerLedId led)
-{
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!checkLedAndFx(led, "breathing_random"))
-        return false;
-    return true;
-}
-
-bool RazerFakeDevice::setBlinking(RazerLedId led, uchar red, uchar green, uchar blue)
-{
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), red, green, blue);
-    if (!checkLedAndFx(led, "blinking"))
-        return false;
-    return true;
-}
-
-bool RazerFakeDevice::setSpectrum(RazerLedId led)
-{
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!checkLedAndFx(led, "spectrum"))
-        return false;
-    return true;
-}
-
-bool RazerFakeDevice::setWave(RazerLedId led, WaveDirection direction)
-{
-    qDebug("Called %s with params %hhu, %hhu", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(direction));
-    if (!checkLedAndFx(led, "wave"))
-        return false;
-    return true;
-}
-
-bool RazerFakeDevice::setReactive(RazerLedId led, ReactiveSpeed speed, uchar red, uchar green, uchar blue)
-{
-    qDebug("Called %s with params %hhu, %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(led), static_cast<uchar>(speed), red, green, blue);
-    if (!checkLedAndFx(led, "reactive"))
-        return false;
+    }
     return true;
 }
 
@@ -137,23 +117,5 @@ bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endC
     qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
     if (!checkFx("custom_frame"))
         return false;
-    return true;
-}
-
-bool RazerFakeDevice::setBrightness(RazerLedId led, uchar brightness)
-{
-    qDebug("Called %s with params %hhu, %i", Q_FUNC_INFO, static_cast<uchar>(led), brightness);
-    if (!checkLedAndFx(led, QString::null))
-        return false;
-    // TODO: Persist brightness
-    return true;
-}
-
-bool RazerFakeDevice::getBrightness(RazerLedId led, uchar *brightness)
-{
-    qDebug("Called %s with param %hhu", Q_FUNC_INFO, static_cast<uchar>(led));
-    if (!checkLedAndFx(led, QString::null))
-        return false;
-    *brightness = 255;
     return true;
 }

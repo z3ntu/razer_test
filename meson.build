@@ -38,6 +38,7 @@ src = [
     'src/device/razerfakedevice.cpp',
     'src/device/razermatrixdevice.cpp',
     'src/led/razerclassicled.cpp',
+    'src/led/razerfakeled.cpp',
     'src/led/razerled.cpp',
     'src/led/razermatrixled.cpp',
     'src/manager/devicemanager.cpp'

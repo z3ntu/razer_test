@@ -69,9 +69,6 @@ public:
     QHash<RazerLedId, RazerLED *> getLeds();
     QList<QDBusObjectPath> getLedObjectPaths();
 
-    // TODO: Deprecate this method, checkFx is better
-    bool checkLedAndFx(RazerLedId led, QString fxStr);
-
     bool hasFx(const QString &fxStr);
     bool hasQuirk(RazerDeviceQuirks quirk);
 

@@ -114,6 +114,38 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSp
     return argument;
 }
 
+enum class RazerEffect {
+    Off,
+    Static,
+    Breathing,
+    BreathingDual,
+    BreathingRandom,
+    Blinking,
+    Spectrum,
+    Wave,
+    Reactive,
+};
+
+// Marshall the RazerEffect data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerEffect &value)
+{
+    argument.beginStructure();
+    argument << static_cast<int>(value);
+    argument.endStructure();
+    return argument;
+}
+
+// Retrieve the RazerEffect data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerEffect &value)
+{
+    int a;
+    argument.beginStructure();
+    argument >> a;
+    argument.endStructure();
+    value = static_cast<RazerEffect>(a);
+    return argument;
+}
+
 struct RazerDPI {
     ushort dpi_x;
     ushort dpi_y;
@@ -165,6 +197,7 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, MatrixDime
 Q_DECLARE_METATYPE(razer_test::RazerLedId)
 Q_DECLARE_METATYPE(razer_test::WaveDirection)
 Q_DECLARE_METATYPE(razer_test::ReactiveSpeed)
+Q_DECLARE_METATYPE(razer_test::RazerEffect)
 Q_DECLARE_METATYPE(razer_test::RazerDPI)
 Q_DECLARE_METATYPE(razer_test::MatrixDimensions)
 

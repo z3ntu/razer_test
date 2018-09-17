@@ -189,6 +189,8 @@ int main(int argc, char *argv[])
     parser.process(app);
 
     qInfo("razer_test - version %s", RAZER_TEST_VERSION);
+    if (parser.isSet("devel"))
+        qInfo("Running in development mode and using development data files.");
 
     // Register the enums with the Qt system
     qRegisterMetaType<RazerLedId>("RazerLedId");
@@ -310,7 +312,14 @@ int main(int argc, char *argv[])
 #else
 
     if (!connection.registerService("io.github.openrazer1")) {
-        qCritical("Failed to register D-Bus service at \"io.github.openrazer1\". Maybe it's already running?");
+        qCritical("Failed to register D-Bus service at \"io.github.openrazer1\".");
+        if (connection.lastError().isValid()) {
+            qCritical("Additional information:");
+            qCritical(qUtf8Printable(connection.lastError().name()));
+            qCritical(qUtf8Printable(connection.lastError().message()));
+        } else {
+            qCritical("Maybe it's already running?");
+        }
         return 1;
     }
 

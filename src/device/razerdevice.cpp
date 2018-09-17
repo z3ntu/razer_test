@@ -379,24 +379,6 @@ void RazerDevice::pauseCustomEffectThread()
     thread.pauseThread();
 }
 
-/**
- * Checks if the device has/supports the given LED & FX.
- * fxStr can be an empty string (e.g. QString::null) to skip the FX check.
- * Returns true if both are valid.
- * Returns false and sends a D-Bus NotSupported error otherwise.
- */
-bool RazerDevice::checkLedAndFx(RazerLedId led, QString fxStr)
-{
-    if (!ledIds.contains(led)) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::NotSupported, "Unsupported LED.");
-        return false;
-    }
-    if (!checkFx(fxStr))
-        return false;
-    return true;
-}
-
 bool RazerDevice::checkFx(QString fxStr)
 {
     if (!fxStr.isEmpty() && !fx.contains(fxStr)) {
