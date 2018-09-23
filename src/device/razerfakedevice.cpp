@@ -33,7 +33,7 @@ bool RazerFakeDevice::initializeLeds()
     foreach (RazerLedId ledId, ledIds) {
         auto *rled = new RazerFakeLED(this, ledId);
         rled->brightness = 255;
-        rled->effect = RazerEffect::Spectrum;
+//         rled->effect = RazerEffect::Spectrum;
         leds.insert(ledId, rled);
     }
     return true;

@@ -251,6 +251,9 @@ inline void registerMetaTypes()
     qRegisterMetaType<QList<RGB>>("QList<RGB>");
     qDBusRegisterMetaType<QList<RGB>>();
 
+    qRegisterMetaType<RazerEffect>("RazerEffect");
+    qDBusRegisterMetaType<RazerEffect>();
+
     qDBusRegisterMetaType<QList<QDBusObjectPath>>();
 }
 

@@ -177,6 +177,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 
+    // Set the directory of the application to where the application is located. Needed for relative paths.
+    QDir::setCurrent(QCoreApplication::applicationDirPath());
+
     QCoreApplication::setApplicationName("razer_test");
     QCoreApplication::setApplicationVersion(RAZER_TEST_VERSION);
 

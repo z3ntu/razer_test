@@ -41,20 +41,21 @@ class RazerLED : public QObject, protected QDBusContext
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
     Q_PROPERTY(QList<RGB> CurrentColors READ getCurrentColors)
+    Q_PROPERTY(RazerEffect CurrentEffect READ getCurrentEffect)
 
 public:
     RazerLED(RazerDevice *device, RazerLedId ledId);
     ~RazerLED() override;
 
     RazerDevice *device;
-    RazerLedId ledId;
+    const RazerLedId ledId;
     uchar brightness;
 
     QDBusObjectPath getObjectPath();
 
     virtual bool getBrightness(uchar *brightness) = 0;
 
-//     virtual RazerEffect getCurrentEffect() = 0;
+    RazerEffect getCurrentEffect();
     QList<RGB> getCurrentColors();
 
 public Q_SLOTS:
@@ -74,10 +75,12 @@ public Q_SLOTS:
 
 protected:
     bool checkFx(QString fxStr);
+    void saveFxAndColors(RazerEffect fx, int numColors, RGB color1 = {0, 0, 0}, RGB color2 = {0, 0, 0}, RGB color3 = {0, 0, 0});
 
-    RGB color1;
-    RGB color2;
-    RGB color3;
+    RazerEffect fx = RazerEffect::Spectrum;
+    RGB color1 = {0, 255, 0};
+    RGB color2 = {255, 0, 0};
+    RGB color3 = {0, 0, 255};
 };
 
 #include "../device/razerdevice.h"

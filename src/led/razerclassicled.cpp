@@ -24,6 +24,7 @@ bool RazerClassicLED::setNone()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("off"))
         return false;
+    saveFxAndColors(RazerEffect::Off, 0);
     return setLedState(RazerClassicLedState::Off);
 }
 
@@ -32,6 +33,7 @@ bool RazerClassicLED::setStatic(uchar red, uchar green, uchar blue)
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
     if (!checkFx("static"))
         return false;
+    saveFxAndColors(RazerEffect::Static, 1, {red, green, blue});
 
     if (!ensureLedStateOn())
         return false;
@@ -50,6 +52,7 @@ bool RazerClassicLED::setBreathing(uchar red, uchar green, uchar blue)
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
     if (!checkFx("breathing"))
         return false;
+    saveFxAndColors(RazerEffect::Breathing, 1, {red, green, blue});
 
     if (!ensureLedStateOn())
         return false;
@@ -68,6 +71,7 @@ bool RazerClassicLED::setBreathingDual(uchar red, uchar green, uchar blue, uchar
     qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, red, green, blue, red2, green2, blue2);
     if (!checkFx("breathing_dual"))
         return false;
+    saveFxAndColors(RazerEffect::BreathingDual, 1, {red, green, blue}, {red2, green2, blue2});
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
@@ -77,6 +81,7 @@ bool RazerClassicLED::setBreathingRandom()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("breathing_random"))
         return false;
+    saveFxAndColors(RazerEffect::BreathingRandom, 0);
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
@@ -86,6 +91,7 @@ bool RazerClassicLED::setBlinking(uchar red, uchar green, uchar blue)
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
     if (!checkFx("blinking"))
         return false;
+    saveFxAndColors(RazerEffect::Blinking, 1, {red, green, blue});
 
     if (!ensureLedStateOn())
         return false;
@@ -104,6 +110,7 @@ bool RazerClassicLED::setSpectrum()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("spectrum"))
         return false;
+    saveFxAndColors(RazerEffect::Spectrum, 0);
 
     if (!ensureLedStateOn())
         return false;
@@ -119,6 +126,7 @@ bool RazerClassicLED::setWave(WaveDirection direction)
     qDebug("Called %s with params %hhu", Q_FUNC_INFO, static_cast<uchar>(direction));
     if (!checkFx("wave"))
         return false;
+    saveFxAndColors(RazerEffect::Wave, 0);
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
@@ -128,6 +136,7 @@ bool RazerClassicLED::setReactive(ReactiveSpeed speed, uchar red, uchar green, u
     qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), red, green, blue);
     if (!checkFx("reactive"))
         return false;
+    saveFxAndColors(RazerEffect::Reactive, 1, {red, green, blue});
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }

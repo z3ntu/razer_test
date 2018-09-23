@@ -4,6 +4,9 @@
     <property name="CurrentColors" type="a(yyy)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="QList&lt;RGB&gt;"/>
     </property>
+    <property name="CurrentEffect" type="(i)" access="read">
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerEffect"/>
+    </property>
     <method name="setNone">
       <arg type="b" direction="out"/>
     </method>

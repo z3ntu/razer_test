@@ -39,6 +39,12 @@ QList<RGB> RazerLEDAdaptor::currentColors() const
     return qvariant_cast< QList<RGB> >(parent()->property("CurrentColors"));
 }
 
+RazerEffect RazerLEDAdaptor::currentEffect() const
+{
+    // get the value of property CurrentEffect
+    return qvariant_cast< RazerEffect >(parent()->property("CurrentEffect"));
+}
+
 uchar RazerLEDAdaptor::getBrightness()
 {
     // handle method call io.github.openrazer1.Led.getBrightness
