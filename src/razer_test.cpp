@@ -193,20 +193,7 @@ int main(int argc, char *argv[])
         qInfo("Running in development mode and using development data files.");
 
     // Register the enums with the Qt system
-    qRegisterMetaType<RazerLedId>("RazerLedId");
-    qDBusRegisterMetaType<RazerLedId>();
-
-    qRegisterMetaType<WaveDirection>("WaveDirection");
-    qDBusRegisterMetaType<WaveDirection>();
-
-    qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
-    qDBusRegisterMetaType<ReactiveSpeed>();
-
-    qRegisterMetaType<RazerDPI>("RazerDPI");
-    qDBusRegisterMetaType<RazerDPI>();
-
-    qRegisterMetaType<MatrixDimensions>("MatrixDimensions");
-    qDBusRegisterMetaType<MatrixDimensions>();
+    razer_test::registerMetaTypes();
 
     // Get the D-Bus system bus
     QDBusConnection connection = QDBusConnection::systemBus();

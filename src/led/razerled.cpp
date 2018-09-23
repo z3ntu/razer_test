@@ -41,6 +41,11 @@ uchar RazerLED::getBrightness()
     return brightness;
 }
 
+QList<RGB> RazerLED::getCurrentColors()
+{
+    return {color1, color2, color3};
+}
+
 bool RazerLED::checkFx(QString fxStr)
 {
     if (!device->hasFx(fxStr)) {

@@ -20,6 +20,7 @@
 #define RAZERTEST_H
 
 #include <QDBusArgument>
+#include <QDBusMetaType>
 
 namespace razer_test {
 
@@ -192,6 +193,30 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, MatrixDime
     return argument;
 }
 
+struct RGB {
+    uchar r;
+    uchar g;
+    uchar b;
+};
+
+// Marshall the RGB data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const RGB &value)
+{
+    argument.beginStructure();
+    argument << value.r << value.g << value.b;
+    argument.endStructure();
+    return argument;
+}
+
+// Retrieve the RGB data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, RGB &value)
+{
+    argument.beginStructure();
+    argument >> value.r >> value.g >> value.b;
+    argument.endStructure();
+    return argument;
+}
+
 }
 
 Q_DECLARE_METATYPE(razer_test::RazerLedId)
@@ -200,5 +225,35 @@ Q_DECLARE_METATYPE(razer_test::ReactiveSpeed)
 Q_DECLARE_METATYPE(razer_test::RazerEffect)
 Q_DECLARE_METATYPE(razer_test::RazerDPI)
 Q_DECLARE_METATYPE(razer_test::MatrixDimensions)
+Q_DECLARE_METATYPE(razer_test::RGB)
+
+namespace razer_test {
+
+inline void registerMetaTypes()
+{
+    qRegisterMetaType<RazerLedId>("RazerLedId");
+    qDBusRegisterMetaType<RazerLedId>();
+
+    qRegisterMetaType<WaveDirection>("WaveDirection");
+    qDBusRegisterMetaType<WaveDirection>();
+
+    qRegisterMetaType<RazerDPI>("RazerDPI");
+    qDBusRegisterMetaType<RazerDPI>();
+
+    qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
+    qDBusRegisterMetaType<ReactiveSpeed>();
+
+    qRegisterMetaType<MatrixDimensions>("MatrixDimensions");
+    qDBusRegisterMetaType<MatrixDimensions>();
+
+    qRegisterMetaType<RGB>("RGB");
+    qDBusRegisterMetaType<RGB>();
+    qRegisterMetaType<QList<RGB>>("QList<RGB>");
+    qDBusRegisterMetaType<QList<RGB>>();
+
+    qDBusRegisterMetaType<QList<QDBusObjectPath>>();
+}
+
+}
 
 #endif // RAZERTEST_H

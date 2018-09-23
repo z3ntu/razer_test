@@ -22,6 +22,7 @@
 #include <QMetaType>
 #include <QDBusArgument>
 #include <QDBusContext>
+#include <QList>
 
 #include "../razer_test.h"
 #include "../razer_test_private.h"
@@ -39,7 +40,7 @@ class RazerLED : public QObject, protected QDBusContext
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
-    // TODO Q_PROPERTY something?
+    Q_PROPERTY(QList<RGB> CurrentColors READ getCurrentColors)
 
 public:
     RazerLED(RazerDevice *device, RazerLedId ledId);
@@ -52,6 +53,9 @@ public:
     QDBusObjectPath getObjectPath();
 
     virtual bool getBrightness(uchar *brightness) = 0;
+
+//     virtual RazerEffect getCurrentEffect() = 0;
+    QList<RGB> getCurrentColors();
 
 public Q_SLOTS:
     // FX
@@ -70,6 +74,10 @@ public Q_SLOTS:
 
 protected:
     bool checkFx(QString fxStr);
+
+    RGB color1;
+    RGB color2;
+    RGB color3;
 };
 
 #include "../device/razerdevice.h"

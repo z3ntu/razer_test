@@ -33,6 +33,12 @@ RazerLEDAdaptor::~RazerLEDAdaptor()
     // destructor
 }
 
+QList<RGB> RazerLEDAdaptor::currentColors() const
+{
+    // get the value of property CurrentColors
+    return qvariant_cast< QList<RGB> >(parent()->property("CurrentColors"));
+}
+
 uchar RazerLEDAdaptor::getBrightness()
 {
     // handle method call io.github.openrazer1.Led.getBrightness

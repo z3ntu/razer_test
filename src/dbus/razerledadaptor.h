@@ -34,6 +34,9 @@ class RazerLEDAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
     Q_CLASSINFO("D-Bus Introspection", ""
                 "  <interface name=\"io.github.openrazer1.Led\">\n"
+                "    <property access=\"read\" type=\"a(yyy)\" name=\"CurrentColors\">\n"
+                "      <annotation value=\"QList&lt;RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                "    </property>\n"
                 "    <method name=\"setNone\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "    </method>\n"
@@ -97,6 +100,9 @@ public:
     virtual ~RazerLEDAdaptor();
 
 public: // PROPERTIES
+    Q_PROPERTY(QList<RGB> CurrentColors READ currentColors)
+    QList<RGB> currentColors() const;
+
 public Q_SLOTS: // METHODS
     uchar getBrightness();
     bool setBlinking(uchar red, uchar green, uchar blue);
