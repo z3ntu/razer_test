@@ -295,7 +295,7 @@ int main(int argc, char *argv[])
     foreach (RazerLED *led, razerDevice->getLeds()) {
 //         qDebug() << "LED ID:" << static_cast<uchar>(id);
         qDebug() << "LED object path:" << led->getObjectPath().path();
-        led->setStatic(0xFF, 0xFF, 0x00);
+        led->setStatic({0xFF, 0xFF, 0x00});
     }
     return 0;
 
