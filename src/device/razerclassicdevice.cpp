@@ -28,7 +28,7 @@ bool RazerClassicDevice::initializeLeds()
         uchar brightness;
         RazerClassicEffectId effect;
         RazerClassicLedState state;
-        uchar red, green, blue;
+        RGB color;
         ok = rled->getBrightness(&brightness);
         if (!ok) {
             qWarning("Error during getBrightness()");
@@ -44,7 +44,7 @@ bool RazerClassicDevice::initializeLeds()
             qWarning("Error during getLedState()");
             return false;
         }
-        ok = rled->getLedRgb(&red, &green, &blue);
+        ok = rled->getLedRgb(&color);
         if (!ok) {
             qWarning("Error during getLedRgb()");
             return false;
@@ -52,9 +52,7 @@ bool RazerClassicDevice::initializeLeds()
         rled->brightness = brightness;
         rled->effect = effect;
         rled->state = state;
-        rled->red = red;
-        rled->green = green;
-        rled->blue = blue;
+//         rled->color1 = color;
         leds.insert(ledId, rled);
     }
     return true;

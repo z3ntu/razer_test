@@ -12,33 +12,28 @@
     </method>
     <method name="setStatic">
       <arg type="b" direction="out"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
+      <arg name="color" type="(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
     </method>
     <method name="setBreathing">
       <arg type="b" direction="out"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
+      <arg name="color" type="(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
     </method>
     <method name="setBreathingDual">
       <arg type="b" direction="out"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
-      <arg name="red2" type="y" direction="in"/>
-      <arg name="green2" type="y" direction="in"/>
-      <arg name="blue2" type="y" direction="in"/>
+      <arg name="color" type="(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
+      <arg name="color2" type="(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="razer_test::RGB"/>
     </method>
     <method name="setBreathingRandom">
       <arg type="b" direction="out"/>
     </method>
     <method name="setBlinking">
       <arg type="b" direction="out"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
+      <arg name="color" type="(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
     </method>
     <method name="setSpectrum">
       <arg type="b" direction="out"/>
@@ -52,9 +47,8 @@
       <arg type="b" direction="out"/>
       <arg name="speed" type="(i)" direction="in"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::ReactiveSpeed"/>
-      <arg name="red" type="y" direction="in"/>
-      <arg name="green" type="y" direction="in"/>
-      <arg name="blue" type="y" direction="in"/>
+      <arg name="color" type="(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="razer_test::RGB"/>
     </method>
     <method name="setBrightness">
       <arg type="b" direction="out"/>

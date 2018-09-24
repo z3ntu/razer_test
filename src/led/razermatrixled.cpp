@@ -31,42 +31,42 @@ bool RazerMatrixLED::setNone()
     }
 }
 
-bool RazerMatrixLED::setStatic(uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setStatic(RGB color)
 {
-    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("static"))
         return false;
-    saveFxAndColors(RazerEffect::Static, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Static, 1, color);
     if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Static, 0x00, 0x00, 0x01, red, green, blue);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Static, 0x00, 0x00, 0x01, color.r, color.g, color.b);
     } else {
-        return setMatrixEffect(RazerMatrixEffectId::Static, red, green, blue);
+        return setMatrixEffect(RazerMatrixEffectId::Static, color.r, color.g, color.b);
     }
 }
 
-bool RazerMatrixLED::setBreathing(uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setBreathing(RGB color)
 {
-    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("breathing"))
         return false;
-    saveFxAndColors(RazerEffect::Breathing, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Breathing, 1, color);
     if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing, 0x01, 0x00, 0x01, red, green, blue);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing, 0x01, 0x00, 0x01, color.r, color.g, color.b);
     } else {
-        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x01, red, green, blue);
+        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x01, color.r, color.g, color.b);
     }
 }
 
-bool RazerMatrixLED::setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+bool RazerMatrixLED::setBreathingDual(RGB color, RGB color2)
 {
-    qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, red, green, blue, red2, green2, blue2);
+    qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     if (!checkFx("breathing_dual"))
         return false;
-    saveFxAndColors(RazerEffect::BreathingDual, 1, {red, green, blue}, {red2, green2, blue2});
+    saveFxAndColors(RazerEffect::BreathingDual, 2, color, color2);
     if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing, 0x02, 0x00, 0x02, red, green, blue, red2, green2, blue2);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Breathing, 0x02, 0x00, 0x02, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     } else {
-        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x02, red, green, blue, red2, green2, blue2);
+        return setMatrixEffect(RazerMatrixEffectId::Breathing, 0x02, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     }
 }
 
@@ -83,12 +83,12 @@ bool RazerMatrixLED::setBreathingRandom()
     }
 }
 
-bool RazerMatrixLED::setBlinking(uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setBlinking(RGB color)
 {
-    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("blinking"))
         return false;
-    saveFxAndColors(RazerEffect::Blinking, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Blinking, 1, color);
     if (calledFromDBus())
         sendErrorReply(QDBusError::NotSupported);
     return false;
@@ -121,16 +121,16 @@ bool RazerMatrixLED::setWave(WaveDirection direction)
     }
 }
 
-bool RazerMatrixLED::setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+bool RazerMatrixLED::setReactive(ReactiveSpeed speed, RGB color)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), red, green, blue);
+    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), color.r, color.g, color.b);
     if (!checkFx("reactive"))
         return false;
-    saveFxAndColors(RazerEffect::Reactive, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Reactive, 1, color);
     if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
-        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Reactive, 0x00, static_cast<uchar>(speed), 0x01, red, green, blue);
+        return setMouseMatrixEffect(RazerMouseMatrixEffectId::Reactive, 0x00, static_cast<uchar>(speed), 0x01, color.r, color.g, color.b);
     } else {
-        return setMatrixEffect(RazerMatrixEffectId::Reactive, static_cast<uchar>(speed), red, green, blue);
+        return setMatrixEffect(RazerMatrixEffectId::Reactive, static_cast<uchar>(speed), color.r, color.g, color.b);
     }
 }
 

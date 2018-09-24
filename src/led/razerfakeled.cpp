@@ -27,30 +27,30 @@ bool RazerFakeLED::setNone()
     return true;
 }
 
-bool RazerFakeLED::setStatic(uchar red, uchar green, uchar blue)
+bool RazerFakeLED::setStatic(RGB color)
 {
-    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("static"))
         return false;
-    saveFxAndColors(RazerEffect::Static, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Static, 1, {color.r, color.g, color.b});
     return true;
 }
 
-bool RazerFakeLED::setBreathing(uchar red, uchar green, uchar blue)
+bool RazerFakeLED::setBreathing(RGB color)
 {
-    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("breathing"))
         return false;
-    saveFxAndColors(RazerEffect::Breathing, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Breathing, 1, {color.r, color.g, color.b});
     return true;
 }
 
-bool RazerFakeLED::setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+bool RazerFakeLED::setBreathingDual(RGB color, RGB color2)
 {
-    qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, red, green, blue, red2, green2, blue2);
+    qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     if (!checkFx("breathing_dual"))
         return false;
-    saveFxAndColors(RazerEffect::BreathingDual, 1, {red, green, blue}, {red2, green2, blue2});
+    saveFxAndColors(RazerEffect::BreathingDual, 2, color, color2);
     return true;
 }
 
@@ -63,12 +63,12 @@ bool RazerFakeLED::setBreathingRandom()
     return true;
 }
 
-bool RazerFakeLED::setBlinking(uchar red, uchar green, uchar blue)
+bool RazerFakeLED::setBlinking(RGB color)
 {
-    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, red, green, blue);
+    qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("blinking"))
         return false;
-    saveFxAndColors(RazerEffect::Blinking, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Blinking, 1, {color.r, color.g, color.b});
     return true;
 }
 
@@ -90,12 +90,12 @@ bool RazerFakeLED::setWave(WaveDirection direction)
     return true;
 }
 
-bool RazerFakeLED::setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+bool RazerFakeLED::setReactive(ReactiveSpeed speed, RGB color)
 {
-    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), red, green, blue);
+    qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), color.r, color.g, color.b);
     if (!checkFx("reactive"))
         return false;
-    saveFxAndColors(RazerEffect::Reactive, 1, {red, green, blue});
+    saveFxAndColors(RazerEffect::Reactive, 1, {color.r, color.g, color.b});
     return true;
 }
 

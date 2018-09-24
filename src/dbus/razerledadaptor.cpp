@@ -53,27 +53,27 @@ uchar RazerLEDAdaptor::getBrightness()
     return out0;
 }
 
-bool RazerLEDAdaptor::setBlinking(uchar red, uchar green, uchar blue)
+bool RazerLEDAdaptor::setBlinking(razer_test::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setBlinking
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setBlinking", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    QMetaObject::invokeMethod(parent(), "setBlinking", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color));
     return out0;
 }
 
-bool RazerLEDAdaptor::setBreathing(uchar red, uchar green, uchar blue)
+bool RazerLEDAdaptor::setBreathing(razer_test::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setBreathing
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setBreathing", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    QMetaObject::invokeMethod(parent(), "setBreathing", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color));
     return out0;
 }
 
-bool RazerLEDAdaptor::setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2)
+bool RazerLEDAdaptor::setBreathingDual(razer_test::RGB color, razer_test::RGB color2)
 {
     // handle method call io.github.openrazer1.Led.setBreathingDual
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue), Q_ARG(uchar, red2), Q_ARG(uchar, green2), Q_ARG(uchar, blue2));
+    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color), Q_ARG(razer_test::RGB, color2));
     return out0;
 }
 
@@ -101,11 +101,11 @@ bool RazerLEDAdaptor::setNone()
     return out0;
 }
 
-bool RazerLEDAdaptor::setReactive(razer_test::ReactiveSpeed speed, uchar red, uchar green, uchar blue)
+bool RazerLEDAdaptor::setReactive(razer_test::ReactiveSpeed speed, razer_test::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setReactive
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setReactive", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::ReactiveSpeed, speed), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    QMetaObject::invokeMethod(parent(), "setReactive", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::ReactiveSpeed, speed), Q_ARG(razer_test::RGB, color));
     return out0;
 }
 
@@ -117,11 +117,11 @@ bool RazerLEDAdaptor::setSpectrum()
     return out0;
 }
 
-bool RazerLEDAdaptor::setStatic(uchar red, uchar green, uchar blue)
+bool RazerLEDAdaptor::setStatic(razer_test::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setStatic
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setStatic", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, red), Q_ARG(uchar, green), Q_ARG(uchar, blue));
+    QMetaObject::invokeMethod(parent(), "setStatic", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color));
     return out0;
 }
 

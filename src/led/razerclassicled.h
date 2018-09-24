@@ -31,19 +31,16 @@ public:
 
     RazerClassicLedState state;
     RazerClassicEffectId effect;
-    unsigned char red;
-    unsigned char green;
-    unsigned char blue;
 
     bool setNone() override;
-    bool setStatic(uchar red, uchar green, uchar blue) override;
-    bool setBreathing(uchar red, uchar green, uchar blue) override;
-    bool setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) override;
+    bool setStatic(RGB color) override;
+    bool setBreathing(RGB color) override;
+    bool setBreathingDual(RGB color, RGB color2) override;
     bool setBreathingRandom() override;
-    bool setBlinking(uchar red, uchar green, uchar blue) override;
+    bool setBlinking(RGB color) override;
     bool setSpectrum() override;
     bool setWave(WaveDirection direction) override;
-    bool setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue) override;
+    bool setReactive(ReactiveSpeed speed, RGB color) override;
 
     bool setBrightness(uchar brightness) override;
     bool getBrightness(uchar *brightness) override;
@@ -53,8 +50,8 @@ public:
     bool ensureLedStateOn();
     bool setLedEffect(RazerClassicEffectId effect);
     bool getLedEffect(RazerClassicEffectId *effect);
-    bool setLedRgb(uchar red, uchar green, uchar blue);
-    bool getLedRgb(uchar *red, uchar *green, uchar *blue);
+    bool setLedRgb(RGB color);
+    bool getLedRgb(RGB *color);
 };
 
 #endif // RAZERCLASSICLED_H

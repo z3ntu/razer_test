@@ -61,14 +61,14 @@ public:
 public Q_SLOTS:
     // FX
     virtual bool setNone() = 0;
-    virtual bool setStatic(uchar red, uchar green, uchar blue) = 0;
-    virtual bool setBreathing(uchar red, uchar green, uchar blue) = 0;
-    virtual bool setBreathingDual(uchar red, uchar green, uchar blue, uchar red2, uchar green2, uchar blue2) = 0;
+    virtual bool setStatic(RGB color) = 0;
+    virtual bool setBreathing(RGB color) = 0;
+    virtual bool setBreathingDual(RGB color, RGB color2) = 0;
     virtual bool setBreathingRandom() = 0;
-    virtual bool setBlinking(uchar red, uchar green, uchar blue) = 0;
+    virtual bool setBlinking(RGB color) = 0;
     virtual bool setSpectrum() = 0;
     virtual bool setWave(WaveDirection direction) = 0;
-    virtual bool setReactive(ReactiveSpeed speed, uchar red, uchar green, uchar blue) = 0;
+    virtual bool setReactive(ReactiveSpeed speed, RGB color) = 0;
 
     virtual bool setBrightness(uchar brightness) = 0;
     uchar getBrightness();
