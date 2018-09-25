@@ -29,7 +29,7 @@ class RazerClassicDevice : public RazerDevice
 public:
     using RazerDevice::RazerDevice;
 
-    bool initializeLeds() override;
+    bool initialize() override;
 
     bool displayCustomFrame() override;
     bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) override;

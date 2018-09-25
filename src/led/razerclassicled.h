@@ -29,8 +29,7 @@ class RazerClassicLED : public RazerLED
 public:
     using RazerLED::RazerLED;
 
-    RazerClassicLedState state;
-    RazerClassicEffectId effect;
+    bool initialize() override;
 
     bool setNone() override;
     bool setStatic(RGB color) override;
@@ -52,6 +51,10 @@ public:
     bool getLedEffect(RazerClassicEffectId *effect);
     bool setLedRgb(RGB color);
     bool getLedRgb(RGB *color);
+
+private:
+    RazerClassicLedState state;
+    RazerClassicEffectId effect;
 };
 
 #endif // RAZERCLASSICLED_H

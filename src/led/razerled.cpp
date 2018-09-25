@@ -41,7 +41,7 @@ uchar RazerLED::getBrightness()
 
 RazerEffect RazerLED::getCurrentEffect()
 {
-    return fx;
+    return effect;
 }
 
 QList<RGB> RazerLED::getCurrentColors()
@@ -61,7 +61,7 @@ bool RazerLED::checkFx(QString fxStr)
 
 void RazerLED::saveFxAndColors(RazerEffect fx, int numColors, RGB color1, RGB color2, RGB color3)
 {
-    this->fx = fx;
+    this->effect = fx;
     if (numColors >= 1) {
         this->color1 = color1;
     }

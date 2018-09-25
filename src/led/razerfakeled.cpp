@@ -18,6 +18,13 @@
 
 #include "razerfakeled.h"
 
+bool RazerFakeLED::initialize()
+{
+    brightness = 255;
+    effect = RazerEffect::Spectrum;
+    return true;
+}
+
 bool RazerFakeLED::setNone()
 {
     qDebug("Called %s", Q_FUNC_INFO);

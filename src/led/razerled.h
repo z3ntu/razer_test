@@ -47,16 +47,17 @@ public:
     RazerLED(RazerDevice *device, RazerLedId ledId);
     ~RazerLED() override;
 
-    RazerDevice *device;
-    const RazerLedId ledId;
-    uchar brightness;
-
-    QDBusObjectPath getObjectPath();
+    virtual bool initialize() = 0;
 
     virtual bool getBrightness(uchar *brightness) = 0;
 
+    QDBusObjectPath getObjectPath();
     RazerEffect getCurrentEffect();
     QList<RGB> getCurrentColors();
+
+    RazerDevice *device;
+    const RazerLedId ledId;
+    uchar brightness;
 
 public Q_SLOTS:
     // FX
@@ -77,7 +78,7 @@ protected:
     bool checkFx(QString fxStr);
     void saveFxAndColors(RazerEffect fx, int numColors, RGB color1 = {0, 0, 0}, RGB color2 = {0, 0, 0}, RGB color3 = {0, 0, 0});
 
-    RazerEffect fx = RazerEffect::Spectrum;
+    RazerEffect effect = RazerEffect::Spectrum;
     RGB color1 = {0, 255, 0};
     RGB color2 = {255, 0, 0};
     RGB color3 = {0, 0, 255};

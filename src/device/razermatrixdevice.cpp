@@ -20,26 +20,14 @@
 
 #include "../led/razermatrixled.h"
 
-bool RazerMatrixDevice::initializeLeds()
+bool RazerMatrixDevice::initialize()
 {
     foreach (RazerLedId ledId, ledIds) {
         auto *rled = new RazerMatrixLED(this, ledId);
-        bool ok;
-        uchar brightness;
-        ok = rled->getBrightness(&brightness);
-        if (!ok) {
-            qWarning("Error during getBrightness()");
+        if (!rled->initialize()) {
+            qWarning("Error while initializing LED with ID '%hhu'", static_cast<uchar>(ledId));
+            delete rled;
             return false;
-        }
-        if (!rled->setSpectrumInit()) {
-            qWarning("Error during setSpectrumInit()");
-            return false;
-        }
-        rled->brightness = brightness;
-        if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
-            rled->mouseMatrixEffect = RazerMouseMatrixEffectId::Spectrum;
-        } else {
-            rled->effect = RazerMatrixEffectId::Spectrum;
         }
         leds.insert(ledId, rled);
     }

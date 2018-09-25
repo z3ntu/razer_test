@@ -165,7 +165,7 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
         delete device;
         return nullptr;
     }
-    if (!device->initializeLeds()) {
+    if (!device->initialize()) {
         qCritical("Failed to initialize leds");
         delete device;
         return nullptr;

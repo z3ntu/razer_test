@@ -29,7 +29,7 @@ class RazerFakeLED : public RazerLED
 public:
     using RazerLED::RazerLED;
 
-//     RazerEffect effect;
+    bool initialize() override;
 
     bool setNone() override;
     bool setStatic(RGB color) override;

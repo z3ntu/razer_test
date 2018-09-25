@@ -19,6 +19,32 @@
 #include "razerclassicled.h"
 #include "../src/razerreport.h"
 
+bool RazerClassicLED::initialize()
+{
+    bool ok;
+    ok = getBrightness(&brightness);
+    if (!ok) {
+        qWarning("Error during getBrightness()");
+        return false;
+    }
+    ok = getLedEffect(&effect);
+    if (!ok) {
+        qWarning("Error during getLedEffect()");
+        return false;
+    }
+    ok = getLedState(&state);
+    if (!ok) {
+        qWarning("Error during getLedState()");
+        return false;
+    }
+    ok = getLedRgb(&color1);
+    if (!ok) {
+        qWarning("Error during getLedRgb()");
+        return false;
+    }
+    return true;
+}
+
 bool RazerClassicLED::setNone()
 {
     qDebug("Called %s", Q_FUNC_INFO);

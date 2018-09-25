@@ -28,12 +28,15 @@ bool RazerFakeDevice::openDeviceHandle()
     return true;
 }
 
-bool RazerFakeDevice::initializeLeds()
+bool RazerFakeDevice::initialize()
 {
     foreach (RazerLedId ledId, ledIds) {
         auto *rled = new RazerFakeLED(this, ledId);
-        rled->brightness = 255;
-//         rled->effect = RazerEffect::Spectrum;
+        if (!rled->initialize()) {
+            qWarning("Error while initializing LED with ID '%hhu'", static_cast<uchar>(ledId));
+            delete rled;
+            return false;
+        }
         leds.insert(ledId, rled);
     }
     return true;

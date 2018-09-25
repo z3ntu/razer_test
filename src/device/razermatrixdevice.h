@@ -28,7 +28,7 @@ class RazerMatrixDevice : public RazerDevice
 {
     using RazerDevice::RazerDevice;
 
-    bool initializeLeds() override;
+    bool initialize() override;
 
     bool displayCustomFrame() override;
     bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) override;

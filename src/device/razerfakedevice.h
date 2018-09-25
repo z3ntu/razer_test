@@ -30,7 +30,7 @@ class RazerFakeDevice : public RazerDevice
 
     bool openDeviceHandle() override;
 
-    bool initializeLeds() override;
+    bool initialize() override;
 
     QString getSerial() override;
     QString getFirmwareVersion() override;

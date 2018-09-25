@@ -54,7 +54,7 @@ public:
     ~RazerDevice() override;
 
     virtual bool openDeviceHandle();
-    virtual bool initializeLeds() = 0;
+    virtual bool initialize() = 0;
 
     int sendReport(razer_report request_report, razer_report *response_report);
     QDBusObjectPath getObjectPath();

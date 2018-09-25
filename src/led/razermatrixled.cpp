@@ -18,6 +18,26 @@
 
 #include "razermatrixled.h"
 
+bool RazerMatrixLED::initialize()
+{
+    bool ok;
+    ok = getBrightness(&brightness);
+    if (!ok) {
+        qWarning("Error during getBrightness()");
+        return false;
+    }
+    if (!setSpectrumInit()) {
+        qWarning("Error during setSpectrumInit()");
+        return false;
+    }
+    if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
+        mouseMatrixEffect = RazerMouseMatrixEffectId::Spectrum;
+    } else {
+        effect = RazerMatrixEffectId::Spectrum;
+    }
+    return true;
+}
+
 bool RazerMatrixLED::setNone()
 {
     qDebug("Called %s", Q_FUNC_INFO);
