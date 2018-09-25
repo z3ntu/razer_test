@@ -28,6 +28,37 @@
 #include "manager/devicemanager.h"
 #include "config.h"
 
+#define ANSI_BOLD          "\x1b[1m"
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_RESET         "\x1b[0m"
+
+// Used to tell myMessageOutput if --verbose was given on the command line
+bool verbose = false;
+
+void myMessageOutput(QtMsgType type, const QMessageLogContext &/*context*/, const QString &msg)
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch (type) {
+    case QtDebugMsg:
+        if (verbose)
+            fprintf(stderr, ANSI_BOLD ANSI_COLOR_GREEN "[debug]" ANSI_RESET " %s\n", localMsg.constData());
+        break;
+    case QtInfoMsg:
+        fprintf(stderr, ANSI_BOLD ANSI_COLOR_GREEN "[info]" ANSI_RESET " %s\n", localMsg.constData());
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, ANSI_BOLD ANSI_COLOR_YELLOW "[warning]" ANSI_RESET " %s\n", localMsg.constData());
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, ANSI_BOLD ANSI_COLOR_RED "[critical]" ANSI_RESET " %s\n", localMsg.constData());
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, ANSI_BOLD ANSI_COLOR_RED "[fatal]" ANSI_RESET " %s\n", localMsg.constData());
+        break;
+    }
+}
 
 QJsonArray loadDevicesFromJson(bool devel)
 {
@@ -161,12 +192,12 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
         return nullptr;
     }
     if (!device->openDeviceHandle()) {
-        qCritical("Failed to open device handle");
+        qCritical("Failed to open device handle, skipping device.");
         delete device;
         return nullptr;
     }
     if (!device->initialize()) {
-        qCritical("Failed to initialize leds");
+        qCritical("Failed to initialize leds, skipping device.");
         delete device;
         return nullptr;
     }
@@ -187,9 +218,13 @@ int main(int argc, char *argv[])
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addOption({"fake-devices", "Adds fake devices instead of real ones."});
+    parser.addOption({"verbose", "Print debug messages."});
     parser.addOption({"devel", QString("Uses data files at ../data/devices instead of %1.").arg(RAZER_TEST_DATADIR)});
+    parser.addOption({"fake-devices", "Adds fake devices instead of real ones."});
     parser.process(app);
+
+    verbose = parser.isSet("verbose");
+    qInstallMessageHandler(myMessageOutput);
 
     qInfo("razer_test - version %s", RAZER_TEST_VERSION);
     if (parser.isSet("devel"))
@@ -204,8 +239,7 @@ int main(int argc, char *argv[])
     // Load the supported devices from the json files
     QJsonArray supportedDevices = loadDevicesFromJson(parser.isSet("devel"));
     if (supportedDevices.isEmpty()) {
-        qCritical("JSON device definition files were not found. Exiting.");
-        return -1;
+        qFatal("JSON device definition files were not found. Exiting.");
     }
 
     QVector<RazerDevice *> devices;
@@ -274,28 +308,24 @@ int main(int argc, char *argv[])
     DeviceManager *manager = new DeviceManager(devices);
     new DeviceManagerAdaptor(manager);
     if (!connection.registerObject(manager->getObjectPath().path(), manager)) {
-        qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
-        return 1;
+        qFatal("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
     }
 
 #ifdef DEMO
 
     if (devices.isEmpty()) {
         qFatal("No device found. Exiting.");
-        return 1;
     }
-    RazerDevice *razerDevice = devices[0];
+    foreach (RazerDevice *razerDevice, devices) {
+        qInfo() << "Device:" << razerDevice->getName();
+        qInfo() << "Serial:" << razerDevice->getSerial();
+        qInfo() << "Firmware version:" << razerDevice->getFirmwareVersion();
 
-    // Serial
-    qDebug() << "Serial:" << razerDevice->getSerial();
-
-    // Firmware version
-    qDebug() << "Firmware version:" << razerDevice->getFirmwareVersion();
-
-    foreach (RazerLED *led, razerDevice->getLeds()) {
-//         qDebug() << "LED ID:" << static_cast<uchar>(id);
-        qDebug() << "LED object path:" << led->getObjectPath().path();
-        led->setStatic({0xFF, 0xFF, 0x00});
+        foreach (RazerLED *led, razerDevice->getLeds()) {
+            qInfo() << "Setting LED to static with color #FFFF00";
+            qDebug() << "LED object path:" << led->getObjectPath().path();
+            led->setStatic({0xFF, 0xFF, 0x00});
+        }
     }
     return 0;
 
