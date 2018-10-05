@@ -27,6 +27,7 @@ bool RazerClassicLED::initialize()
         qWarning("Error during getBrightness()");
         return false;
     }
+    // TODO: Translate that effect to "RazerEffect effect"
     ok = getLedEffect(&effect);
     if (!ok) {
         qWarning("Error during getLedEffect()");

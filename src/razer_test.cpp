@@ -218,9 +218,9 @@ int main(int argc, char *argv[])
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addOption({"verbose", "Print debug messages."});
     parser.addOption({"devel", QString("Uses data files at ../data/devices instead of %1.").arg(RAZER_TEST_DATADIR)});
     parser.addOption({"fake-devices", "Adds fake devices instead of real ones."});
+    parser.addOption({"verbose", "Print debug messages."});
     parser.process(app);
 
     verbose = parser.isSet("verbose");
