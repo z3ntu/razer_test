@@ -7,6 +7,9 @@
     <property name="CurrentEffect" type="(i)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerEffect"/>
     </property>
+    <property name="LedId" type="(i)" access="read">
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerLedId"/>
+    </property>
     <method name="setNone">
       <arg type="b" direction="out"/>
     </method>

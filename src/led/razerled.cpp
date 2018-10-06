@@ -49,6 +49,11 @@ QList<RGB> RazerLED::getCurrentColors()
     return {color1, color2, color3};
 }
 
+razer_test::RazerLedId RazerLED::getLedId()
+{
+    return ledId;
+}
+
 bool RazerLED::checkFx(QString fxStr)
 {
     if (!device->hasFx(fxStr)) {

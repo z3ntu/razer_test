@@ -22,21 +22,28 @@
 bool RazerClassicLED::initialize()
 {
     bool ok;
+    RazerClassicEffectId classicEffect;
     ok = getBrightness(&brightness);
     if (!ok) {
         qWarning("Error during getBrightness()");
         return false;
     }
-    // TODO: Translate that effect to "RazerEffect effect"
-    ok = getLedEffect(&effect);
+    ok = getLedEffect(&classicEffect);
     if (!ok) {
         qWarning("Error during getLedEffect()");
         return false;
     }
-    ok = getLedState(&state);
+    ok = getLedState(&classicState);
     if (!ok) {
         qWarning("Error during getLedState()");
         return false;
+    }
+    // Translate effect to "RazerEffect effect"
+    if (classicState == RazerClassicLedState::Off) {
+        // State being Off is equivalent to Off effect
+        effect = RazerEffect::Off;
+    } else {
+        effect = effectTranslationTable.value(classicEffect, RazerEffect::Off);
     }
     ok = getLedRgb(&color1);
     if (!ok) {
@@ -218,7 +225,7 @@ bool RazerClassicLED::setLedState(RazerClassicLedState state)
     }
 
     // Save state into LED variable
-    this->state = state;
+    this->classicState = state;
 
     return true;
 }
@@ -244,7 +251,7 @@ bool RazerClassicLED::getLedState(RazerClassicLedState *state)
 
 bool RazerClassicLED::ensureLedStateOn()
 {
-    if (this->state == RazerClassicLedState::Off) {
+    if (this->classicState == RazerClassicLedState::Off) {
         return setLedState(RazerClassicLedState::On);
     }
     return true;
@@ -258,9 +265,6 @@ bool RazerClassicLED::setLedEffect(RazerClassicEffectId effect)
     if (device->sendReport(report, &response_report) != 0) {
         return false;
     }
-
-    // Save state into LED variable
-    this->effect = effect;
 
     return true;
 }

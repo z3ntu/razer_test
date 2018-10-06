@@ -47,6 +47,10 @@ enum class RazerClassicEffectId : uchar {
     Breathing = 0x02, // Pulsating
     Spectrum = 0x04
 };
+inline uint qHash(RazerClassicEffectId key, uint seed)
+{
+    return ::qHash(static_cast<uchar>(key), seed);
+}
 
 enum class RazerMatrixEffectId : uchar {
     Off         = 0x00,

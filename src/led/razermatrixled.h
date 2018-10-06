@@ -44,16 +44,10 @@ public:
     bool setBrightness(uchar brightness) override;
     bool getBrightness(uchar *brightness) override;
 
-    bool setSpectrumInit();
-
     bool setMatrixEffect(RazerMatrixEffectId effect,
                          uchar arg1 = 0x00, uchar arg2 = 0x00, uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00);
     bool setMouseMatrixEffect(RazerMouseMatrixEffectId effect,
                               uchar arg3 = 0x00, uchar arg4 = 0x00, uchar arg5 = 0x00, uchar arg6 = 0x00, uchar arg7 = 0x00, uchar arg8 = 0x00, uchar arg9 = 0x00, uchar arg10 = 0x00, uchar arg11 = 0x00);
-
-private:
-    RazerMatrixEffectId effect;
-    RazerMouseMatrixEffectId mouseMatrixEffect;
 };
 
 #endif // RAZERMATRIXLED_H

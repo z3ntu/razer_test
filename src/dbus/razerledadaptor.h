@@ -40,6 +40,9 @@ class RazerLEDAdaptor: public QDBusAbstractAdaptor
                 "    <property access=\"read\" type=\"(i)\" name=\"CurrentEffect\">\n"
                 "      <annotation value=\"RazerEffect\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                 "    </property>\n"
+                "    <property access=\"read\" type=\"(i)\" name=\"LedId\">\n"
+                "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                "    </property>\n"
                 "    <method name=\"setNone\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "    </method>\n"
@@ -102,6 +105,9 @@ public: // PROPERTIES
 
     Q_PROPERTY(RazerEffect CurrentEffect READ currentEffect)
     RazerEffect currentEffect() const;
+
+    Q_PROPERTY(RazerLedId LedId READ ledId)
+    RazerLedId ledId() const;
 
 public Q_SLOTS: // METHODS
     uchar getBrightness();

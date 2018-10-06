@@ -26,15 +26,11 @@ bool RazerMatrixLED::initialize()
         qWarning("Error during getBrightness()");
         return false;
     }
-    if (!setSpectrumInit()) {
+    if (!setSpectrum()) {
         qWarning("Error during setSpectrumInit()");
         return false;
     }
-    if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
-        mouseMatrixEffect = RazerMouseMatrixEffectId::Spectrum;
-    } else {
-        effect = RazerMatrixEffectId::Spectrum;
-    }
+    effect = RazerEffect::Spectrum;
     return true;
 }
 
@@ -203,22 +199,6 @@ bool RazerMatrixLED::getBrightness(uchar *brightness)
 
 /* --------------------- PRIVATE METHODS --------------------- */
 
-bool RazerMatrixLED::setSpectrumInit()
-{
-    razer_report report, response_report;
-
-    if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
-        report = razer_chroma_extended_mouse_matrix_effect(RazerVarstore::NOSTORE, this->ledId, RazerMouseMatrixEffectId::Spectrum);
-    } else {
-        report = razer_chroma_standard_matrix_effect(RazerMatrixEffectId::Spectrum);
-    }
-    if (device->sendReport(report, &response_report) != 0) {
-        return false;
-    }
-
-    return true;
-}
-
 bool RazerMatrixLED::setMatrixEffect(RazerMatrixEffectId effect, uchar arg1, uchar arg2, uchar arg3, uchar arg4, uchar arg5, uchar arg6, uchar arg7, uchar arg8)
 {
     razer_report report, response_report;
@@ -238,9 +218,6 @@ bool RazerMatrixLED::setMatrixEffect(RazerMatrixEffectId effect, uchar arg1, uch
             sendErrorReply(QDBusError::Failed);
         return false;
     }
-
-    // Save state into LED variable
-    this->effect = effect;
 
     return true;
 }
@@ -268,9 +245,6 @@ bool RazerMatrixLED::setMouseMatrixEffect(RazerMouseMatrixEffectId effect, uchar
             sendErrorReply(QDBusError::Failed);
         return false;
     }
-
-    // Save state into LED variable
-    this->mouseMatrixEffect = effect;
 
     return true;
 }

@@ -44,6 +44,7 @@ public:
     bool setBrightness(uchar brightness) override;
     bool getBrightness(uchar *brightness) override;
 
+private:
     bool setLedState(RazerClassicLedState state);
     bool getLedState(RazerClassicLedState *state);
     bool ensureLedStateOn();
@@ -52,9 +53,14 @@ public:
     bool setLedRgb(RGB color);
     bool getLedRgb(RGB *color);
 
-private:
-    RazerClassicLedState state;
-    RazerClassicEffectId effect;
+    RazerClassicLedState classicState;
+
+    QHash<RazerClassicEffectId, RazerEffect> effectTranslationTable {
+        {RazerClassicEffectId::Static, RazerEffect::Static},
+        {RazerClassicEffectId::Blinking, RazerEffect::Blinking},
+        {RazerClassicEffectId::Breathing, RazerEffect::Breathing},
+        {RazerClassicEffectId::Spectrum, RazerEffect::Spectrum}
+    };
 };
 
 #endif // RAZERCLASSICLED_H
