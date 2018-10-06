@@ -20,5 +20,17 @@
         "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "brightness"],
         "features": ["custom_frame", "keyboard_layout"],
         "matrix_dimensions": [6, 22]
+    },
+    {
+        "name": "Razer BlackWidow Elite",
+        "vid": "1532",
+        "pid": "0228",
+        "type": "keyboard",
+        "pclass": "matrix",
+        "leds": [5],
+        "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"],
+        "features": ["keyboard_layout"],
+        "matrix_dimensions": [6, 22],
+        "quirks": ["mouse_matrix", "matrix_brightness"]
     }
 ]
