@@ -23,7 +23,7 @@
 #include "spectrumeffect.h"
 #include "waveeffect.h"
 
-CustomEffectThread::CustomEffectThread(QObject *parent) : QThread(parent)
+CustomEffectThread::CustomEffectThread(const uchar width, const uchar height, QObject *parent) : QThread(parent), width(width), height(height)
 {
     pause = false;
     abort = false;

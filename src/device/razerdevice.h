@@ -111,7 +111,7 @@ protected:
     MatrixDimensions matrixDimensions;
     ushort maxDPI;
 
-    CustomEffectThread thread;
+    CustomEffectThread *thread;
 
     QHash<RazerLedId, RazerLED *> leds;
 

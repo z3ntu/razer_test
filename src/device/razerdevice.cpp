@@ -38,9 +38,11 @@ RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, 
     this->matrixDimensions = matrixDimensions;
     this->maxDPI = maxDPI;
 
+    this->thread = new CustomEffectThread(matrixDimensions.x, matrixDimensions.y);
+
     // Connect CustomEffectThread with the device
-    connect(&thread, &CustomEffectThread::rgbDataReady, this, &RazerDevice::customRgbDataReady);
-    connect(&thread, &CustomEffectThread::frameReady, this, &RazerDevice::customFrameReady);
+    connect(thread, &CustomEffectThread::rgbDataReady, this, &RazerDevice::customRgbDataReady);
+    connect(thread, &CustomEffectThread::frameReady, this, &RazerDevice::customFrameReady);
 }
 
 RazerDevice::~RazerDevice()
@@ -49,6 +51,8 @@ RazerDevice::~RazerDevice()
     foreach (RazerLED *led, leds) {
         delete led;
     }
+    // Destroy CustomEffectThread
+    delete thread;
     // Close hidapi handle
     if (handle != nullptr)
         hid_close(handle);
@@ -366,7 +370,7 @@ MatrixDimensions RazerDevice::getMatrixDimensions()
 
 bool RazerDevice::startCustomEffectThread(QString effectName)
 {
-    if (!thread.startThread(effectName)) {
+    if (!thread->startThread(effectName)) {
         if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
         return false;
@@ -376,7 +380,7 @@ bool RazerDevice::startCustomEffectThread(QString effectName)
 
 void RazerDevice::pauseCustomEffectThread()
 {
-    thread.pauseThread();
+    thread->pauseThread();
 }
 
 bool RazerDevice::checkFx(QString fxStr)

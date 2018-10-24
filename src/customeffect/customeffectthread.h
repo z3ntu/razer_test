@@ -32,7 +32,7 @@ class CustomEffectThread : public QThread
 {
     Q_OBJECT
 public:
-    CustomEffectThread(QObject *parent = nullptr);
+    CustomEffectThread(const uchar width, const uchar height, QObject *parent = nullptr);
     ~CustomEffectThread() override;
 
     bool startThread(QString effectName);
@@ -51,9 +51,8 @@ private:
     bool pause;
     bool abort;
 
-    // TODO Height and width is device-specific
-    const uchar width = 22;
-    const uchar height = 6;
+    const uchar width;
+    const uchar height;
 
     CustomEffectBase *customEffect = nullptr;
     QString currentEffect;
