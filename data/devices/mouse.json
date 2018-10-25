@@ -21,5 +21,18 @@
         "features": ["dpi", "poll_rate"],
         "max_dpi": 16000,
         "quirks": ["mouse_matrix", "matrix_brightness"]
+    },
+    {
+        "name": "Razer Mamba",
+        "vid": "1532",
+        "pid": "0044",
+        "type": "mouse",
+        "pclass": "matrix",
+        "leds": [5],
+        "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "custom_frame", "brightness"],
+        "features": ["dpi", "poll_rate"],
+        "max_dpi": 16000,
+        "quirks": ["firefly_custom_frame"],
+        "matrix_dimensions": [1, 15]
     }
 ]
