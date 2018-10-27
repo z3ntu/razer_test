@@ -253,13 +253,9 @@ int main(int argc, char *argv[])
         devs = hid_enumerate(0x1532, 0x0000);
         cur_dev = devs;
 
-        QVector<ushort> alreadyAddedPids;
-
         while (cur_dev) {
             // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
-
-            // Check if device is already added
-            if (alreadyAddedPids.contains(cur_dev->product_id)) {
+            if(cur_dev->interface_number != 0) {
                 cur_dev = cur_dev->next;
                 continue;
             }
@@ -278,7 +274,6 @@ int main(int argc, char *argv[])
                         break;
 
                     devices.append(device);
-                    alreadyAddedPids.append(cur_dev->product_id);
 
                     // D-Bus
                     registerDeviceOnDBus(device, connection);

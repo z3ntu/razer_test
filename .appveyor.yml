@@ -20,7 +20,7 @@ install:
   # Print out dependency paths
   - cmd: echo Using Python at %PYTHON_ROOT%
   - cmd: echo Using Qt at %QT_ROOT%
-  # Add neccessary paths to PATH variable
+  # Add necessary paths to PATH variable
   - cmd: set PATH=%cd%;C:\ninja-build;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson
   # Pin meson to 0.47.2 because of https://github.com/mesonbuild/meson/issues/4248, fixed with https://github.com/mesonbuild/meson/pull/4259
