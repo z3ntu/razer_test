@@ -23,8 +23,7 @@ install:
   # Add necessary paths to PATH variable
   - cmd: set PATH=%cd%;C:\ninja-build;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson
-  # Pin meson to 0.47.2 because of https://github.com/mesonbuild/meson/issues/4248, fixed with https://github.com/mesonbuild/meson/pull/4259
-  - cmd: pip install meson==0.47.2
+  - cmd: pip install meson
   # Set up the build environment
   - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
   - cmd: if %compiler%==msvc2017 ( call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %arch% )
