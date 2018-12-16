@@ -234,7 +234,11 @@ int main(int argc, char *argv[])
     razer_test::registerMetaTypes();
 
     // Get the D-Bus system bus
+#ifdef Q_OS_DARWIN
+    QDBusConnection connection = QDBusConnection::sessionBus();
+#else
     QDBusConnection connection = QDBusConnection::systemBus();
+#endif
 
     // Load the supported devices from the json files
     QJsonArray supportedDevices = loadDevicesFromJson(parser.isSet("devel"));
