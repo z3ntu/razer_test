@@ -27,20 +27,11 @@ matrix:
 services:
   - docker
 
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install meson qt hidapi; fi
+install:
+  - ./.ci/travis_install.sh
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$DISTRO" == "ubuntu" ]]; then echo 'FROM ubuntu:latest' > Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$DISTRO" == "alpine" ]]; then echo 'FROM alpine:latest' > Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo 'ADD . /root' >> Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$DISTRO" == "ubuntu" ]]; then echo 'RUN apt-get update && apt-get install -y meson qt5-default g++ clang pkg-config libhidapi-dev' >> Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$DISTRO" == "alpine" ]]; then echo 'RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories' >> Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$DISTRO" == "alpine" ]]; then echo 'RUN apk add meson qt5-qtbase-dev g++ clang pkgconf hidapi-dev@testing' >> Dockerfile; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker build -t myimage .; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker run myimage /bin/sh -c "cd /root && TRAVIS=true CC=$CC CXX=$CXX meson -Dbuild_tests=true builddir && ninja -C builddir test"; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/qt/bin:$PATH"; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then meson -Dbuild_tests=true builddir && ninja -C builddir test; fi
+  - ./.ci/travis_script.sh
 
 notifications:
     webhooks:

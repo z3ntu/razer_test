@@ -23,7 +23,7 @@ install:
   # Add necessary paths to PATH variable
   - cmd: set PATH=%cd%;C:\ninja-build;%QT_ROOT%\bin;%PYTHON_ROOT%;%PYTHON_ROOT%\Scripts;%PATH%
   # Install meson
-  - cmd: pip install meson
+  - cmd: if "%APPVEYOR_PROJECT_NAME%"=="razer_test meson nightly" (pip install git+https://github.com/mesonbuild/meson.git) else (pip install meson==0.48.2)
   # Set up the build environment
   - cmd: if %compiler%==msvc2015 ( call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %arch% )
   - cmd: if %compiler%==msvc2017 ( call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %arch% )
