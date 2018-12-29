@@ -84,6 +84,7 @@ void testJsonValidity::checkJsonDataValidity()
         QVERIFY2(hexStringToUshort(devObj["vid"].toString()) == 0x1532, "Invalid vid - has to be \"1532\".");
         qDebug() << "pid:" << devObj["pid"].toString();
         QVERIFY2(hexStringToUshort(devObj["pid"].toString()) != 0, "Invalid pid - has to be a hex number in string form.");
+        QVERIFY2(devObj["pid"].toString().toLower() == devObj["pid"].toString(), "Invalid pid - has to be in lower case.");
         qDebug() << "type:" << devObj["type"].toString();
         QVERIFY2(validType.contains(devObj["type"].toString()), "Invalid device type.");
         qDebug() << "pclass:" << devObj["pclass"].toString();
