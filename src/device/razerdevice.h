@@ -125,6 +125,7 @@ protected:
         {0x04, "French"},
         {0x06, "UK"},
         {0x07, "Nordic"},
+        {0x10, "Spanish"},
         {0x11, "Italian"},
         {0x12, "Portuguese"},
         {0x81, "US-mac"}
