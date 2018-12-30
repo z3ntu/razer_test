@@ -72,17 +72,22 @@ void testJsonValidity::checkJsonDataValidity()
     foreach (const QJsonValue &devVal, devices) {
         QJsonObject devObj = devVal.toObject();
 
+        // name
         qDebug() << "name:" << devObj["name"].toString();
         QVERIFY2(devObj["name"].isString(), "Invalid device name - has to be a string.");
+        // vid
         qDebug() << "vid:" << devObj["vid"].toString();
         QVERIFY2(hexStringToUshort(devObj["vid"].toString()) == 0x1532, "Invalid vid - has to be \"1532\".");
         QVERIFY2(devObj["vid"].toString().size() == 4, "Invalid vid - has to be four characters long.");
+        // pid
         qDebug() << "pid:" << devObj["pid"].toString();
         QVERIFY2(hexStringToUshort(devObj["pid"].toString()) != 0, "Invalid pid - has to be a hex number in string form.");
         QVERIFY2(devObj["pid"].toString().size() == 4, "Invalid pid - has to be four characters long.");
         QVERIFY2(devObj["pid"].toString().toLower() == devObj["pid"].toString(), "Invalid pid - has to be in lower case.");
+        // type
         qDebug() << "type:" << devObj["type"].toString();
         QVERIFY2(validType.contains(devObj["type"].toString()), "Invalid device type.");
+        // pclass
         qDebug() << "pclass:" << devObj["pclass"].toString();
         QVERIFY2(validPclass.contains(devObj["pclass"].toString()), "Invalid pclass.");
         // leds array
