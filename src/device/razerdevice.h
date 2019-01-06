@@ -50,7 +50,7 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_PROPERTY(MatrixDimensions MatrixDimensions READ getMatrixDimensions)
 
 public:
-    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI);
+    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI);
     ~RazerDevice() override;
 
     virtual bool openDeviceHandle();
@@ -102,7 +102,6 @@ protected:
     ushort product_id;
     QString name;
     QString type;
-    QString pclass;
     QVector<RazerLedId> ledIds;
     QStringList fx;
     QStringList features;

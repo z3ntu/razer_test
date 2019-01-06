@@ -182,11 +182,11 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
 
     RazerDevice *device;
     if (dev_path == nullptr) { // create a fake device
-        device = new RazerFakeDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
+        device = new RazerFakeDevice(dev_path, vid, pid, name, type, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else if (pclass == "classic") {
-        device = new RazerClassicDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
+        device = new RazerClassicDevice(dev_path, vid, pid, name, type, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else if (pclass == "matrix") {
-        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, pclass, leds, fx, features, quirks, matrixDimensions, maxDPI);
+        device = new RazerMatrixDevice(dev_path, vid, pid, name, type, leds, fx, features, quirks, matrixDimensions, maxDPI);
     } else {
         qCritical("Unknown device class: %s", qUtf8Printable(pclass));
         return nullptr;

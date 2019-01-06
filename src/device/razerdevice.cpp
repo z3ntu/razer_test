@@ -23,14 +23,13 @@
 
 #include "razerdevice.h"
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QString pclass, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
     this->product_id = product_id;
     this->name = name;
     this->type = type;
-    this->pclass = pclass;
     this->ledIds = ledIds;
     this->fx = fx;
     this->features = features;
@@ -66,7 +65,6 @@ bool RazerDevice::openDeviceHandle()
     }
     handle = hid_open_path(dev_path.toStdString().c_str());
     if (!handle) {
-        qCritical("unable to open device");
         return false;
     }
     return true;
@@ -103,7 +101,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         // Send the Feature Report to the device
         res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
         if (res < 0) {
-            printf("Unable to send a feature report.\n");
+            qWarning("Unable to send a feature report.");
             retryCount--;
             continue;
         }
@@ -118,7 +116,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         res_buf[0] = 0x00; // report number
         res = hid_get_feature_report(handle, res_buf, sizeof(res_buf));
         if (res < 0) {
-            printf("Unable to get a feature report.\n");
+            qWarning("Unable to get a feature report.");
             retryCount--;
             continue;
         }
@@ -152,7 +150,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
             return 0;
         }
     }
-    printf("Failed to send report after 3 tries.\n");
+    qWarning("Failed to send report after 3 tries.");
     return 1;
 }
 
