@@ -20,20 +20,14 @@
 #include <QObject>
 #include <QtTest>
 
+#include "../src/validjsonvalues.h"
+
 class testJsonValidity : public QObject
 {
     Q_OBJECT
 private:
     QJsonArray loadJson();
     ushort hexStringToUshort(const QString &str);
-
-    QStringList allowedKeys = {"name", "vid", "pid", "type", "pclass", "leds", "fx", "features", "quirks", "matrix_dimensions", "max_dpi"};
-
-    QStringList validType = {"core", "headset", "keyboard", "keypad", "mouse", "mousepad", "mug"};
-    QStringList validPclass = {"classic", "matrix"};
-    QStringList validFx = {"off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"};
-    QStringList validFeatures = {"keyboard_layout", "dpi", "poll_rate"};
-    QStringList validQuirks = {"mouse_matrix", "matrix_brightness", "firefly_custom_frame"};
 
 private slots:
     void checkJsonDataValidity();
