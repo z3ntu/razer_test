@@ -324,6 +324,7 @@ int main(int argc, char *argv[])
             qInfo() << "Setting LED to static with color #FFFF00";
             qDebug() << "LED object path:" << led->getObjectPath().path();
             led->setStatic({0xFF, 0xFF, 0x00});
+            led->setBrightness(255);
         }
     }
     return 0;
@@ -334,8 +335,8 @@ int main(int argc, char *argv[])
         qCritical("Failed to register D-Bus service at \"io.github.openrazer1\".");
         if (connection.lastError().isValid()) {
             qCritical("Additional information:");
-            qCritical(qUtf8Printable(connection.lastError().name()));
-            qCritical(qUtf8Printable(connection.lastError().message()));
+            qCritical("%s", qUtf8Printable(connection.lastError().name()));
+            qCritical("%s", qUtf8Printable(connection.lastError().message()));
         } else {
             qCritical("Maybe it's already running?");
         }
