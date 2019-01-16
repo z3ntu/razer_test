@@ -56,7 +56,7 @@ razer_test::RazerLedId RazerLED::getLedId()
 
 bool RazerLED::checkFx(QString fxStr)
 {
-    if (!device->hasFx(fxStr)) {
+    if (!device->checkFx(fxStr)) {
         if (calledFromDBus())
             sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
         return false;

@@ -30,7 +30,7 @@ install:
 
 build_script:
   - cmd: echo Building on %arch% with %compiler%
-  - cmd: meson --backend=ninja -Dbuild_tests=true builddir
+  - cmd: meson --backend=ninja -Dbuild_bringup_util=true -Dbuild_tests=true builddir
   - cmd: ninja -C builddir
 
 test_script:
@@ -38,7 +38,7 @@ test_script:
 
 after_build:
   # Zip build binaries and dependencies
-  - cmd: 7z a razer_test_%compiler%_%arch%.zip %APPVEYOR_BUILD_FOLDER%\builddir\razer_test_demo.exe %APPVEYOR_BUILD_FOLDER%\builddir\subprojects\hidapi\hidapi.dll %QT_ROOT%\bin\Qt5Cored.dll %QT_ROOT%\bin\Qt5DBusd.dll
+  - cmd: 7z a razer_test_%compiler%_%arch%.zip %APPVEYOR_BUILD_FOLDER%\builddir\razer_test.exe %APPVEYOR_BUILD_FOLDER%\builddir\razer_test_bringup_util.exe %APPVEYOR_BUILD_FOLDER%\builddir\subprojects\hidapi\hidapi.dll %QT_ROOT%\bin\Qt5Cored.dll %QT_ROOT%\bin\Qt5DBusd.dll
 
 artifacts:
   - path: razer_test*.zip

@@ -16,33 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAZERFAKELED_H
-#define RAZERFAKELED_H
+#ifndef BRINGUPUTIL_H
+#define BRINGUPUTIL_H
 
-#include "razerled.h"
+#include <hidapi.h>
+
+#include "../device/razerdevice.h"
 
 /**
  * @todo write docs
  */
-class RazerFakeLED : public RazerLED
+class BringupUtil
 {
 public:
-    using RazerLED::RazerLED;
+    BringupUtil(struct hid_device_info *hid_dev_info);
+    BringupUtil(RazerDevice *device);
+    bool newDevice();
 
-    bool initialize() override;
+    // Automatic
+    bool testDPI();
+    bool testPollRate();
+    bool testKeyboardLayout();
+    bool testBrightness();
 
-    bool setOff() override;
-    bool setStatic(RGB color) override;
-    bool setBreathing(RGB color) override;
-    bool setBreathingDual(RGB color, RGB color2) override;
-    bool setBreathingRandom() override;
-    bool setBlinking(RGB color) override;
-    bool setSpectrum() override;
-    bool setWave(WaveDirection direction) override;
-    bool setReactive(ReactiveSpeed speed, RGB color) override;
+    // Interactive
+    QVector<RazerEffect> testLedEffects();
+private:
+    struct hid_device_info *hid_dev_info;
+    RazerDevice *device;
 
-    bool setBrightness(uchar brightness) override;
-    bool getBrightness(uchar *brightness) override;
+    bool setEffect(RazerLED *led, razer_test::RazerEffect effect, razer_test::RGB color1, razer_test::RGB color2, razer_test::RGB color3);
 };
 
-#endif // RAZERFAKELED_H
+#endif // BRINGUPUTIL_H

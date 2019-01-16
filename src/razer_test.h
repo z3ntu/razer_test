@@ -146,6 +146,10 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerEffec
     value = static_cast<RazerEffect>(a);
     return argument;
 }
+inline uint qHash(RazerEffect key, uint seed)
+{
+    return ::qHash(static_cast<uint>(key), seed);
+}
 
 struct RazerDPI {
     ushort dpi_x;

@@ -21,6 +21,8 @@
 
 #include <QtGlobal>
 
+namespace razer_test {
+
 enum class RazerVarstore : uchar {
     NOSTORE = 0x00,
     STORE = 0x01
@@ -79,5 +81,75 @@ enum class RazerDeviceQuirks {
     MatrixBrightness,
     FireflyCustomFrame
 };
+inline uint qHash(RazerDeviceQuirks key, uint seed)
+{
+    return ::qHash(static_cast<uchar>(key), seed);
+}
+
+const QHash<QString, RazerDeviceQuirks> StringToQuirks {
+    {"mouse_matrix", RazerDeviceQuirks::MouseMatrix},
+    {"matrix_brightness", RazerDeviceQuirks::MatrixBrightness},
+    {"firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame}
+};
+
+const QHash<RazerDeviceQuirks, QString> QuirksToString {
+    {RazerDeviceQuirks::MouseMatrix, "mouse_matrix"},
+    {RazerDeviceQuirks::MatrixBrightness, "matrix_brightness"},
+    {RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame"}
+};
+
+const QHash<QString, RazerLedId> StringToLedId {
+    {"scroll_wheel", RazerLedId::ScrollWheelLED},
+    {"battery", RazerLedId::BatteryLED},
+    {"logo", RazerLedId::LogoLED},
+    {"backlight", RazerLedId::BacklightLED},
+    {"macro_recording", RazerLedId::MacroRecordingLED},
+    {"game_mode", RazerLedId::GameModeLED},
+    {"keymap_red", RazerLedId::KeymapRedLED},
+    {"keymap_green", RazerLedId::KeymapGreenLED},
+    {"keymap_blue", RazerLedId::KeymapBlueLED},
+    {"right_side", RazerLedId::RightSideLED},
+    {"left_side", RazerLedId::LeftSideLED}
+};
+
+const QHash<RazerLedId, QString> LedIdToString {
+    {RazerLedId::ScrollWheelLED, "scroll_wheel"},
+    {RazerLedId::BatteryLED, "battery"},
+    {RazerLedId::LogoLED, "logo"},
+    {RazerLedId::BacklightLED, "backlight"},
+    {RazerLedId::MacroRecordingLED, "macro_recording"},
+    {RazerLedId::GameModeLED, "game_mode"},
+    {RazerLedId::KeymapRedLED, "keymap_red"},
+    {RazerLedId::KeymapGreenLED, "keymap_green"},
+    {RazerLedId::KeymapBlueLED, "keymap_blue"},
+    {RazerLedId::RightSideLED, "right_side"},
+    {RazerLedId::LeftSideLED, "left_side"}
+};
+
+const QHash<QString, RazerEffect> StringToEffect {
+    {"off", RazerEffect::Off},
+    {"static", RazerEffect::Static},
+    {"blinking", RazerEffect::Blinking},
+    {"breathing", RazerEffect::Breathing},
+    {"breathing_dual", RazerEffect::BreathingDual},
+    {"breathing_random", RazerEffect::BreathingRandom},
+    {"spectrum", RazerEffect::Spectrum},
+    {"wave", RazerEffect::Wave},
+    {"reactive", RazerEffect::Reactive}
+};
+
+const QHash<RazerEffect, QString> EffectToString {
+    {RazerEffect::Off, "off"},
+    {RazerEffect::Static, "static"},
+    {RazerEffect::Blinking, "blinking"},
+    {RazerEffect::Breathing, "breathing"},
+    {RazerEffect::BreathingDual, "breathing_dual"},
+    {RazerEffect::BreathingRandom, "breathing_random"},
+    {RazerEffect::Spectrum, "spectrum"},
+    {RazerEffect::Wave, "wave"},
+    {RazerEffect::Reactive, "reactive"}
+};
+
+}
 
 #endif // RAZERTESTPRIVATE_H

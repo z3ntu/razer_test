@@ -31,7 +31,7 @@ public:
 
     bool initialize() override;
 
-    bool setNone() override;
+    bool setOff() override;
     bool setStatic(RGB color) override;
     bool setBreathing(RGB color) override;
     bool setBreathingDual(RGB color, RGB color2) override;

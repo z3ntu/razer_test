@@ -199,11 +199,6 @@ QList<QDBusObjectPath> RazerDevice::getLedObjectPaths()
     return paths;
 }
 
-bool RazerDevice::hasFx(const QString &fxStr)
-{
-    return fx.contains(fxStr);
-}
-
 bool RazerDevice::hasQuirk(RazerDeviceQuirks quirk)
 {
     return quirks.contains(quirk);
@@ -250,6 +245,7 @@ QString RazerDevice::getKeyboardLayout()
             sendErrorReply(QDBusError::Failed);
         return "error";
     }
+    qDebug("Keyboard layout ID: 0x%02X", response_report.arguments[0]);
     return keyboardLayoutIds.value(response_report.arguments[0], "unknown");
 }
 

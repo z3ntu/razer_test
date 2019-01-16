@@ -19,7 +19,7 @@
         "leds": [1, 4, 16, 17],
         "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "brightness"],
         "features": ["dpi", "poll_rate"],
-        "max_dpi": 16000,
-        "quirks": ["mouse_matrix", "matrix_brightness"]
+        "quirks": ["mouse_matrix", "matrix_brightness"],
+        "max_dpi": 16000
     }
 ]

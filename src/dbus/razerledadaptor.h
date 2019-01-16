@@ -43,7 +43,7 @@ class RazerLEDAdaptor: public QDBusAbstractAdaptor
                 "    <property access=\"read\" type=\"(i)\" name=\"LedId\">\n"
                 "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                 "    </property>\n"
-                "    <method name=\"setNone\">\n"
+                "    <method name=\"setOff\">\n"
                 "      <arg direction=\"out\" type=\"b\"/>\n"
                 "    </method>\n"
                 "    <method name=\"setStatic\">\n"
@@ -116,7 +116,7 @@ public Q_SLOTS: // METHODS
     bool setBreathingDual(razer_test::RGB color, razer_test::RGB color2);
     bool setBreathingRandom();
     bool setBrightness(uchar brightness);
-    bool setNone();
+    bool setOff();
     bool setReactive(razer_test::ReactiveSpeed speed, razer_test::RGB color);
     bool setSpectrum();
     bool setStatic(razer_test::RGB color);

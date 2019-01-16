@@ -34,7 +34,7 @@ bool RazerMatrixLED::initialize()
     return true;
 }
 
-bool RazerMatrixLED::setNone()
+bool RazerMatrixLED::setOff()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("off"))

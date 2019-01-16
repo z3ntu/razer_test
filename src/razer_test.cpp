@@ -16,6 +16,9 @@
 
 #include <QDBusConnection>
 
+#ifdef ENABLE_BRINGUP_UTIL
+#include "bringup/bringuputil.h"
+#endif
 #include "device/razerdevice.h"
 #include "device/razerclassicdevice.h"
 #include "device/razermatrixdevice.h"
@@ -138,12 +141,8 @@ bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, 
         features->append(featureVal.toString());
     }
     foreach (const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
-        if (quirkVal.toString() == "mouse_matrix") {
-            quirks->append(RazerDeviceQuirks::MouseMatrix);
-        } else if (quirkVal.toString() == "matrix_brightness") {
-            quirks->append(RazerDeviceQuirks::MatrixBrightness);
-        } else if (quirkVal.toString() == "firefly_custom_frame") {
-            quirks->append(RazerDeviceQuirks::FireflyCustomFrame);
+        if (StringToQuirks.contains(quirkVal.toString())) {
+            quirks->append(StringToQuirks.value(quirkVal.toString()));
         } else {
             qCritical("Unhandled quirks string!");
         }
@@ -226,7 +225,12 @@ int main(int argc, char *argv[])
     verbose = parser.isSet("verbose");
     qInstallMessageHandler(myMessageOutput);
 
-    qInfo("razer_test - version %s", RAZER_TEST_VERSION);
+#ifdef ENABLE_BRINGUP_UTIL
+    const char *bringup = " (bringup util)";
+#else
+    const char *bringup = "";
+#endif
+    qInfo("razer_test%s - version %s", bringup, RAZER_TEST_VERSION);
     if (parser.isSet("devel"))
         qInfo("Running in development mode and using development data files.");
 
@@ -259,11 +263,12 @@ int main(int argc, char *argv[])
 
         while (cur_dev) {
             // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
-            if(cur_dev->interface_number != 0) {
+            if (cur_dev->interface_number != 0) {
                 cur_dev = cur_dev->next;
                 continue;
             }
 
+            bool supported = false;
             // Check if device is supported
             foreach (const QJsonValue &deviceVal, supportedDevices) {
                 QJsonObject deviceObj = deviceVal.toObject();
@@ -273,6 +278,8 @@ int main(int argc, char *argv[])
                     break;
 
                 if (cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
+                    supported = true;
+
                     RazerDevice *device = initializeDevice(QString(cur_dev->path), deviceObj);
                     if (device == nullptr)
                         break;
@@ -285,6 +292,16 @@ int main(int argc, char *argv[])
                     break;
                 }
             }
+#ifdef ENABLE_BRINGUP_UTIL
+            if (!supported) {
+                BringupUtil bringupUtil = BringupUtil(cur_dev);
+                if (bringupUtil.newDevice()) {
+                    return 0;
+                }
+            }
+#else
+            Q_UNUSED(supported);
+#endif
             cur_dev = cur_dev->next;
         }
 
@@ -310,7 +327,7 @@ int main(int argc, char *argv[])
         qFatal("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
     }
 
-#ifdef DEMO
+#ifdef ENABLE_BRINGUP_UTIL
 
     if (devices.isEmpty()) {
         qFatal("No device found. Exiting.");
@@ -326,6 +343,16 @@ int main(int argc, char *argv[])
             led->setStatic({0xFF, 0xFF, 0x00});
             led->setBrightness(255);
         }
+
+        BringupUtil bringupUtil = BringupUtil(razerDevice);
+        // Automatic
+        bringupUtil.testDPI();
+        bringupUtil.testPollRate();
+        bringupUtil.testKeyboardLayout();
+        bringupUtil.testBrightness();
+
+        // Interactive
+        bringupUtil.testLedEffects();
     }
     return 0;
 

@@ -63,7 +63,7 @@ public:
 
 public Q_SLOTS:
     // FX
-    virtual bool setNone() = 0;
+    virtual bool setOff() = 0;
     virtual bool setStatic(RGB color) = 0;
     virtual bool setBreathing(RGB color) = 0;
     virtual bool setBreathingDual(RGB color, RGB color2) = 0;

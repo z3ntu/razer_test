@@ -78,9 +78,8 @@ configure_file(input : 'data/io.github.openrazer1.service.in',
 install_data('data/io.github.openrazer1.conf', install_dir : join_paths(get_option('datadir'), 'dbus-1', 'system.d'))
 
 # Build requested executables
-if get_option('build_daemon')
-  executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep], install : true)
-endif
-if get_option('build_demo')
-  executable('razer_test_demo', [src, processed], dependencies : [hidapi, qt5_dep], cpp_args : '-DDEMO')
+executable('razer_test', [src, processed], dependencies : [hidapi, qt5_dep], install : true)
+if get_option('build_bringup_util')
+  extra_src = ['src/bringup/bringuputil.cpp']
+  executable('razer_test_bringup_util', [src, extra_src, processed], dependencies : [hidapi, qt5_dep], cpp_args : '-DENABLE_BRINGUP_UTIL')
 endif

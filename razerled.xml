@@ -10,7 +10,7 @@
     <property name="LedId" type="(i)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerLedId"/>
     </property>
-    <method name="setNone">
+    <method name="setOff">
       <arg type="b" direction="out"/>
     </method>
     <method name="setStatic">

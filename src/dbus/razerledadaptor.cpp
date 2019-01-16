@@ -99,11 +99,11 @@ bool RazerLEDAdaptor::setBrightness(uchar brightness)
     return out0;
 }
 
-bool RazerLEDAdaptor::setNone()
+bool RazerLEDAdaptor::setOff()
 {
-    // handle method call io.github.openrazer1.Led.setNone
+    // handle method call io.github.openrazer1.Led.setOff
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setNone", Q_RETURN_ARG(bool, out0));
+    QMetaObject::invokeMethod(parent(), "setOff", Q_RETURN_ARG(bool, out0));
     return out0;
 }
 

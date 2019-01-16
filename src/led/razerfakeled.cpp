@@ -25,7 +25,7 @@ bool RazerFakeLED::initialize()
     return true;
 }
 
-bool RazerFakeLED::setNone()
+bool RazerFakeLED::setOff()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("off"))

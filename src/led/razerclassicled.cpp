@@ -53,7 +53,7 @@ bool RazerClassicLED::initialize()
     return true;
 }
 
-bool RazerClassicLED::setNone()
+bool RazerClassicLED::setOff()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("off"))

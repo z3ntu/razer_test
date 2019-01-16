@@ -69,8 +69,9 @@ public:
     QHash<RazerLedId, RazerLED *> getLeds();
     QList<QDBusObjectPath> getLedObjectPaths();
 
-    bool hasFx(const QString &fxStr);
     bool hasQuirk(RazerDeviceQuirks quirk);
+    bool checkFeature(QString featureStr);
+    bool checkFx(QString fxStr);
 
 public Q_SLOTS:
     // TODO: CamelCase public functions (at least for D-Bus)
@@ -113,9 +114,6 @@ protected:
     CustomEffectThread *thread;
 
     QHash<RazerLedId, RazerLED *> leds;
-
-    bool checkFeature(QString featureStr);
-    bool checkFx(QString fxStr);
 
     QHash<uchar, QString> keyboardLayoutIds {
         {0x01, "US"},
