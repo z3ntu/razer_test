@@ -203,6 +203,28 @@ RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj)
     return device;
 }
 
+QJsonObject getDeviceJsonForDevice(ushort vid, ushort pid, QJsonArray supportedDevices)
+{
+    // Check if device is supported
+    foreach (const QJsonValue &deviceVal, supportedDevices) {
+        QJsonObject deviceObj = deviceVal.toObject();
+
+        ushort vidJson, pidJson;
+        if (!getVidPidFromJson(deviceObj, &vidJson, &pidJson))
+            break;
+
+        if (vid == vidJson && pid == pidJson) {
+            return deviceObj;
+        }
+    }
+    return QJsonObject();
+}
+
+QString hexUshortToString(ushort number)
+{
+    return QString::number(number, 16).rightJustified(4, '0');
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
@@ -254,6 +276,7 @@ int main(int argc, char *argv[])
 
     // Use the real devices
     if (!parser.isSet("fake-devices")) {
+        // Initialize HIDAPI
         if (hid_init())
             return -1;
 
@@ -264,44 +287,40 @@ int main(int argc, char *argv[])
         while (cur_dev) {
             // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
             if (cur_dev->interface_number != 0) {
+                qDebug() << "Ignored interface with number:" << cur_dev->interface_number;
                 cur_dev = cur_dev->next;
                 continue;
             }
 
-            bool supported = false;
-            // Check if device is supported
-            foreach (const QJsonValue &deviceVal, supportedDevices) {
-                QJsonObject deviceObj = deviceVal.toObject();
-
-                ushort vid, pid;
-                if (!getVidPidFromJson(deviceObj, &vid, &pid))
-                    break;
-
-                if (cur_dev->vendor_id == vid && cur_dev->product_id == pid) {
-                    supported = true;
-
-                    RazerDevice *device = initializeDevice(QString(cur_dev->path), deviceObj);
-                    if (device == nullptr)
-                        break;
-
-                    devices.append(device);
-
-                    // D-Bus
-                    registerDeviceOnDBus(device, connection);
-
-                    break;
-                }
-            }
+            // Get the JSON object for a device
+            QJsonObject deviceObj = getDeviceJsonForDevice(cur_dev->vendor_id, cur_dev->product_id, supportedDevices);
+            // Device is not supported
+            if (deviceObj.size() == 0) {
+                qWarning("Device with the USB ID %s:%s (%s) is not supported.",
+                         qUtf8Printable(hexUshortToString(cur_dev->vendor_id)),
+                         qUtf8Printable(hexUshortToString(cur_dev->product_id)),
+                         qUtf8Printable(QString::fromWCharArray(cur_dev->product_string)));
 #ifdef ENABLE_BRINGUP_UTIL
-            if (!supported) {
                 BringupUtil bringupUtil = BringupUtil(cur_dev);
                 if (bringupUtil.newDevice()) {
-                    return 0;
+                    break;
                 }
-            }
-#else
-            Q_UNUSED(supported);
 #endif
+                cur_dev = cur_dev->next;
+                continue;
+            }
+
+            RazerDevice *device = initializeDevice(QString(cur_dev->path), deviceObj);
+            if (device == nullptr) {
+                cur_dev = cur_dev->next;
+                continue;
+            }
+
+            devices.append(device);
+
+            // D-Bus
+            registerDeviceOnDBus(device, connection);
+
             cur_dev = cur_dev->next;
         }
 
