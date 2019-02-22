@@ -24,7 +24,8 @@ if get_option('build_tests')
 endif
 
 src = [
-    'src/razer_test.cpp',
+    'src/daemon.cpp',
+    'src/main.cpp',
     'src/razerreport.cpp',
     'src/customeffect/customeffectbase.cpp',
     'src/customeffect/customeffectthread.cpp',
