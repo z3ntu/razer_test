@@ -60,6 +60,12 @@ processed = qt5.preprocess(
 
 # Install public header
 install_headers('src/razer_test.h')
+
+# Install pkg-config file
+pkg = import('pkgconfig')
+pkg.generate(name: 'razer_test',
+             description: 'Header describing the enums and structs used in the D-Bus interface of razer_test')
+
 # Install json device files
 install_subdir('data/devices', install_dir : join_paths(get_option('datadir'), meson.project_name()), strip_directory : true)
 
