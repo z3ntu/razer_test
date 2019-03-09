@@ -47,17 +47,17 @@
 #include "config.h"
 #include "daemon.h"
 
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
+#define TARGET_BUS QDBusConnection::systemBus()
+#elif defined(Q_OS_DARWIN) || defined(Q_OS_WIN)
+#define TARGET_BUS QDBusConnection::sessionBus()
+#endif
+
 Daemon::Daemon(bool develMode, bool fakeDevices) :
-    connection(QDBusConnection::systemBus()),
+    connection(TARGET_BUS),
     develMode(develMode),
     fakeDevices(fakeDevices)
 {
-    // Get the D-Bus session or system bus, depending on the platform
-#ifdef Q_OS_DARWIN
-    connection = QDBusConnection::sessionBus();
-#else
-    connection = QDBusConnection::systemBus();
-#endif
 }
 
 
