@@ -58,6 +58,11 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &/*context*/, cons
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_DARWIN
+    // For Device Notifier: Lets Qt use the CF loop, otherwise CFRunLoopRun() would have to be used.
+    qputenv("QT_EVENT_DISPATCHER_CORE_FOUNDATION", "1");
+#endif
+
     QCoreApplication app(argc, argv);
 
     // Set the directory of the application to where the application is located. Needed for relative paths.

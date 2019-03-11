@@ -16,34 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "devicemanager.h"
-#include "config.h"
+#ifndef IDEVICENOTIFIER_H
+#define IDEVICENOTIFIER_H
 
-DeviceManager::DeviceManager(QVector<RazerDevice *> rDevices)
-{
-    setDevices(rDevices);
-}
+#include <QObject>
 
-QString DeviceManager::getVersion()
+/**
+ * @todo write docs
+ */
+class IDeviceNotifier : public QObject
 {
-    return RAZER_TEST_VERSION;
-}
+    Q_OBJECT
+public:
+    ~IDeviceNotifier() override = default;
+    virtual bool setup() = 0;
+signals:
+    void triggerRediscover();
+};
 
-QList<QDBusObjectPath> DeviceManager::getDevices()
-{
-    return devices.toList();
-}
-
-QDBusObjectPath DeviceManager::getObjectPath()
-{
-    return QDBusObjectPath("/io/github/openrazer1");
-}
-
-void DeviceManager::setDevices(QVector<RazerDevice *> rDevices)
-{
-    devices.clear();
-    foreach (RazerDevice *rDevice, rDevices) {
-        devices.append(rDevice->getObjectPath());
-    }
-    emit devicesChanged();
-}
+#endif // IDEVICENOTIFIER_H

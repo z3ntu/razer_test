@@ -20,8 +20,6 @@
 
 CustomEffectBase::CustomEffectBase(uchar width, uchar height) : width(width), height(height)
 {
-    this->rgbData = rgbData;
-
     // We need height times QByteArrays
     rgbData.resize(height);
     foreach (QByteArray arr, rgbData) {

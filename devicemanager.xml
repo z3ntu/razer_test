@@ -3,5 +3,7 @@
   <interface name="io.github.openrazer1.Manager">
     <property name="Devices" type="ao" access="read"/>
     <property name="Version" type="s" access="read"/>
+    <signal name="devicesChanged">
+    </signal>
   </interface>
 </node>

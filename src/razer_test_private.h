@@ -150,6 +150,19 @@ const QHash<RazerEffect, QString> EffectToString {
     {RazerEffect::Reactive, "reactive"}
 };
 
+const QHash<uchar, QString> keyboardLayoutIds {
+    {0x01, "US"},
+    {0x02, "Greek"},
+    {0x03, "German"},
+    {0x04, "French"},
+    {0x06, "UK"},
+    {0x07, "Nordic"},
+    {0x10, "Spanish"},
+    {0x11, "Italian"},
+    {0x12, "Portuguese"},
+    {0x81, "US-mac"}
+};
+
 }
 
 #endif // RAZERTESTPRIVATE_H

@@ -16,34 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "devicemanager.h"
-#include "config.h"
+#ifndef DEVICENOTIFIERMAC_H
+#define DEVICENOTIFIERMAC_H
 
-DeviceManager::DeviceManager(QVector<RazerDevice *> rDevices)
-{
-    setDevices(rDevices);
-}
+#include "idevicenotifier.h"
 
-QString DeviceManager::getVersion()
-{
-    return RAZER_TEST_VERSION;
-}
+#include <IOKit/IOTypes.h>
 
-QList<QDBusObjectPath> DeviceManager::getDevices()
-{
-    return devices.toList();
-}
+#include <QHash>
 
-QDBusObjectPath DeviceManager::getObjectPath()
+/**
+ * @todo write docs
+ */
+class DeviceNotifier : public IDeviceNotifier
 {
-    return QDBusObjectPath("/io/github/openrazer1");
-}
+public:
+    ~DeviceNotifier() override;
+    bool setup() override;
 
-void DeviceManager::setDevices(QVector<RazerDevice *> rDevices)
-{
-    devices.clear();
-    foreach (RazerDevice *rDevice, rDevices) {
-        devices.append(rDevice->getObjectPath());
-    }
-    emit devicesChanged();
-}
+private:
+    static void deviceConnectedCallback(void *refCon, io_iterator_t iterator);
+    static void deviceDisconnectedCallback(void *refCon, io_iterator_t iterator);
+
+    io_iterator_t gAddedIter;
+    io_iterator_t gRemovedIter;
+
+    QHash<uint64_t, UInt16> activeDevices;
+    bool active = false;
+};
+
+#endif // DEVICENOTIFIERMAC_H
+

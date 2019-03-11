@@ -61,7 +61,7 @@ public:
     const RazerLedId ledId;
     uchar brightness;
 
-public Q_SLOTS:
+public slots:
     // FX
     virtual bool setOff() = 0;
     virtual bool setStatic(RGB color) = 0;

@@ -31,6 +31,8 @@
 #include <QDebug>
 #include <QCoreApplication>
 
+#include "daemon.h"
+
 #ifdef ENABLE_BRINGUP_UTIL
 #include "bringup/bringuputil.h"
 #endif
@@ -43,9 +45,7 @@
 #include "dbus/razerdeviceadaptor.h"
 #include "dbus/devicemanageradaptor.h"
 #include "dbus/razerledadaptor.h"
-#include "manager/devicemanager.h"
 #include "config.h"
-#include "daemon.h"
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #define TARGET_BUS QDBusConnection::systemBus()
@@ -58,6 +58,16 @@ Daemon::Daemon(bool develMode, bool fakeDevices) :
     develMode(develMode),
     fakeDevices(fakeDevices)
 {
+#ifndef NO_DEVNOTIFIER_IMPL
+    if (!fakeDevices) {
+        // Set up the Device Notifier
+        notifier = new DeviceNotifier();
+        notifier->setup();
+        connect(notifier, &IDeviceNotifier::triggerRediscover, this, &Daemon::rediscoverDevices);
+    } else {
+        qWarning("Skipping DeviceNotifier setup because of fake-devices mode.");
+    }
+#endif
 }
 
 
@@ -80,7 +90,8 @@ bool Daemon::initialize()
         discoverFakeDevices();
     }
 
-    DeviceManager *manager = new DeviceManager(devices);
+    manager = new DeviceManager(devices);
+    connect(this, &Daemon::devicesChanged, manager, &DeviceManager::setDevices);
     new DeviceManagerAdaptor(manager);
     if (!connection.registerObject(manager->getObjectPath().path(), manager)) {
         qFatal("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
@@ -142,10 +153,25 @@ void Daemon::discoverDevices()
     devs = hid_enumerate(0x1532, 0x0000);
     cur_dev = devs;
 
+    // List, that is used to "cross off" devices that are found,
+    // the rest is removed at the end.
+    QHash<QString, RazerDevice *> deviceCheckList = QHash<QString, RazerDevice *>(devicesHash);
+
     while (cur_dev) {
         // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
         if (cur_dev->interface_number != 0) {
             qDebug() << "Ignored interface with number:" << cur_dev->interface_number;
+            if (cur_dev->interface_number == -1) {
+                qWarning("NOTE: On macOS you will need to apply the patch available at https://github.com/signal11/hidapi/pull/380 to your HIDAPI sources.");
+            }
+            cur_dev = cur_dev->next;
+            continue;
+        }
+
+        QString devPath = QString(cur_dev->path);
+        // Check, if the device was added already
+        if (deviceCheckList.contains(devPath)) {
+            deviceCheckList.remove(devPath);
             cur_dev = cur_dev->next;
             continue;
         }
@@ -168,22 +194,44 @@ void Daemon::discoverDevices()
             continue;
         }
 
-        RazerDevice *device = initializeDevice(QString(cur_dev->path), deviceObj);
+        RazerDevice *device = initializeDevice(devPath, deviceObj);
         if (device == nullptr) {
             cur_dev = cur_dev->next;
             continue;
         }
 
         devices.append(device);
+        devicesHash.insert(devPath, device);
 
         // D-Bus
-        registerDeviceOnDBus(device, connection);
+        registerDeviceOnDBus(device);
 
         cur_dev = cur_dev->next;
     }
 
     // Free devs and cur_dev pointers
     hid_free_enumeration(devs);
+
+    // Clear up devices that were removed
+    QHashIterator<QString, RazerDevice *> i(deviceCheckList);
+    while (i.hasNext()) {
+        i.next();
+        QString path = i.key();
+        RazerDevice *device = i.value();
+
+        qDebug() << "Removing device" << path;
+        unregisterDeviceOnDBus(device);
+        if (devicesHash.remove(path) != 1) {
+            qCritical("Failed to remove path from devicesHash.");
+        }
+        if (!devices.removeOne(device)) {
+            qCritical("Failed to remove device from devices list.");
+        }
+        delete device;
+    }
+
+    // Emit signal with new device list
+    emit devicesChanged(devices);
 }
 
 void Daemon::discoverFakeDevices()
@@ -197,8 +245,14 @@ void Daemon::discoverFakeDevices()
         devices.append(device);
 
         // D-Bus
-        registerDeviceOnDBus(device, connection);
+        registerDeviceOnDBus(device);
     }
+}
+
+void Daemon::rediscoverDevices()
+{
+    qDebug() << "Rediscovering devices because of a hotplug...";
+    discoverDevices();
 }
 
 /**
@@ -292,7 +346,7 @@ bool Daemon::getVidPidFromJson(QJsonObject deviceObj, ushort *vid, ushort *pid)
     return true;
 }
 
-bool Daemon::registerDeviceOnDBus(RazerDevice *device, QDBusConnection &connection)
+bool Daemon::registerDeviceOnDBus(RazerDevice *device)
 {
     // D-Bus
     new RazerDeviceAdaptor(device);
@@ -310,6 +364,11 @@ bool Daemon::registerDeviceOnDBus(RazerDevice *device, QDBusConnection &connecti
         }
     }
     return true;
+}
+
+void Daemon::unregisterDeviceOnDBus(RazerDevice *device)
+{
+    connection.unregisterObject(device->getObjectPath().path(), QDBusConnection::UnregisterTree);
 }
 
 bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, MatrixDimensions *matrixDimensions, ushort *maxDPI)

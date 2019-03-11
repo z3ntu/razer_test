@@ -16,34 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "devicemanager.h"
-#include "config.h"
+#ifndef DEVICENOTIFIERLINUX_H
+#define DEVICENOTIFIERLINUX_H
 
-DeviceManager::DeviceManager(QVector<RazerDevice *> rDevices)
-{
-    setDevices(rDevices);
-}
+#include <libudev.h>
 
-QString DeviceManager::getVersion()
-{
-    return RAZER_TEST_VERSION;
-}
+#include <QHash>
 
-QList<QDBusObjectPath> DeviceManager::getDevices()
-{
-    return devices.toList();
-}
+#include "idevicenotifier.h"
 
-QDBusObjectPath DeviceManager::getObjectPath()
+/**
+ * @todo write docs
+ */
+class DeviceNotifier : public IDeviceNotifier
 {
-    return QDBusObjectPath("/io/github/openrazer1");
-}
+public:
+    ~DeviceNotifier() override;
+    bool setup() override;
 
-void DeviceManager::setDevices(QVector<RazerDevice *> rDevices)
-{
-    devices.clear();
-    foreach (RazerDevice *rDevice, rDevices) {
-        devices.append(rDevice->getObjectPath());
-    }
-    emit devicesChanged();
-}
+private:
+    struct udev *udev = nullptr;
+    struct udev_monitor *mon = nullptr;
+
+    void enumerateExistingDevices();
+
+    QHash<QString, QString> activeDevices;
+
+private slots:
+    void udevEvent(int fd);
+};
+
+#endif // DEVICENOTIFIERLINUX_H

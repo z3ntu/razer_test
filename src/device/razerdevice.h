@@ -73,7 +73,7 @@ public:
     bool checkFeature(QString featureStr);
     bool checkFx(QString fxStr);
 
-public Q_SLOTS:
+public slots:
     // TODO: CamelCase public functions (at least for D-Bus)
     virtual QString getSerial();
     virtual QString getFirmwareVersion();
@@ -115,18 +115,8 @@ protected:
 
     QHash<RazerLedId, RazerLED *> leds;
 
-    QHash<uchar, QString> keyboardLayoutIds {
-        {0x01, "US"},
-        {0x02, "Greek"},
-        {0x03, "German"},
-        {0x04, "French"},
-        {0x06, "UK"},
-        {0x07, "Nordic"},
-        {0x10, "Spanish"},
-        {0x11, "Italian"},
-        {0x12, "Portuguese"},
-        {0x81, "US-mac"}
-    };
+    // Cache serial for use after the device has been removed
+    QString serial;
 
 private slots:
     void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);

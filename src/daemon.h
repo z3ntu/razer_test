@@ -24,12 +24,22 @@
 #include <QObject>
 
 #include "device/razerdevice.h"
+#if defined(Q_OS_LINUX)
+#include "devnotifier/devicenotifierlinux.h"
+#elif defined(Q_OS_DARWIN)
+#include "devnotifier/devicenotifiermac.h"
+#else
+#define NO_DEVNOTIFIER_IMPL
+#include "devnotifier/idevicenotifier.h"
+#endif
+#include "manager/devicemanager.h"
 
 /**
  * @todo write docs
  */
-class Daemon :  QObject
+class Daemon : public QObject
 {
+    Q_OBJECT
 public:
     Daemon(bool develMode, bool fakeDevices);
 
@@ -39,14 +49,27 @@ public:
     RazerDevice *initializeDevice(QString dev_path, QJsonObject deviceObj);
     QJsonArray loadDevicesFromJson(bool devel);
     bool getVidPidFromJson(QJsonObject deviceObj, ushort *vid, ushort *pid);
-    bool registerDeviceOnDBus(RazerDevice *device, QDBusConnection &connection);
+    bool registerDeviceOnDBus(RazerDevice *device);
+    void unregisterDeviceOnDBus(RazerDevice *device);
     bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, MatrixDimensions *matrixDimensions, ushort *maxDPI);
     QJsonObject getDeviceJsonForDevice(ushort vid, ushort pid);
 
     static QString hexUshortToString(ushort number);
 
+public slots:
+    void rediscoverDevices();
+
+signals:
+    void devicesChanged(QVector<RazerDevice *> devices);
+
 private:
     QVector<RazerDevice *> devices;
+    QHash<QString, RazerDevice *> devicesHash;
+
+    IDeviceNotifier *notifier = nullptr;
+    DeviceManager *manager;
+
+    QStringList devicePathList;
     QJsonArray supportedDevices;
     QDBusConnection connection;
 

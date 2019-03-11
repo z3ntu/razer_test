@@ -207,6 +207,10 @@ bool RazerDevice::hasQuirk(RazerDeviceQuirks quirk)
 QString RazerDevice::getSerial()
 {
     qDebug("Called %s", Q_FUNC_INFO);
+    if (!serial.isEmpty()) {
+        return serial;
+    }
+
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_serial();
@@ -215,7 +219,8 @@ QString RazerDevice::getSerial()
             sendErrorReply(QDBusError::Failed);
         return "error";
     }
-    return QString((char *)&response_report.arguments[0]);
+    serial = QString((char *)&response_report.arguments[0]);
+    return serial;
 }
 
 QString RazerDevice::getFirmwareVersion()

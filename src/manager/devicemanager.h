@@ -42,6 +42,11 @@ public:
     QList<QDBusObjectPath> getDevices();
     QDBusObjectPath getObjectPath();
 
+    void setDevices(QVector<RazerDevice *> devices);
+
+signals:
+    void devicesChanged();
+
 private:
     QVector<QDBusObjectPath> devices;
 };
