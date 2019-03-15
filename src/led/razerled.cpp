@@ -18,12 +18,12 @@
 
 #include "razerled.h"
 
-RazerLED::RazerLED(RazerDevice *device, RazerLedId ledId) : device(device), ledId(ledId)
+RazerLED::RazerLED(RazerDevice *device, RazerLedId ledId)
+    : device(device), ledId(ledId)
 {
 }
 
-RazerLED::~RazerLED()
-    = default;
+RazerLED::~RazerLED() = default;
 
 QDBusObjectPath RazerLED::getObjectPath()
 {
@@ -46,7 +46,7 @@ RazerEffect RazerLED::getCurrentEffect()
 
 QList<RGB> RazerLED::getCurrentColors()
 {
-    return {color1, color2, color3};
+    return { color1, color2, color3 };
 }
 
 razer_test::RazerLedId RazerLED::getLedId()

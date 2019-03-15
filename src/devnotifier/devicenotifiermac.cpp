@@ -24,8 +24,7 @@
 #include <QDebug>
 #include <QThread>
 
-DeviceNotifier::~DeviceNotifier()
-    = default;
+DeviceNotifier::~DeviceNotifier() = default;
 
 void DeviceNotifier::deviceConnectedCallback(void *refCon, io_iterator_t iterator)
 {
@@ -53,7 +52,7 @@ void DeviceNotifier::deviceConnectedCallback(void *refCon, io_iterator_t iterato
 
         IOUSBDeviceInterface **deviceInterface;
         HRESULT res;
-        res = (*plugInInterface)->QueryInterface(plugInInterface, CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID), (LPVOID *) &deviceInterface);
+        res = (*plugInInterface)->QueryInterface(plugInInterface, CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID), (LPVOID *)&deviceInterface);
         (*plugInInterface)->Release(plugInInterface);
 
         if (res || deviceInterface == NULL) {
@@ -146,4 +145,3 @@ bool DeviceNotifier::setup()
 
     return true;
 }
-

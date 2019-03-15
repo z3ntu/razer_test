@@ -36,37 +36,37 @@ RazerDeviceAdaptor::~RazerDeviceAdaptor()
 QList<QDBusObjectPath> RazerDeviceAdaptor::leds() const
 {
     // get the value of property Leds
-    return qvariant_cast< QList<QDBusObjectPath> >(parent()->property("Leds"));
+    return qvariant_cast<QList<QDBusObjectPath>>(parent()->property("Leds"));
 }
 
 MatrixDimensions RazerDeviceAdaptor::matrixDimensions() const
 {
     // get the value of property MatrixDimensions
-    return qvariant_cast< MatrixDimensions >(parent()->property("MatrixDimensions"));
+    return qvariant_cast<MatrixDimensions>(parent()->property("MatrixDimensions"));
 }
 
 QString RazerDeviceAdaptor::name() const
 {
     // get the value of property Name
-    return qvariant_cast< QString >(parent()->property("Name"));
+    return qvariant_cast<QString>(parent()->property("Name"));
 }
 
 QStringList RazerDeviceAdaptor::supportedFeatures() const
 {
     // get the value of property SupportedFeatures
-    return qvariant_cast< QStringList >(parent()->property("SupportedFeatures"));
+    return qvariant_cast<QStringList>(parent()->property("SupportedFeatures"));
 }
 
 QStringList RazerDeviceAdaptor::supportedFx() const
 {
     // get the value of property SupportedFx
-    return qvariant_cast< QStringList >(parent()->property("SupportedFx"));
+    return qvariant_cast<QStringList>(parent()->property("SupportedFx"));
 }
 
 QString RazerDeviceAdaptor::type() const
 {
     // get the value of property Type
-    return qvariant_cast< QString >(parent()->property("Type"));
+    return qvariant_cast<QString>(parent()->property("Type"));
 }
 
 bool RazerDeviceAdaptor::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData)
@@ -162,4 +162,3 @@ bool RazerDeviceAdaptor::startCustomEffectThread(const QString &effectName)
     QMetaObject::invokeMethod(parent(), "startCustomEffectThread", Q_RETURN_ARG(bool, out0), Q_ARG(QString, effectName));
     return out0;
 }
-

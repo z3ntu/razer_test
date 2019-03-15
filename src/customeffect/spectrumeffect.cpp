@@ -20,7 +20,7 @@
 
 void SpectrumEffect::initialize()
 {
-    rgbVal = {0xFF, 0x00, 0x00}; // Red
+    rgbVal = { 0xFF, 0x00, 0x00 }; // Red
     nextColor = SpectrumColor::Yellow;
     msleep = 100;
 }

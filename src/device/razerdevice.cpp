@@ -258,18 +258,18 @@ RazerDPI RazerDevice::getDPI()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFeature("dpi"))
-        return {0, 0};
+        return { 0, 0 };
     razer_report report, response_report;
 
     report = razer_chroma_misc_get_dpi_xy(RazerVarstore::STORE);
     if (sendReport(report, &response_report) != 0) {
         if (calledFromDBus())
             sendErrorReply(QDBusError::Failed);
-        return {0, 0};
+        return { 0, 0 };
     }
     ushort dpi_x = (response_report.arguments[1] << 8) | (response_report.arguments[2] & 0xFF);
     ushort dpi_y = (response_report.arguments[3] << 8) | (response_report.arguments[4] & 0xFF);
-    return {dpi_x, dpi_y};
+    return { dpi_x, dpi_y };
 }
 
 bool RazerDevice::setDPI(RazerDPI dpi)

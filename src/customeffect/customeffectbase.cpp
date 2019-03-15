@@ -18,7 +18,8 @@
 
 #include "customeffectbase.h"
 
-CustomEffectBase::CustomEffectBase(uchar width, uchar height) : width(width), height(height)
+CustomEffectBase::CustomEffectBase(uchar width, uchar height)
+    : width(width), height(height)
 {
     // We need height times QByteArrays
     rgbData.resize(height);

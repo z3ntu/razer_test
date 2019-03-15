@@ -36,12 +36,11 @@ DeviceManagerAdaptor::~DeviceManagerAdaptor()
 QList<QDBusObjectPath> DeviceManagerAdaptor::devices() const
 {
     // get the value of property Devices
-    return qvariant_cast< QList<QDBusObjectPath> >(parent()->property("Devices"));
+    return qvariant_cast<QList<QDBusObjectPath>>(parent()->property("Devices"));
 }
 
 QString DeviceManagerAdaptor::version() const
 {
     // get the value of property Version
-    return qvariant_cast< QString >(parent()->property("Version"));
+    return qvariant_cast<QString>(parent()->property("Version"));
 }
-

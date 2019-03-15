@@ -92,7 +92,8 @@ void DeviceNotifier::enumerateExistingDevices()
     udev_enumerate_add_match_subsystem(enumerate, "usb");
     udev_enumerate_scan_devices(enumerate);
     devices = udev_enumerate_get_list_entry(enumerate);
-    udev_list_entry_foreach(dev_list_entry, devices) {
+    udev_list_entry_foreach(dev_list_entry, devices)
+    {
         dev = udev_device_new_from_syspath(udev, udev_list_entry_get_name(dev_list_entry));
 
         QString devtype = QString(udev_device_get_devtype(dev));

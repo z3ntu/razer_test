@@ -240,10 +240,10 @@ bool RazerClassicLED::getLedState(RazerClassicLedState *state)
     }
 
     unsigned char stateChar = response_report.arguments[2];
-//     if (stateChar < RazerClassicLedState::Off || stateChar > RazerClassicLedState::On) { // TODO: Needed?
-//         qWarning("getLedState value is out of bounds!");
-//         return false;
-//     }
+    //     if (stateChar < RazerClassicLedState::Off || stateChar > RazerClassicLedState::On) { // TODO: Needed?
+    //         qWarning("getLedState value is out of bounds!");
+    //         return false;
+    //     }
     *state = static_cast<RazerClassicLedState>(stateChar);
 
     return true;
@@ -279,10 +279,10 @@ bool RazerClassicLED::getLedEffect(RazerClassicEffectId *effect)
     }
 
     unsigned char effectChar = response_report.arguments[2];
-//     if (effectChar < RazerClassicEffectId::Static || effectChar > RazerClassicEffectId::Spectrum) { // TODO: Needed?
-//         qWarning("getLedEffect value is out of bounds!");
-//         return false;
-//     }
+    //     if (effectChar < RazerClassicEffectId::Static || effectChar > RazerClassicEffectId::Spectrum) { // TODO: Needed?
+    //         qWarning("getLedEffect value is out of bounds!");
+    //         return false;
+    //     }
     *effect = static_cast<RazerClassicEffectId>(effectChar);
 
     return true;

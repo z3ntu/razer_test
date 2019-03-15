@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <QObject>
 #include <QtTest>
 
@@ -60,7 +59,8 @@ ushort testJsonValidity::hexStringToUshort(const QString &str)
 {
     bool ok;
     ushort num = str.toUShort(&ok, 16);
-    if (!ok) return 0;
+    if (!ok)
+        return 0;
     return num;
 }
 

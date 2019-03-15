@@ -36,19 +36,19 @@ RazerLEDAdaptor::~RazerLEDAdaptor()
 QList<RGB> RazerLEDAdaptor::currentColors() const
 {
     // get the value of property CurrentColors
-    return qvariant_cast< QList<RGB> >(parent()->property("CurrentColors"));
+    return qvariant_cast<QList<RGB>>(parent()->property("CurrentColors"));
 }
 
 RazerEffect RazerLEDAdaptor::currentEffect() const
 {
     // get the value of property CurrentEffect
-    return qvariant_cast< RazerEffect >(parent()->property("CurrentEffect"));
+    return qvariant_cast<RazerEffect>(parent()->property("CurrentEffect"));
 }
 
 RazerLedId RazerLEDAdaptor::ledId() const
 {
     // get the value of property LedId
-    return qvariant_cast< RazerLedId >(parent()->property("LedId"));
+    return qvariant_cast<RazerLedId>(parent()->property("LedId"));
 }
 
 uchar RazerLEDAdaptor::getBrightness()
@@ -138,4 +138,3 @@ bool RazerLEDAdaptor::setWave(razer_test::WaveDirection direction)
     QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::WaveDirection, direction));
     return out0;
 }
-

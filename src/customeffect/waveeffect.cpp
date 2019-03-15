@@ -20,7 +20,7 @@
 
 void WaveEffect::initialize()
 {
-    startVal = {0xFF, 0x00, 0x00}; // Red
+    startVal = { 0xFF, 0x00, 0x00 }; // Red
     startNextColor = SpectrumColor::Yellow;
     msleep = 100;
 }

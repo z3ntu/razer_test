@@ -24,16 +24,16 @@
 #include "daemon.h"
 #include "razer_test.h"
 
-#define ANSI_BOLD          "\x1b[1m"
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_RESET         "\x1b[0m"
+#define ANSI_BOLD "\x1b[1m"
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_RESET "\x1b[0m"
 
 // Used to tell myMessageOutput if --verbose was given on the command line
 bool verbose = false;
 
-void myMessageOutput(QtMsgType type, const QMessageLogContext &/*context*/, const QString &msg)
+void myMessageOutput(QtMsgType type, const QMessageLogContext & /*context*/, const QString &msg)
 {
     QByteArray localMsg = msg.toLocal8Bit();
     switch (type) {
@@ -75,9 +75,9 @@ int main(int argc, char *argv[])
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addOption({"devel", QString("Uses data files at ../data/devices instead of %1.").arg(RAZER_TEST_DATADIR)});
-    parser.addOption({"fake-devices", "Adds fake devices instead of real ones."});
-    parser.addOption({"verbose", "Print debug messages."});
+    parser.addOption({ "devel", QString("Uses data files at ../data/devices instead of %1.").arg(RAZER_TEST_DATADIR) });
+    parser.addOption({ "fake-devices", "Adds fake devices instead of real ones." });
+    parser.addOption({ "verbose", "Print debug messages." });
     parser.process(app);
 
     verbose = parser.isSet("verbose");

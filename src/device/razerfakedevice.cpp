@@ -66,7 +66,7 @@ RazerDPI RazerFakeDevice::getDPI()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFeature("dpi"))
-        return {0, 0};
+        return { 0, 0 };
 
     return dpi;
 }

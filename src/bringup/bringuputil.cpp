@@ -27,19 +27,21 @@
 
 #include <iostream>
 
-BringupUtil::BringupUtil(struct hid_device_info *hid_dev_info) : hid_dev_info(hid_dev_info)
+BringupUtil::BringupUtil(struct hid_device_info *hid_dev_info)
+    : hid_dev_info(hid_dev_info)
 {
 }
 
-BringupUtil::BringupUtil(RazerDevice *device) : device(device)
+BringupUtil::BringupUtil(RazerDevice *device)
+    : device(device)
 {
 }
 
 const QVector<QVector<RazerDeviceQuirks>> quirksCombinations {
     {},
-    {RazerDeviceQuirks::MouseMatrix},
-    {RazerDeviceQuirks::MouseMatrix, RazerDeviceQuirks::MatrixBrightness},
-    {RazerDeviceQuirks::MatrixBrightness}
+    { RazerDeviceQuirks::MouseMatrix },
+    { RazerDeviceQuirks::MouseMatrix, RazerDeviceQuirks::MatrixBrightness },
+    { RazerDeviceQuirks::MatrixBrightness }
 };
 
 bool BringupUtil::newDevice()
@@ -69,7 +71,7 @@ bool BringupUtil::newDevice()
         return false;
     }
 
-    QVector<RazerLedId> allLedIds = {RazerLedId::ScrollWheelLED, RazerLedId::BatteryLED, RazerLedId::LogoLED, RazerLedId::BacklightLED, RazerLedId::MacroRecordingLED, RazerLedId::GameModeLED, RazerLedId::KeymapRedLED, RazerLedId::KeymapGreenLED, RazerLedId::KeymapBlueLED, RazerLedId::RightSideLED, RazerLedId::LeftSideLED};
+    QVector<RazerLedId> allLedIds = { RazerLedId::ScrollWheelLED, RazerLedId::BatteryLED, RazerLedId::LogoLED, RazerLedId::BacklightLED, RazerLedId::MacroRecordingLED, RazerLedId::GameModeLED, RazerLedId::KeymapRedLED, RazerLedId::KeymapGreenLED, RazerLedId::KeymapBlueLED, RazerLedId::RightSideLED, RazerLedId::LeftSideLED };
     QVector<RazerLedId> ledIds = {};
     QStringList features = {};
     QVector<RazerDeviceQuirks> quirks = quirksCombinations.at(0);
@@ -113,7 +115,7 @@ bool BringupUtil::newDevice()
         return true;
     }
     for (auto led : device->getLeds()) {
-        led->setStatic({0xFF, 0xFF, 0x00});
+        led->setStatic({ 0xFF, 0xFF, 0x00 });
         qInfo("Did a LED just turn yellow (tried %s)? (y/N)", qUtf8Printable(LedIdToString.value(led->getLedId())));
         std::cout << "> ";
         input = cin.readLine();
@@ -149,7 +151,6 @@ bool BringupUtil::newDevice()
 
     // == FX ==
     QVector<RazerEffect> fxVec = testLedEffects();
-
 
     // == FEATURES ==
     if (type == "mouse") {
@@ -188,20 +189,20 @@ bool BringupUtil::newDevice()
     QJsonArray quirksJson;
     for (auto quirk : quirks)
         quirksJson.append(QuirksToString.value(quirk));
-    QJsonArray dimsJson = {dims.x, dims.y};
+    QJsonArray dimsJson = { dims.x, dims.y };
 
     QJsonObject deviceObj {
-        {"name", name},
-        {"vid", vid},
-        {"pid", pid},
-        {"type", type},
-        {"pclass", "matrix"}, // TODO
-        {"leds", ledIdsJson},
-        {"fx", fxJson},
-        {"features", featuresJson},
-        {"quirks", quirksJson},
-        {"matrix_dimensions", dimsJson}, // TODO
-        {"max_dpi", maxDPI}
+        { "name", name },
+        { "vid", vid },
+        { "pid", pid },
+        { "type", type },
+        { "pclass", "matrix" }, // TODO
+        { "leds", ledIdsJson },
+        { "fx", fxJson },
+        { "features", featuresJson },
+        { "quirks", quirksJson },
+        { "matrix_dimensions", dimsJson }, // TODO
+        { "max_dpi", maxDPI }
     };
 
     // Remove unnecessary entries
@@ -228,7 +229,7 @@ bool BringupUtil::testDPI()
         return false;
     }
     qInfo("The current DPI is: %hu - %hu", dpi.dpi_x, dpi.dpi_y);
-    RazerDPI newDPI = {500, 600};
+    RazerDPI newDPI = { 500, 600 };
     device->setDPI(newDPI);
     auto dpi2 = device->getDPI();
     if (dpi2.dpi_x != newDPI.dpi_x || dpi2.dpi_y != newDPI.dpi_y) {
@@ -322,9 +323,10 @@ QVector<RazerEffect> BringupUtil::testLedEffects()
         auto currEffect = led->getCurrentEffect();
         auto currColors = led->getCurrentColors();
         for (auto effectStr : device->getSupportedFx()) {
-            if (effectStr == "custom_frame" || effectStr == "brightness") continue;
+            if (effectStr == "custom_frame" || effectStr == "brightness")
+                continue;
             RazerEffect effect = StringToEffect.value(effectStr);
-            setEffect(led, effect, {255, 0, 0}, {0, 255, 0}, {0, 0, 255});
+            setEffect(led, effect, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 });
             qInfo("Effect %s should be active now. Is that correct? (y/N)", qUtf8Printable(effectStr));
             std::cout << "> ";
             input = cin.readLine();
@@ -333,7 +335,7 @@ QVector<RazerEffect> BringupUtil::testLedEffects()
             }
         }
         if (currColors.size() <= 2) // should never happen
-            currColors = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}};
+            currColors = { { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 } };
         setEffect(led, currEffect, currColors.at(0), currColors.at(1), currColors.at(2));
     }
     return workingEffects;

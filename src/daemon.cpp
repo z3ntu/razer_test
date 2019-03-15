@@ -53,10 +53,8 @@
 #define TARGET_BUS QDBusConnection::sessionBus()
 #endif
 
-Daemon::Daemon(bool develMode, bool fakeDevices) :
-    connection(TARGET_BUS),
-    develMode(develMode),
-    fakeDevices(fakeDevices)
+Daemon::Daemon(bool develMode, bool fakeDevices)
+    : connection(TARGET_BUS), develMode(develMode), fakeDevices(fakeDevices)
 {
 #ifndef NO_DEVNOTIFIER_IMPL
     if (!fakeDevices) {
@@ -69,7 +67,6 @@ Daemon::Daemon(bool develMode, bool fakeDevices) :
     }
 #endif
 }
-
 
 bool Daemon::initialize()
 {
@@ -110,7 +107,7 @@ bool Daemon::initialize()
         foreach (RazerLED *led, razerDevice->getLeds()) {
             qInfo() << "Setting LED to static with color #FFFF00";
             qDebug() << "LED object path:" << led->getObjectPath().path();
-            led->setStatic({0xFF, 0xFF, 0x00});
+            led->setStatic({ 0xFF, 0xFF, 0x00 });
             led->setBrightness(255);
         }
 
@@ -393,13 +390,11 @@ bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString
             qCritical("Unhandled quirks string!");
         }
     }
-    *matrixDimensions = {deviceObj["matrix_dimensions"].toArray()[0].toVariant().value<uchar>(),
-                         deviceObj["matrix_dimensions"].toArray()[1].toVariant().value<uchar>()
-                        };
+    *matrixDimensions = { deviceObj["matrix_dimensions"].toArray()[0].toVariant().value<uchar>(),
+                          deviceObj["matrix_dimensions"].toArray()[1].toVariant().value<uchar>() };
     *maxDPI = deviceObj["max_dpi"].toInt();
     return true;
 }
-
 
 QJsonObject Daemon::getDeviceJsonForDevice(ushort vid, ushort pid)
 {
