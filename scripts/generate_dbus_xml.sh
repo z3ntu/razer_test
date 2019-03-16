@@ -7,12 +7,12 @@ set -e
 
 env QT_PLUGIN_PATH=scripts/qdbuscpp2xml-plugin/builddir/ \
     /mnt/hdd/qt/qtbase/bin/qdbuscpp2xml -x qdbuscpp2xml-plugin \
-    src/device/razerdevice.h -o razerdevice.xml
+    src/device/razerdevice.h -o dbus/razerdevice.xml
 
 env QT_PLUGIN_PATH=scripts/qdbuscpp2xml-plugin/builddir/ \
     /mnt/hdd/qt/qtbase/bin/qdbuscpp2xml -x qdbuscpp2xml-plugin \
-    src/manager/devicemanager.h -o devicemanager.xml
+    src/manager/devicemanager.h -o dbus/devicemanager.xml
 
 env QT_PLUGIN_PATH=scripts/qdbuscpp2xml-plugin/builddir/ \
     /mnt/hdd/qt/qtbase/bin/qdbuscpp2xml -x qdbuscpp2xml-plugin \
-    src/led/razerled.h -o razerled.xml
+    src/led/razerled.h -o dbus/razerled.xml
