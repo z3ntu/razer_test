@@ -59,6 +59,9 @@ QString RazerFakeDevice::getFirmwareVersion()
 QString RazerFakeDevice::getKeyboardLayout()
 {
     qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("keyboard_layout"))
+        return "error";
+
     return keyboardLayoutIds.value(0x01, "unknown"); // en_US
 }
 
