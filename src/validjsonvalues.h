@@ -23,7 +23,7 @@
 
 const QStringList allowedKeys {"name", "vid", "pid", "type", "pclass", "leds", "fx", "features", "quirks", "matrix_dimensions", "max_dpi"};
 
-const QStringList validType = {"core", "headset", "keyboard", "keypad", "mouse", "mousepad", "mug"};
+const QStringList validType = {"accessory", "headset", "keyboard", "keypad", "mouse", "mousepad"};
 const QStringList validPclass = {"classic", "matrix"};
 const QStringList validFx = {"off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"};
 const QStringList validFeatures = {"keyboard_layout", "dpi", "poll_rate"};
