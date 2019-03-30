@@ -216,16 +216,27 @@ razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage,
     return report;
 }
 
+razer_report razer_chroma_extended_matrix_set_custom_frame(uchar row_index, uchar start_col, uchar stop_col, const uchar *rgb_data)
+{
+    razer_report report = get_razer_report(0x0F, 0x03, 0x47);
+    auto row_length = (size_t)(((stop_col + 1) - start_col) * 3);
+
+    report.arguments[2] = row_index;
+    report.arguments[3] = start_col;
+    report.arguments[4] = stop_col;
+    memcpy(&report.arguments[5], rgb_data, row_length);
+
+    return report;
+}
+
 razer_report razer_chroma_misc_one_row_set_custom_frame(uchar start_col, uchar stop_col, const uchar *rgb_data)
 {
     razer_report report = get_razer_report(0x03, 0x0C, 0x32);
     auto row_length = (size_t)(((stop_col + 1) - start_col) * 3);
-    int index = 2 + (start_col * 3);
 
     report.arguments[0] = start_col;
     report.arguments[1] = stop_col;
-
-    memcpy(&report.arguments[index], rgb_data, row_length);
+    memcpy(&report.arguments[2], rgb_data, row_length);
 
     return report;
 }

@@ -45,6 +45,8 @@ bool RazerMatrixDevice::displayCustomFrame()
     RazerMatrixLED *led = static_cast<RazerMatrixLED *>(leds.values().first());
     if (quirks.contains(RazerDeviceQuirks::MouseMatrix)) {
         return led->setMouseMatrixEffect(RazerMouseMatrixEffectId::CustomFrame);
+    } else if (quirks.contains(RazerDeviceQuirks::ExtendedMatrix)) {
+        return led->setExtendedMatrixEffect(RazerMouseMatrixEffectId::CustomFrame);
     } else {
         return led->setMatrixEffect(RazerMatrixEffectId::CustomFrame);
     }
@@ -73,6 +75,8 @@ bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar en
 
     if (quirks.contains(RazerDeviceQuirks::FireflyCustomFrame)) {
         report = razer_chroma_misc_one_row_set_custom_frame(startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData2.constData()));
+    } else if (quirks.contains(RazerDeviceQuirks::ExtendedMatrix)) {
+        report = razer_chroma_extended_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData2.constData()));
     } else {
         report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData2.constData()));
     }
