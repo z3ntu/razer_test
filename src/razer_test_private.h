@@ -85,6 +85,7 @@ enum class RazerDeviceQuirks {
     MatrixBrightness,
     FireflyCustomFrame,
     ByteDPI,
+    NoGetBrightness,
 };
 inline uint qHash(RazerDeviceQuirks key, uint seed)
 {
@@ -97,6 +98,7 @@ const QHash<QString, RazerDeviceQuirks> StringToQuirks {
     { "matrix_brightness", RazerDeviceQuirks::MatrixBrightness },
     { "firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame },
     { "byte_dpi", RazerDeviceQuirks::ByteDPI },
+    { "no_get_brightness", RazerDeviceQuirks::NoGetBrightness },
 };
 
 const QHash<RazerDeviceQuirks, QString> QuirksToString {
@@ -105,6 +107,7 @@ const QHash<RazerDeviceQuirks, QString> QuirksToString {
     { RazerDeviceQuirks::MatrixBrightness, "matrix_brightness" },
     { RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame" },
     { RazerDeviceQuirks::ByteDPI, "byte_dpi" },
+    { RazerDeviceQuirks::NoGetBrightness, "no_get_brightness" },
 };
 
 const QHash<QString, RazerLedId> StringToLedId {

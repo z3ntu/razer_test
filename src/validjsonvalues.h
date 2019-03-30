@@ -27,6 +27,6 @@ const QStringList validType = { "accessory", "headset", "keyboard", "keypad", "m
 const QStringList validPclass = { "classic", "matrix" };
 const QStringList validFx = { "off", "on", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "brightness" };
 const QStringList validFeatures = { "custom_frame", "keyboard_layout", "dpi", "poll_rate" };
-const QStringList validQuirks = { "extended_matrix", "mouse_matrix", "matrix_brightness", "firefly_custom_frame", "byte_dpi" };
+const QStringList validQuirks = { "extended_matrix", "mouse_matrix", "matrix_brightness", "firefly_custom_frame", "byte_dpi", "no_get_brightness" };
 
 #endif // VALIDJSONVALUES_H

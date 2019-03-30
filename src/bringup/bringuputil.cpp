@@ -42,7 +42,10 @@ const QVector<QVector<RazerDeviceQuirks>> quirksCombinations {
     {},
     { RazerDeviceQuirks::MouseMatrix },
     { RazerDeviceQuirks::MouseMatrix, RazerDeviceQuirks::MatrixBrightness },
-    { RazerDeviceQuirks::MatrixBrightness }
+    { RazerDeviceQuirks::MatrixBrightness },
+    { RazerDeviceQuirks::MouseMatrix, RazerDeviceQuirks::NoGetBrightness },
+    { RazerDeviceQuirks::MouseMatrix, RazerDeviceQuirks::MatrixBrightness, RazerDeviceQuirks::NoGetBrightness },
+    { RazerDeviceQuirks::MatrixBrightness, RazerDeviceQuirks::NoGetBrightness }
 };
 
 RazerDevice *BringupUtil::tryDevice(QString pclass, QVector<razer_test::RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks)
