@@ -20,11 +20,19 @@
 
 bool RazerMatrixLED::initialize()
 {
-    bool ok;
-    ok = getBrightness(&brightness);
-    if (!ok) {
-        qWarning("Error during getBrightness()");
-        return false;
+    if (device->hasQuirk(RazerDeviceQuirks::NoGetBrightness)) {
+        brightness = 255;
+        if (!setBrightness(brightness)) {
+            qWarning("Error during setBrightness()");
+            return false;
+        }
+    } else {
+        bool ok;
+        ok = getBrightness(&brightness);
+        if (!ok) {
+            qWarning("Error during getBrightness()");
+            return false;
+        }
     }
     if (!setSpectrum()) {
         qWarning("Error during setSpectrumInit()");
@@ -175,6 +183,12 @@ bool RazerMatrixLED::getBrightness(uchar *brightness)
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("brightness"))
         return false;
+
+    if (device->hasQuirk(RazerDeviceQuirks::NoGetBrightness)) {
+        *brightness = this->brightness;
+        return true;
+    }
+
     razer_report report, response_report;
 
     if (device->hasQuirk(RazerDeviceQuirks::MatrixBrightness)) {

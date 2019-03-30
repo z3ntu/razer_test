@@ -79,6 +79,7 @@ enum class RazerMouseMatrixEffectId : uchar {
 enum class RazerDeviceQuirks {
     MouseMatrix,
     MatrixBrightness,
+    NoGetBrightness,
     FireflyCustomFrame
 };
 inline uint qHash(RazerDeviceQuirks key, uint seed)
@@ -89,13 +90,15 @@ inline uint qHash(RazerDeviceQuirks key, uint seed)
 const QHash<QString, RazerDeviceQuirks> StringToQuirks {
     { "mouse_matrix", RazerDeviceQuirks::MouseMatrix },
     { "matrix_brightness", RazerDeviceQuirks::MatrixBrightness },
-    { "firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame }
+    { "no_get_brightness", RazerDeviceQuirks::NoGetBrightness },
+    { "firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame },
 };
 
 const QHash<RazerDeviceQuirks, QString> QuirksToString {
     { RazerDeviceQuirks::MouseMatrix, "mouse_matrix" },
     { RazerDeviceQuirks::MatrixBrightness, "matrix_brightness" },
-    { RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame" }
+    { RazerDeviceQuirks::NoGetBrightness, "no_get_brightness" },
+    { RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame" },
 };
 
 const QHash<QString, RazerLedId> StringToLedId {
