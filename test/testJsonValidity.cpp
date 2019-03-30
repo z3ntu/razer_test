@@ -102,11 +102,13 @@ void testJsonValidity::checkJsonDataValidity()
             qDebug() << "fx:" << fxVal.toString();
             QVERIFY2(validFx.contains(fxVal.toString()), "Invalid fx.");
         }
-        // features array
-        QVERIFY2(devObj["features"].isArray(), "Invalid features - has to be an array.");
-        foreach (const QJsonValue &featVal, devObj["features"].toArray()) {
-            qDebug() << "features:" << featVal.toString();
-            QVERIFY2(validFeatures.contains(featVal.toString()), "Invalid features.");
+        // features array - optional
+        if(devObj.contains("features")) {
+            QVERIFY2(devObj["features"].isArray(), "Invalid features - has to be an array.");
+            foreach (const QJsonValue &featVal, devObj["features"].toArray()) {
+                qDebug() << "features:" << featVal.toString();
+                QVERIFY2(validFeatures.contains(featVal.toString()), "Invalid features.");
+            }
         }
         // quirks array - optional
         // Access the value here with .value() and not with [], as the latter will create the value and make the "else if" fail
