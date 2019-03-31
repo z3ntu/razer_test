@@ -51,7 +51,7 @@ private:
 
     static int serialCounter;
 
-    RazerDPI dpi = {500, 500};
+    RazerDPI dpi = { 500, 500 };
     ushort poll_rate = 1000;
 };
 

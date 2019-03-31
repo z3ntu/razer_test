@@ -21,12 +21,12 @@
 
 #include <QStringList>
 
-const QStringList allowedKeys {"name", "vid", "pid", "type", "pclass", "leds", "fx", "features", "quirks", "matrix_dimensions", "max_dpi"};
+const QStringList allowedKeys { "name", "vid", "pid", "type", "pclass", "leds", "fx", "features", "quirks", "matrix_dimensions", "max_dpi" };
 
-const QStringList validType = {"accessory", "headset", "keyboard", "keypad", "mouse", "mousepad"};
-const QStringList validPclass = {"classic", "matrix"};
-const QStringList validFx = {"off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness"};
-const QStringList validFeatures = {"keyboard_layout", "dpi", "poll_rate"};
-const QStringList validQuirks = {"mouse_matrix", "matrix_brightness", "firefly_custom_frame"};
+const QStringList validType = { "accessory", "headset", "keyboard", "keypad", "mouse", "mousepad" };
+const QStringList validPclass = { "classic", "matrix" };
+const QStringList validFx = { "off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "custom_frame", "brightness" };
+const QStringList validFeatures = { "keyboard_layout", "dpi", "poll_rate" };
+const QStringList validQuirks = { "mouse_matrix", "matrix_brightness", "firefly_custom_frame" };
 
 #endif // VALIDJSONVALUES_H

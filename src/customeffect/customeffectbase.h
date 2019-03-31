@@ -29,7 +29,12 @@ struct RGBval {
 };
 
 enum class SpectrumColor {
-    Red, Yellow, Green, Cyan, Blue, Magenta
+    Red,
+    Yellow,
+    Green,
+    Cyan,
+    Blue,
+    Magenta
 };
 
 inline uchar increaseByNoOverflow(uchar num, uchar incBy)

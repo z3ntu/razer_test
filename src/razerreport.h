@@ -54,7 +54,6 @@ struct razer_report_struct {
 };
 using razer_report = razer_report_struct;
 
-
 uchar razer_calculate_crc(razer_report *report);
 razer_report get_razer_report(uchar command_class, uchar command_id, uchar data_size);
 

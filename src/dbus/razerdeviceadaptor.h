@@ -18,8 +18,10 @@ using namespace razer_test;
 #include <QtDBus/QtDBus>
 QT_BEGIN_NAMESPACE
 class QByteArray;
-template<class T> class QList;
-template<class Key, class Value> class QMap;
+template<class T>
+class QList;
+template<class Key, class Value>
+class QMap;
 class QString;
 class QStringList;
 class QVariant;
@@ -28,65 +30,65 @@ QT_END_NAMESPACE
 /*
  * Adaptor class for interface io.github.openrazer1.Device
  */
-class RazerDeviceAdaptor: public QDBusAbstractAdaptor
+class RazerDeviceAdaptor : public QDBusAbstractAdaptor
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Device")
     Q_CLASSINFO("D-Bus Introspection", ""
-"  <interface name=\"io.github.openrazer1.Device\">\n"
-"    <property access=\"read\" type=\"s\" name=\"Name\"/>\n"
-"    <property access=\"read\" type=\"s\" name=\"Type\"/>\n"
-"    <property access=\"read\" type=\"ao\" name=\"Leds\"/>\n"
-"    <property access=\"read\" type=\"as\" name=\"SupportedFx\"/>\n"
-"    <property access=\"read\" type=\"as\" name=\"SupportedFeatures\"/>\n"
-"    <property access=\"read\" type=\"(yy)\" name=\"MatrixDimensions\">\n"
-"      <annotation value=\"MatrixDimensions\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
-"    </property>\n"
-"    <method name=\"getSerial\">\n"
-"      <arg direction=\"out\" type=\"s\"/>\n"
-"    </method>\n"
-"    <method name=\"getFirmwareVersion\">\n"
-"      <arg direction=\"out\" type=\"s\"/>\n"
-"    </method>\n"
-"    <method name=\"getKeyboardLayout\">\n"
-"      <arg direction=\"out\" type=\"s\"/>\n"
-"    </method>\n"
-"    <method name=\"getDPI\">\n"
-"      <arg direction=\"out\" type=\"(qq)\"/>\n"
-"      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
-"    </method>\n"
-"    <method name=\"setDPI\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
-"      <annotation value=\"razer_test::RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
-"    </method>\n"
-"    <method name=\"getMaxDPI\">\n"
-"      <arg direction=\"out\" type=\"q\"/>\n"
-"    </method>\n"
-"    <method name=\"getPollRate\">\n"
-"      <arg direction=\"out\" type=\"q\"/>\n"
-"    </method>\n"
-"    <method name=\"setPollRate\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"q\" name=\"poll_rate\"/>\n"
-"    </method>\n"
-"    <method name=\"displayCustomFrame\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"    </method>\n"
-"    <method name=\"defineCustomFrame\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"y\" name=\"row\"/>\n"
-"      <arg direction=\"in\" type=\"y\" name=\"startColumn\"/>\n"
-"      <arg direction=\"in\" type=\"y\" name=\"endColumn\"/>\n"
-"      <arg direction=\"in\" type=\"ay\" name=\"rgbData\"/>\n"
-"    </method>\n"
-"    <method name=\"startCustomEffectThread\">\n"
-"      <arg direction=\"out\" type=\"b\"/>\n"
-"      <arg direction=\"in\" type=\"s\" name=\"effectName\"/>\n"
-"    </method>\n"
-"    <method name=\"pauseCustomEffectThread\"/>\n"
-"  </interface>\n"
-        "")
+                                       "  <interface name=\"io.github.openrazer1.Device\">\n"
+                                       "    <property access=\"read\" type=\"s\" name=\"Name\"/>\n"
+                                       "    <property access=\"read\" type=\"s\" name=\"Type\"/>\n"
+                                       "    <property access=\"read\" type=\"ao\" name=\"Leds\"/>\n"
+                                       "    <property access=\"read\" type=\"as\" name=\"SupportedFx\"/>\n"
+                                       "    <property access=\"read\" type=\"as\" name=\"SupportedFeatures\"/>\n"
+                                       "    <property access=\"read\" type=\"(yy)\" name=\"MatrixDimensions\">\n"
+                                       "      <annotation value=\"MatrixDimensions\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                                       "    </property>\n"
+                                       "    <method name=\"getSerial\">\n"
+                                       "      <arg direction=\"out\" type=\"s\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"getFirmwareVersion\">\n"
+                                       "      <arg direction=\"out\" type=\"s\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"getKeyboardLayout\">\n"
+                                       "      <arg direction=\"out\" type=\"s\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"getDPI\">\n"
+                                       "      <arg direction=\"out\" type=\"(qq)\"/>\n"
+                                       "      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"setDPI\">\n"
+                                       "      <arg direction=\"out\" type=\"b\"/>\n"
+                                       "      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
+                                       "      <annotation value=\"razer_test::RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"getMaxDPI\">\n"
+                                       "      <arg direction=\"out\" type=\"q\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"getPollRate\">\n"
+                                       "      <arg direction=\"out\" type=\"q\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"setPollRate\">\n"
+                                       "      <arg direction=\"out\" type=\"b\"/>\n"
+                                       "      <arg direction=\"in\" type=\"q\" name=\"poll_rate\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"displayCustomFrame\">\n"
+                                       "      <arg direction=\"out\" type=\"b\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"defineCustomFrame\">\n"
+                                       "      <arg direction=\"out\" type=\"b\"/>\n"
+                                       "      <arg direction=\"in\" type=\"y\" name=\"row\"/>\n"
+                                       "      <arg direction=\"in\" type=\"y\" name=\"startColumn\"/>\n"
+                                       "      <arg direction=\"in\" type=\"y\" name=\"endColumn\"/>\n"
+                                       "      <arg direction=\"in\" type=\"ay\" name=\"rgbData\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"startCustomEffectThread\">\n"
+                                       "      <arg direction=\"out\" type=\"b\"/>\n"
+                                       "      <arg direction=\"in\" type=\"s\" name=\"effectName\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"pauseCustomEffectThread\"/>\n"
+                                       "  </interface>\n"
+                                       "")
 public:
     RazerDeviceAdaptor(QObject *parent);
     virtual ~RazerDeviceAdaptor();

@@ -16,8 +16,10 @@
 #include <QtDBus/QtDBus>
 QT_BEGIN_NAMESPACE
 class QByteArray;
-template<class T> class QList;
-template<class Key, class Value> class QMap;
+template<class T>
+class QList;
+template<class Key, class Value>
+class QMap;
 class QString;
 class QStringList;
 class QVariant;
@@ -26,17 +28,17 @@ QT_END_NAMESPACE
 /*
  * Adaptor class for interface io.github.openrazer1.Manager
  */
-class DeviceManagerAdaptor: public QDBusAbstractAdaptor
+class DeviceManagerAdaptor : public QDBusAbstractAdaptor
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Manager")
     Q_CLASSINFO("D-Bus Introspection", ""
-"  <interface name=\"io.github.openrazer1.Manager\">\n"
-"    <property access=\"read\" type=\"ao\" name=\"Devices\"/>\n"
-"    <property access=\"read\" type=\"s\" name=\"Version\"/>\n"
-"    <signal name=\"devicesChanged\"/>\n"
-"  </interface>\n"
-        "")
+                                       "  <interface name=\"io.github.openrazer1.Manager\">\n"
+                                       "    <property access=\"read\" type=\"ao\" name=\"Devices\"/>\n"
+                                       "    <property access=\"read\" type=\"s\" name=\"Version\"/>\n"
+                                       "    <signal name=\"devicesChanged\"/>\n"
+                                       "  </interface>\n"
+                                       "")
 public:
     DeviceManagerAdaptor(QObject *parent);
     virtual ~DeviceManagerAdaptor();

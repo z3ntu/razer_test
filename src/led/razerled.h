@@ -79,7 +79,7 @@ public slots:
 
 protected:
     bool checkFx(QString fxStr);
-    void saveFxAndColors(RazerEffect fx, int numColors, RGB color1 = {0, 0, 0}, RGB color2 = {0, 0, 0}, RGB color3 = {0, 0, 0});
+    void saveFxAndColors(RazerEffect fx, int numColors, RGB color1 = { 0, 0, 0 }, RGB color2 = { 0, 0, 0 }, RGB color3 = { 0, 0, 0 });
 
     // D-Bus replies don't work when called from another object
     bool sendReportDBusHelper(razer_report request_report, razer_report *response_report);
@@ -87,9 +87,9 @@ protected:
     void dbusNotSupportedHelper(const QString &errorMessage);
 
     RazerEffect effect = RazerEffect::Spectrum;
-    RGB color1 = {0, 255, 0};
-    RGB color2 = {255, 0, 0};
-    RGB color3 = {0, 0, 255};
+    RGB color1 = { 0, 255, 0 };
+    RGB color2 = { 255, 0, 0 };
+    RGB color3 = { 0, 0, 255 };
 };
 
 #include "../device/razerdevice.h"

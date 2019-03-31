@@ -56,10 +56,10 @@ private:
     RazerClassicLedState classicState;
 
     QHash<RazerClassicEffectId, RazerEffect> effectTranslationTable {
-        {RazerClassicEffectId::Static, RazerEffect::Static},
-        {RazerClassicEffectId::Blinking, RazerEffect::Blinking},
-        {RazerClassicEffectId::Breathing, RazerEffect::Breathing},
-        {RazerClassicEffectId::Spectrum, RazerEffect::Spectrum}
+        { RazerClassicEffectId::Static, RazerEffect::Static },
+        { RazerClassicEffectId::Blinking, RazerEffect::Blinking },
+        { RazerClassicEffectId::Breathing, RazerEffect::Breathing },
+        { RazerClassicEffectId::Spectrum, RazerEffect::Spectrum }
     };
 };
 

@@ -41,6 +41,7 @@ public:
 
     // Interactive
     QVector<RazerEffect> testLedEffects();
+
 private:
     struct hid_device_info *hid_dev_info;
     RazerDevice *device;
