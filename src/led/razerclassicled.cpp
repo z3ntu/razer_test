@@ -105,8 +105,8 @@ bool RazerClassicLED::setBreathingDual(RGB color, RGB color2)
     qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     if (!checkFx("breathing_dual"))
         return false;
-    saveFxAndColors(RazerEffect::BreathingDual, 2, color, color2);
-    sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerClassicLED does not implement setBreathingDual. This should not happen!");
     return false;
 }
 
@@ -115,8 +115,8 @@ bool RazerClassicLED::setBreathingRandom()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("breathing_random"))
         return false;
-    saveFxAndColors(RazerEffect::BreathingRandom, 0);
-    sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerClassicLED does not implement setBreathingRandom. This should not happen!");
     return false;
 }
 
@@ -160,8 +160,8 @@ bool RazerClassicLED::setWave(WaveDirection direction)
     qDebug("Called %s with params %hhu", Q_FUNC_INFO, static_cast<uchar>(direction));
     if (!checkFx("wave"))
         return false;
-    saveFxAndColors(RazerEffect::Wave, 0);
-    sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerClassicLED does not implement setWave. This should not happen!");
     return false;
 }
 
@@ -170,8 +170,8 @@ bool RazerClassicLED::setReactive(ReactiveSpeed speed, RGB color)
     qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), color.r, color.g, color.b);
     if (!checkFx("reactive"))
         return false;
-    saveFxAndColors(RazerEffect::Reactive, 1, color);
-    sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerClassicLED does not implement setReactive. This should not happen!");
     return false;
 }
 
@@ -183,10 +183,8 @@ bool RazerClassicLED::setBrightness(uchar brightness)
     razer_report report, response_report;
 
     report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, this->ledId, brightness);
-    if (device->sendReport(report, &response_report) != 0) {
-        sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     // Save state into LED variable
     this->brightness = brightness;
@@ -202,11 +200,8 @@ bool RazerClassicLED::getBrightness(uchar *brightness)
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, this->ledId);
-    if (device->sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     *brightness = response_report.arguments[2];
 
@@ -220,9 +215,8 @@ bool RazerClassicLED::setLedState(RazerClassicLedState state)
     razer_report report, response_report;
 
     report = razer_chroma_standard_set_led_state(RazerVarstore::STORE, this->ledId, state);
-    if (device->sendReport(report, &response_report) != 0) {
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     // Save state into LED variable
     this->classicState = state;
@@ -235,9 +229,8 @@ bool RazerClassicLED::getLedState(RazerClassicLedState *state)
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_led_state(RazerVarstore::STORE, this->ledId);
-    if (device->sendReport(report, &response_report) != 0) {
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     unsigned char stateChar = response_report.arguments[2];
     //     if (stateChar < RazerClassicLedState::Off || stateChar > RazerClassicLedState::On) { // TODO: Needed?
@@ -262,9 +255,8 @@ bool RazerClassicLED::setLedEffect(RazerClassicEffectId effect)
     razer_report report, response_report;
 
     report = razer_chroma_standard_set_led_effect(RazerVarstore::STORE, this->ledId, effect);
-    if (device->sendReport(report, &response_report) != 0) {
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     return true;
 }
@@ -274,9 +266,8 @@ bool RazerClassicLED::getLedEffect(RazerClassicEffectId *effect)
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_led_effect(RazerVarstore::STORE, this->ledId);
-    if (device->sendReport(report, &response_report) != 0) {
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     unsigned char effectChar = response_report.arguments[2];
     //     if (effectChar < RazerClassicEffectId::Static || effectChar > RazerClassicEffectId::Spectrum) { // TODO: Needed?
@@ -293,9 +284,8 @@ bool RazerClassicLED::setLedRgb(RGB color)
     razer_report report, response_report;
 
     report = razer_chroma_standard_set_led_rgb(RazerVarstore::STORE, this->ledId, color.r, color.g, color.b);
-    if (device->sendReport(report, &response_report) != 0) {
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     // State gets saved in methods calling this one
 
@@ -307,9 +297,8 @@ bool RazerClassicLED::getLedRgb(RGB *color)
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_led_rgb(RazerVarstore::STORE, this->ledId);
-    if (device->sendReport(report, &response_report) != 0) {
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     color->r = response_report.arguments[2];
     color->g = response_report.arguments[3];

@@ -41,7 +41,8 @@ bool RazerClassicDevice::displayCustomFrame()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("custom_frame"))
         return false;
-    sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerClassicDevice does not implement displayCustomFrame. This should not happen!");
     return false;
 }
 
@@ -50,6 +51,7 @@ bool RazerClassicDevice::defineCustomFrame(uchar row, uchar startColumn, uchar e
     qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
     if (!checkFx("custom_frame"))
         return false;
-    sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerClassicDevice does not implement defineCustomFrame. This should not happen!");
     return false;
 }

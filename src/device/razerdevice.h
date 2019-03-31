@@ -56,7 +56,8 @@ public:
     virtual bool openDeviceHandle();
     virtual bool initialize() = 0;
 
-    int sendReport(razer_report request_report, razer_report *response_report);
+    bool sendReport(razer_report request_report, razer_report *response_report, QString &errorMessage);
+
     QDBusObjectPath getObjectPath();
 
     // Getters behind properties (Q_PROPERTY)
@@ -117,6 +118,11 @@ protected:
 
     // Cache serial for use after the device has been removed
     QString serial;
+
+    // D-Bus replies don't work when called from another object
+    bool sendReportDBusHelper(razer_report request_report, razer_report *response_report);
+    void dbusFailedHelper(const QString &errorMessage);
+    void dbusNotSupportedHelper(const QString &errorMessage);
 
 private slots:
     void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);

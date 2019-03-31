@@ -57,9 +57,7 @@ bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar en
         return false;
 
     if (rgbData.size() != ((endColumn + 1 - startColumn) * 3)) {
-        qWarning("defineCustomFrame called with invalid size of rgbData");
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+        dbusFailedHelper("defineCustomFrame called with invalid size of rgbData");
         return false;
     }
 
@@ -70,10 +68,7 @@ bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar en
     } else {
         report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
     }
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
     return true;
 }

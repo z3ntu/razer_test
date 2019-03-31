@@ -104,9 +104,8 @@ bool RazerMatrixLED::setBlinking(RGB color)
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("blinking"))
         return false;
-    saveFxAndColors(RazerEffect::Blinking, 1, color);
-    if (calledFromDBus())
-        sendErrorReply(QDBusError::NotSupported);
+
+    dbusNotSupportedHelper("RazerMatrixLED does not implement setBlinking. This should not happen!");
     return false;
 }
 
@@ -162,11 +161,8 @@ bool RazerMatrixLED::setBrightness(uchar brightness)
     } else {
         report = razer_chroma_standard_set_led_brightness(RazerVarstore::STORE, this->ledId, brightness);
     }
-    if (device->sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     // Save state into LED variable
     this->brightness = brightness;
@@ -186,11 +182,8 @@ bool RazerMatrixLED::getBrightness(uchar *brightness)
     } else {
         report = razer_chroma_standard_get_led_brightness(RazerVarstore::STORE, this->ledId);
     }
-    if (device->sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     *brightness = response_report.arguments[2];
 
@@ -213,11 +206,8 @@ bool RazerMatrixLED::setMatrixEffect(RazerMatrixEffectId effect, uchar arg1, uch
     report.arguments[7] = arg7;
     report.arguments[8] = arg8;
 
-    if (device->sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     return true;
 }
@@ -240,11 +230,8 @@ bool RazerMatrixLED::setMouseMatrixEffect(RazerMouseMatrixEffectId effect, uchar
     report.arguments[10] = arg10;
     report.arguments[11] = arg11;
 
-    if (device->sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
 
     return true;
 }

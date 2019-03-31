@@ -70,11 +70,11 @@ bool RazerDevice::openDeviceHandle()
     return true;
 }
 
-int RazerDevice::sendReport(razer_report request_report, razer_report *response_report)
+bool RazerDevice::sendReport(razer_report request_report, razer_report *response_report, QString &errorMessage)
 {
     if (handle == nullptr) {
-        qCritical("sendReport called on an unopened handle. This should not happen!");
-        return 1;
+        errorMessage = "sendReport called on an unopened handle. This should not happen!";
+        return false;
     }
     int res;
     unsigned char req_buf[sizeof(razer_report) + 1];
@@ -101,7 +101,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         // Send the Feature Report to the device
         res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
         if (res < 0) {
-            qWarning("Unable to send a feature report.");
+            qWarning("Failed to send a feature report, retrying...");
             retryCount--;
             continue;
         }
@@ -116,7 +116,7 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
         res_buf[0] = 0x00; // report number
         res = hid_get_feature_report(handle, res_buf, sizeof(res_buf));
         if (res < 0) {
-            qWarning("Unable to get a feature report.");
+            qWarning("Failed to get a feature report, retrying...");
             retryCount--;
             continue;
         }
@@ -140,18 +140,21 @@ int RazerDevice::sendReport(razer_report request_report, razer_report *response_
                response_report->command_id.id);
 #endif
 
-        if (response_report->status == RazerStatus::NOT_SUPPORTED)
-            return 2;
+        if (response_report->status == RazerStatus::NOT_SUPPORTED) {
+            errorMessage = "Failed to send report - device returned NOT_SUPPORTED";
+            return false;
+        }
 
         if (response_report->status != RazerStatus::SUCCESSFUL) {
             retryCount--;
             continue;
         } else {
-            return 0;
+            return true;
         }
     }
-    qWarning("Failed to send report after 3 tries.");
-    return 1;
+
+    errorMessage = "Failed to send report after 3 tries.";
+    return false;
 }
 
 QDBusObjectPath RazerDevice::getObjectPath()
@@ -214,11 +217,9 @@ QString RazerDevice::getSerial()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_serial();
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return "error";
-    }
+
     serial = QString((char *)&response_report.arguments[0]);
     return serial;
 }
@@ -229,11 +230,9 @@ QString RazerDevice::getFirmwareVersion()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_firmware_version();
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return "error";
-    }
+
     return QString("v%1.%2").arg(response_report.arguments[0]).arg(response_report.arguments[1]);
 }
 
@@ -245,11 +244,9 @@ QString RazerDevice::getKeyboardLayout()
     razer_report report, response_report;
 
     report = razer_chroma_standard_get_keyboard_layout();
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return "error";
-    }
+
     qDebug("Keyboard layout ID: 0x%02X", response_report.arguments[0]);
     return keyboardLayoutIds.value(response_report.arguments[0], "unknown");
 }
@@ -262,11 +259,9 @@ RazerDPI RazerDevice::getDPI()
     razer_report report, response_report;
 
     report = razer_chroma_misc_get_dpi_xy(RazerVarstore::STORE);
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return { 0, 0 };
-    }
+
     ushort dpi_x = (response_report.arguments[1] << 8) | (response_report.arguments[2] & 0xFF);
     ushort dpi_y = (response_report.arguments[3] << 8) | (response_report.arguments[4] & 0xFF);
     return { dpi_x, dpi_y };
@@ -280,11 +275,9 @@ bool RazerDevice::setDPI(RazerDPI dpi)
     razer_report report, response_report;
 
     report = razer_chroma_misc_set_dpi_xy(RazerVarstore::STORE, dpi.dpi_x, dpi.dpi_y);
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
+
     return true;
 }
 
@@ -304,11 +297,9 @@ ushort RazerDevice::getPollRate()
     razer_report report, response_report;
 
     report = razer_chroma_misc_get_polling_rate();
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return 0;
-    }
+
     ushort poll_rate = 0;
     switch (response_report.arguments[0]) {
     case 0x01:
@@ -321,8 +312,7 @@ ushort RazerDevice::getPollRate()
         poll_rate = 125;
         break;
     default: // something else
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+        dbusFailedHelper("Unknown poll rate returned from device.");
         return 0;
     }
     return poll_rate;
@@ -347,17 +337,14 @@ bool RazerDevice::setPollRate(ushort poll_rate)
         poll_rate_byte = 0x08;
         break;
     default: // something else
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+        dbusFailedHelper("Invalid poll rate.");
         return false;
     }
 
     report = razer_chroma_misc_set_polling_rate(poll_rate_byte);
-    if (sendReport(report, &response_report) != 0) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+    if (!sendReportDBusHelper(report, &response_report))
         return false;
-    }
+
     return true;
 }
 
@@ -370,8 +357,7 @@ MatrixDimensions RazerDevice::getMatrixDimensions()
 bool RazerDevice::startCustomEffectThread(QString effectName)
 {
     if (!thread->startThread(effectName)) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+        dbusFailedHelper("Failed to start custom effect thread.");
         return false;
     }
     return true;
@@ -385,8 +371,7 @@ void RazerDevice::pauseCustomEffectThread()
 bool RazerDevice::checkFx(QString fxStr)
 {
     if (!fxStr.isEmpty() && !fx.contains(fxStr)) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
+        dbusNotSupportedHelper("Unsupported FX.");
         return false;
     }
     return true;
@@ -395,8 +380,7 @@ bool RazerDevice::checkFx(QString fxStr)
 bool RazerDevice::checkFeature(QString featureStr)
 {
     if (!features.contains(featureStr)) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::NotSupported, "Unsupported feature.");
+        dbusNotSupportedHelper("Unsupported feature.");
         return false;
     }
     return true;
@@ -414,4 +398,30 @@ void RazerDevice::customFrameReady()
     if (!displayCustomFrame()) {
         qWarning("displayCustomFrame went wrong.");
     }
+}
+
+bool RazerDevice::sendReportDBusHelper(razer_report request_report, razer_report *response_report)
+{
+    QString errorMessage;
+    if (!sendReport(request_report, response_report, errorMessage)) {
+        qCritical("%s", qUtf8Printable(errorMessage));
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed, qUtf8Printable(errorMessage));
+        return false;
+    }
+    return true;
+}
+
+void RazerDevice::dbusFailedHelper(const QString &errorMessage)
+{
+    qWarning("%s", qUtf8Printable(errorMessage));
+    if (calledFromDBus())
+        sendErrorReply(QDBusError::Failed, qUtf8Printable(errorMessage));
+}
+
+void RazerDevice::dbusNotSupportedHelper(const QString &errorMessage)
+{
+    qWarning("%s", qUtf8Printable(errorMessage));
+    if (calledFromDBus())
+        sendErrorReply(QDBusError::NotSupported, qUtf8Printable(errorMessage));
 }

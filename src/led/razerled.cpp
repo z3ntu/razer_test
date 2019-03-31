@@ -57,8 +57,7 @@ razer_test::RazerLedId RazerLED::getLedId()
 bool RazerLED::checkFx(QString fxStr)
 {
     if (!device->checkFx(fxStr)) {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::NotSupported, "Unsupported FX.");
+        dbusNotSupportedHelper("Unsupported FX.");
         return false;
     }
     return true;
@@ -76,4 +75,30 @@ void RazerLED::saveFxAndColors(RazerEffect fx, int numColors, RGB color1, RGB co
     if (numColors >= 3) {
         this->color3 = color3;
     }
+}
+
+bool RazerLED::sendReportDBusHelper(razer_report request_report, razer_report *response_report)
+{
+    QString errorMessage;
+    if (!device->sendReport(request_report, response_report, errorMessage)) {
+        qCritical("%s", qUtf8Printable(errorMessage));
+        if (calledFromDBus())
+            sendErrorReply(QDBusError::Failed, qUtf8Printable(errorMessage));
+        return false;
+    }
+    return true;
+}
+
+void RazerLED::dbusFailedHelper(const QString &errorMessage)
+{
+    qWarning("%s", qUtf8Printable(errorMessage));
+    if (calledFromDBus())
+        sendErrorReply(QDBusError::Failed, qUtf8Printable(errorMessage));
+}
+
+void RazerLED::dbusNotSupportedHelper(const QString &errorMessage)
+{
+    qWarning("%s", qUtf8Printable(errorMessage));
+    if (calledFromDBus())
+        sendErrorReply(QDBusError::NotSupported, qUtf8Printable(errorMessage));
 }

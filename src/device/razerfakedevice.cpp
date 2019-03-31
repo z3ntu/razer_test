@@ -103,8 +103,7 @@ bool RazerFakeDevice::setPollRate(ushort poll_rate)
     if (poll_rate == 1000 || poll_rate == 500 || poll_rate == 125) {
         this->poll_rate = poll_rate;
     } else {
-        if (calledFromDBus())
-            sendErrorReply(QDBusError::Failed);
+        dbusFailedHelper("Invalid poll rate.");
         return false;
     }
     return true;

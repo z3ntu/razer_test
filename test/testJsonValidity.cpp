@@ -103,7 +103,7 @@ void testJsonValidity::checkJsonDataValidity()
             QVERIFY2(validFx.contains(fxVal.toString()), "Invalid fx.");
         }
         // features array - optional
-        if(devObj.contains("features")) {
+        if (devObj.contains("features")) {
             QVERIFY2(devObj["features"].isArray(), "Invalid features - has to be an array.");
             foreach (const QJsonValue &featVal, devObj["features"].toArray()) {
                 qDebug() << "features:" << featVal.toString();
