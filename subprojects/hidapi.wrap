@@ -1,4 +1,4 @@
 [wrap-git]
 directory=hidapi
 url=https://github.com/z3ntu/hidapi.git
-revision=meson
+revision=razer_test
