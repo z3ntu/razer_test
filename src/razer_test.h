@@ -25,7 +25,7 @@
 namespace razer_test {
 
 enum class RazerLedId : uchar {
-    Unspecified = 0x00,
+    ZeroLED = 0x00,
     ScrollWheelLED = 0x01,
     BatteryLED = 0x03,
     LogoLED = 0x04,
