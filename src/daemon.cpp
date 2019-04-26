@@ -132,16 +132,6 @@ void Daemon::discoverDevices()
     QHash<QString, RazerDevice *> deviceCheckList = QHash<QString, RazerDevice *>(devicesHash);
 
     while (cur_dev) {
-        // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
-        if (cur_dev->interface_number != 0) {
-            qDebug() << "Ignored interface with number:" << cur_dev->interface_number;
-            if (cur_dev->interface_number == -1) {
-                qWarning("NOTE: On macOS you will need to apply the patch available at https://github.com/signal11/hidapi/pull/380 to your HIDAPI sources.");
-            }
-            cur_dev = cur_dev->next;
-            continue;
-        }
-
         QString devPath = QString(cur_dev->path);
         // Check, if the device was added already
         if (deviceCheckList.contains(devPath)) {
@@ -167,6 +157,28 @@ void Daemon::discoverDevices()
 #endif
             cur_dev = cur_dev->next;
             continue;
+        }
+
+        // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
+        QString type = deviceObj["type"].toString();
+        if(type == "keyboard") {
+            if (cur_dev->interface_number != 2) {
+                qDebug() << "Ignored interface with number:" << cur_dev->interface_number;
+                if (cur_dev->interface_number == -1) {
+                    qWarning("NOTE: On macOS you will need to apply the patch available at https://github.com/signal11/hidapi/pull/380 to your HIDAPI sources.");
+                }
+                cur_dev = cur_dev->next;
+                continue;
+            }
+        } else {
+            if (cur_dev->interface_number != 0) {
+                qDebug() << "Ignored interface with number:" << cur_dev->interface_number;
+                if (cur_dev->interface_number == -1) {
+                    qWarning("NOTE: On macOS you will need to apply the patch available at https://github.com/signal11/hidapi/pull/380 to your HIDAPI sources.");
+                }
+                cur_dev = cur_dev->next;
+                continue;
+            }
         }
 
         RazerDevice *device = initializeDevice(devPath, deviceObj);
