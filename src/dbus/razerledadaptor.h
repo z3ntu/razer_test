@@ -11,7 +11,7 @@
 
 #ifndef RAZERLEDADAPTOR_H
 #define RAZERLEDADAPTOR_H
-#include "../razer_test.h"
+#include "razer_test.h"
 using namespace razer_test;
 
 #include <QtCore/QObject>

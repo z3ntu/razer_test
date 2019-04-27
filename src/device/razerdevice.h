@@ -28,7 +28,7 @@
 #include <QDBusContext>
 #include <QByteArray>
 
-#include "../razer_test.h"
+#include "razer_test.h"
 #include "../razerreport.h"
 #include "../customeffect/customeffectthread.h"
 #include "../led/razerled.h"

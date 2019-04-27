@@ -24,7 +24,7 @@
 #include <QDBusContext>
 #include <QList>
 
-#include "../razer_test.h"
+#include "razer_test.h"
 #include "../razer_test_private.h"
 #include "../razerreport.h"
 

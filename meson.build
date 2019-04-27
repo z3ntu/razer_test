@@ -3,6 +3,13 @@ project('razer_test', 'cpp',
         meson_version : '>=0.44.0',
         default_options : ['cpp_std=c++14'])
 
+inc = include_directories('include')
+
+if meson.is_subproject()
+    razer_test_dep = declare_dependency(include_directories : inc)
+    subdir_done()
+endif
+
 conf_data = configuration_data()
 conf_data.set('version', meson.project_version())
 conf_data.set('datadir', join_paths(get_option('prefix'), get_option('datadir'), meson.project_name()))
@@ -75,7 +82,7 @@ else
 endif
 
 # Install public header
-install_headers('src/razer_test.h')
+install_headers('include/razer_test.h')
 
 # Install pkg-config file
 pkg = import('pkgconfig')
@@ -106,12 +113,14 @@ install_data('data/io.github.openrazer1.conf', install_dir : join_paths(get_opti
 # Build requested executables
 executable('razer_test',
            [src, processed],
+           include_directories : inc,
            dependencies : [hidapi, qt5_dep, devnotifier_dep],
            install : true)
 if get_option('build_bringup_util')
   extra_src = ['src/bringup/bringuputil.cpp']
   executable('razer_test_bringup_util',
              [src, extra_src, processed],
+             include_directories : inc,
              dependencies : [hidapi, qt5_dep, devnotifier_dep],
              cpp_args : '-DENABLE_BRINGUP_UTIL')
 endif
