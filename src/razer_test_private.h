@@ -65,6 +65,8 @@ enum class RazerMatrixEffectId : uchar {
     Starlight = 0x19
 };
 
+// Also used by "extended matrix"
+// TODO Rename enum
 enum class RazerMouseMatrixEffectId : uchar {
     Off = 0x00,
     Static = 0x01,
@@ -77,6 +79,7 @@ enum class RazerMouseMatrixEffectId : uchar {
 };
 
 enum class RazerDeviceQuirks {
+    ExtendedMatrix,
     MouseMatrix,
     MatrixBrightness,
     FireflyCustomFrame
@@ -87,12 +90,14 @@ inline uint qHash(RazerDeviceQuirks key, uint seed)
 }
 
 const QHash<QString, RazerDeviceQuirks> StringToQuirks {
+    { "extended_matrix", RazerDeviceQuirks::ExtendedMatrix },
     { "mouse_matrix", RazerDeviceQuirks::MouseMatrix },
     { "matrix_brightness", RazerDeviceQuirks::MatrixBrightness },
     { "firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame }
 };
 
 const QHash<RazerDeviceQuirks, QString> QuirksToString {
+    { RazerDeviceQuirks::ExtendedMatrix, "extended_matrix" },
     { RazerDeviceQuirks::MouseMatrix, "mouse_matrix" },
     { RazerDeviceQuirks::MatrixBrightness, "matrix_brightness" },
     { RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame" }
