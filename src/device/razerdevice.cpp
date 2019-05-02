@@ -22,6 +22,8 @@
 #include <cstdio>
 #include <cstring>
 
+#define DEBUG
+
 RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI)
 {
     this->dev_path = dev_path;
