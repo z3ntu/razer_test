@@ -34,6 +34,15 @@ bool RazerFakeLED::setOff()
     return true;
 }
 
+bool RazerFakeLED::setOn()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFx("on"))
+        return false;
+    saveFxAndColors(RazerEffect::On, 0);
+    return true;
+}
+
 bool RazerFakeLED::setStatic(RGB color)
 {
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);

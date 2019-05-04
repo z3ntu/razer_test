@@ -49,6 +49,16 @@ bool RazerMatrixLED::setOff()
     }
 }
 
+bool RazerMatrixLED::setOn()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFx("on"))
+        return false;
+    saveFxAndColors(RazerEffect::On, 0);
+    sendErrorReply(QDBusError::NotSupported);
+    return false;
+}
+
 bool RazerMatrixLED::setStatic(RGB color)
 {
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);

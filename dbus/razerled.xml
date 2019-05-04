@@ -13,6 +13,9 @@
     <method name="setOff">
       <arg type="b" direction="out"/>
     </method>
+    <method name="setOn">
+      <arg type="b" direction="out"/>
+    </method>
     <method name="setStatic">
       <arg type="b" direction="out"/>
       <arg name="color" type="(yyy)" direction="in"/>

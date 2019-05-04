@@ -136,6 +136,7 @@ const QHash<RazerLedId, QString> LedIdToString {
 
 const QHash<QString, RazerEffect> StringToEffect {
     { "off", RazerEffect::Off },
+    { "on", RazerEffect::On },
     { "static", RazerEffect::Static },
     { "blinking", RazerEffect::Blinking },
     { "breathing", RazerEffect::Breathing },
@@ -148,6 +149,7 @@ const QHash<QString, RazerEffect> StringToEffect {
 
 const QHash<RazerEffect, QString> EffectToString {
     { RazerEffect::Off, "off" },
+    { RazerEffect::On, "on" },
     { RazerEffect::Static, "static" },
     { RazerEffect::Blinking, "blinking" },
     { RazerEffect::Breathing, "breathing" },

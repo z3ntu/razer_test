@@ -65,6 +65,7 @@ public:
 public slots:
     // FX
     virtual bool setOff() = 0;
+    virtual bool setOn() = 0;
     virtual bool setStatic(RGB color) = 0;
     virtual bool setBreathing(RGB color) = 0;
     virtual bool setBreathingDual(RGB color, RGB color2) = 0;

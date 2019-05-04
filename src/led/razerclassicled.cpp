@@ -62,6 +62,15 @@ bool RazerClassicLED::setOff()
     return setLedState(RazerClassicLedState::Off);
 }
 
+bool RazerClassicLED::setOn()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFx("on"))
+        return false;
+    saveFxAndColors(RazerEffect::On, 0);
+    return setLedState(RazerClassicLedState::On);
+}
+
 bool RazerClassicLED::setStatic(RGB color)
 {
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);

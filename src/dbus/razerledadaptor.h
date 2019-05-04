@@ -48,6 +48,9 @@ class RazerLEDAdaptor : public QDBusAbstractAdaptor
                                        "    <method name=\"setOff\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "    </method>\n"
+                                       "    <method name=\"setOn\">\n"
+                                       "      <arg direction=\"out\" type=\"b\"/>\n"
+                                       "    </method>\n"
                                        "    <method name=\"setStatic\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color\"/>\n"
@@ -119,6 +122,7 @@ public Q_SLOTS: // METHODS
     bool setBreathingRandom();
     bool setBrightness(uchar brightness);
     bool setOff();
+    bool setOn();
     bool setReactive(razer_test::ReactiveSpeed speed, razer_test::RGB color);
     bool setSpectrum();
     bool setStatic(razer_test::RGB color);

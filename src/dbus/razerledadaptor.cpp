@@ -107,6 +107,14 @@ bool RazerLEDAdaptor::setOff()
     return out0;
 }
 
+bool RazerLEDAdaptor::setOn()
+{
+    // handle method call io.github.openrazer1.Led.setOn
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "setOn", Q_RETURN_ARG(bool, out0));
+    return out0;
+}
+
 bool RazerLEDAdaptor::setReactive(razer_test::ReactiveSpeed speed, razer_test::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setReactive

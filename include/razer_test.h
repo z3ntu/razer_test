@@ -117,6 +117,7 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSp
 
 enum class RazerEffect {
     Off,
+    On,
     Static,
     Breathing,
     BreathingDual,
