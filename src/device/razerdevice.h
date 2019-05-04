@@ -70,9 +70,10 @@ public:
     QList<QDBusObjectPath> getLedObjectPaths();
 
     bool hasQuirk(RazerDeviceQuirks quirk);
-    bool checkFeature(QString featureStr);
     bool checkFx(QString fxStr);
     bool hasFx(QString fxStr);
+    bool checkFeature(QString featureStr);
+    bool hasFeature(QString featureStr);
 
 public slots:
     // TODO: CamelCase public functions (at least for D-Bus)

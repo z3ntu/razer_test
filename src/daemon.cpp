@@ -65,7 +65,8 @@ bool Daemon::initialize()
     // Load the supported devices from the json files
     supportedDevices = loadDevicesFromJson(develMode);
     if (supportedDevices.isEmpty()) {
-        qFatal("JSON device definition files were not found. Exiting.");
+        qCritical("JSON device definition files were not found. Exiting.");
+        return false;
     }
 
     // Use the real devices
@@ -83,37 +84,21 @@ bool Daemon::initialize()
     connect(this, &Daemon::devicesChanged, manager, &DeviceManager::setDevices);
     new DeviceManagerAdaptor(manager);
     if (!connection.registerObject(manager->getObjectPath().path(), manager)) {
-        qFatal("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
+        qCritical("Failed to register D-Bus object at \"%s\".", qUtf8Printable(manager->getObjectPath().path()));
+        return false;
     }
 
 #ifdef ENABLE_BRINGUP_UTIL
 
     if (devices.isEmpty()) {
-        qFatal("No device found. Exiting.");
+        qCritical("No device found. Exiting.");
+        return false;
     }
-    foreach (RazerDevice *razerDevice, devices) {
-        qInfo() << "Device:" << razerDevice->getName();
-        qInfo() << "Serial:" << razerDevice->getSerial();
-        qInfo() << "Firmware version:" << razerDevice->getFirmwareVersion();
-
-        foreach (RazerLED *led, razerDevice->getLeds()) {
-            qInfo() << "Setting LED to static with color #FFFF00";
-            qDebug() << "LED object path:" << led->getObjectPath().path();
-            led->setStatic({ 0xFF, 0xFF, 0x00 });
-            led->setBrightness(255);
-        }
-
-        BringupUtil bringupUtil = BringupUtil(razerDevice);
-        // Automatic
-        bringupUtil.testDPI();
-        bringupUtil.testPollRate();
-        bringupUtil.testKeyboardLayout();
-        bringupUtil.testBrightness();
-
-        // Interactive
-        bringupUtil.testLedEffects();
+    foreach (RazerDevice *device, devices) {
+        BringupUtil bringupUtil = BringupUtil(device);
+        bringupUtil.existingDevice();
     }
-    return true;
+    return false;
 
 #else
 
@@ -169,15 +154,16 @@ void Daemon::discoverDevices()
         QJsonObject deviceObj = getDeviceJsonForDevice(cur_dev->vendor_id, cur_dev->product_id);
         // Device is not supported
         if (deviceObj.size() == 0) {
+#ifdef ENABLE_BRINGUP_UTIL
+            BringupUtil bringupUtil = BringupUtil(cur_dev);
+            if (!bringupUtil.newDevice()) {
+                break;
+            }
+#else
             qWarning("Device with the USB ID %s:%s (%s) is not supported.",
                      qUtf8Printable(hexUshortToString(cur_dev->vendor_id)),
                      qUtf8Printable(hexUshortToString(cur_dev->product_id)),
                      qUtf8Printable(QString::fromWCharArray(cur_dev->product_string)));
-#ifdef ENABLE_BRINGUP_UTIL
-            BringupUtil bringupUtil = BringupUtil(cur_dev);
-            if (bringupUtil.newDevice()) {
-                break;
-            }
 #endif
             cur_dev = cur_dev->next;
             continue;

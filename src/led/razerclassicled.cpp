@@ -24,32 +24,42 @@ bool RazerClassicLED::initialize()
 {
     bool ok;
     RazerClassicEffectId classicEffect;
-    ok = getBrightness(&brightness);
-    if (!ok) {
-        qWarning("Error during getBrightness()");
-        return false;
-    }
-    ok = getLedEffect(&classicEffect);
-    if (!ok) {
-        qWarning("Error during getLedEffect()");
-        return false;
-    }
     ok = getLedState(&classicState);
     if (!ok) {
         qWarning("Error during getLedState()");
         return false;
     }
-    // Translate effect to "RazerEffect effect"
-    if (classicState == RazerClassicLedState::Off) {
-        // State being Off is equivalent to Off effect
-        effect = RazerEffect::Off;
-    } else {
-        effect = effectTranslationTable.value(classicEffect, RazerEffect::Off);
+    // Some old devices don't have brightness
+    if (device->hasFx("brightness")) {
+        ok = getBrightness(&brightness);
+        if (!ok) {
+            qWarning("Error during getBrightness()");
+            return false;
+        }
     }
-    ok = getLedRgb(&color1);
-    if (!ok) {
-        qWarning("Error during getLedRgb()");
-        return false;
+    // If the device doesn't have the 'on' effect, consider the device of being capable of having proper effects and RGB
+    if (!device->hasFx("on")) {
+        ok = getLedEffect(&classicEffect);
+        if (!ok) {
+            qWarning("Error during getLedEffect()");
+            return false;
+        }
+        ok = getLedRgb(&color1);
+        if (!ok) {
+            qWarning("Error during getLedRgb()");
+            return false;
+        }
+        // Translate effect to "RazerEffect effect"
+        effect = effectTranslationTable.value(classicEffect, RazerEffect::Off);
+    } else {
+        // On devices with only on & off, set the effect to 'On' if the state is on
+        if (classicState == RazerClassicLedState::On) {
+            effect = RazerEffect::On;
+        }
+    }
+    // State being off is equivalent to 'Off' effect
+    if (classicState == RazerClassicLedState::Off) {
+        effect = RazerEffect::Off;
     }
     return true;
 }

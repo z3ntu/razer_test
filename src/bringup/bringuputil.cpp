@@ -18,6 +18,7 @@
 
 #include "bringuputil.h"
 
+#include "../device/razerclassicdevice.h"
 #include "../device/razermatrixdevice.h"
 #include "../validjsonvalues.h"
 
@@ -44,6 +45,34 @@ const QVector<QVector<RazerDeviceQuirks>> quirksCombinations {
     { RazerDeviceQuirks::MatrixBrightness }
 };
 
+RazerDevice *BringupUtil::tryDevice(QString pclass, QVector<razer_test::RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks)
+{
+    RazerDevice *device;
+    if (pclass == "classic") {
+        device = new RazerClassicDevice(hid_dev_info->path, hid_dev_info->vendor_id, hid_dev_info->product_id, /*name*/ "", /*type*/ "", ledIds, fx, validFeatures, quirks, /*dims*/ {}, /*maxDPI*/ 0);
+    } else if (pclass == "matrix") {
+        device = new RazerMatrixDevice(hid_dev_info->path, hid_dev_info->vendor_id, hid_dev_info->product_id, /*name*/ "", /*type*/ "", ledIds, fx, validFeatures, quirks, /*dims*/ {}, /*maxDPI*/ 0);
+    } else {
+        qCritical("Unhandled pclass in BringupUtil::tryDevice");
+        return nullptr;
+    }
+
+    if (!device->openDeviceHandle()) {
+        qCritical("Failed to open device handle.");
+        qCritical("You can give your current user permissions to access the hidraw nodes with the following commands:");
+        qCritical("$ sudo chmod g+rw /dev/hidraw*");
+        qCritical("$ sudo chgrp $(id -g) /dev/hidraw*");
+        qFatal("Exiting now.");
+    }
+    if (!device->initialize()) {
+        qWarning("Failed to initialize device.");
+        delete device;
+        return nullptr;
+    }
+    qDebug("Successfully initialized LEDs.");
+    return device;
+}
+
 bool BringupUtil::newDevice()
 {
     QTextStream cin(stdin);
@@ -56,7 +85,10 @@ bool BringupUtil::newDevice()
     QString pid;
     QString type;
 
+    qInfo("=============================");
     qInfo("== razer_test bringup util ==");
+    qInfo("==    NEW DEVICE WIZARD    ==");
+    qInfo("=============================");
     name = QString::fromWCharArray(hid_dev_info->product_string);
     qInfo("Product: %s", qUtf8Printable(name));
     vid = QString::number(hid_dev_info->vendor_id, 16).rightJustified(4, '0');
@@ -68,69 +100,99 @@ bool BringupUtil::newDevice()
     input = cin.readLine();
     if (input.compare("y", Qt::CaseInsensitive) != 0) {
         qInfo("Exiting bringup util.");
+        return true;
+    }
+
+    QVector<RazerLedId> ledIds = {};
+    QStringList features = {};
+    MatrixDimensions dims = {};
+    ushort maxDPI = 0;
+    bool brightnessWorks = false;
+
+    QString pclass;
+    QVector<RazerDeviceQuirks> quirks;
+
+    for (const QString &pclass_try : allPclasses) {
+        for (QVector<RazerDeviceQuirks> quirks_try : quirksCombinations) {
+            QString quirksStr = "[";
+            for (RazerDeviceQuirks quirk : quirks_try)
+                quirksStr.append(QuirksToString.value(quirk) + ",");
+            quirksStr.append("]");
+            qDebug("Trying pclass %s and quirks %s", qUtf8Printable(pclass_try), qUtf8Printable(quirksStr));
+            // "classic" devices can have no rgb and no brightness
+            if (pclass_try == "classic") {
+                device = tryDevice(pclass_try, allLedIds, onOffFx, quirks_try);
+                if (device == nullptr)
+                    continue;
+
+                RazerDevice *rgbDevice = tryDevice(pclass_try, allLedIds, rgbFx, quirks_try);
+                if (rgbDevice == nullptr) {
+                    qInfo("Device seems incapable of RGB effects, ignore the warnings above.");
+                    deviceHasRgb = false;
+                } else {
+                    delete device;
+                    device = rgbDevice;
+                    deviceHasRgb = true;
+                }
+            } else {
+                device = tryDevice(pclass_try, allLedIds, rgbFx, quirks_try);
+                if (device == nullptr)
+                    continue;
+
+                deviceHasRgb = true;
+            }
+
+            for (auto led : device->getLeds()) {
+                led->setOff();
+            }
+            qInfo("Now all LEDs should be off. Is that correct? (y/N)");
+            std::cout << "> ";
+            input = cin.readLine();
+            if (input.compare("y", Qt::CaseInsensitive) != 0) {
+                qWarning("Testing out other pclass / quirks then...");
+                delete device;
+                continue;
+            }
+
+            // Save the values that have worked
+            pclass = pclass_try;
+            quirks = quirks_try;
+
+            // Exit the loop
+            goto device_valid;
+        }
+    }
+    if (device == nullptr) {
+        qCritical("Tried all quirks and pclasses and none worked. Exiting");
         return false;
     }
 
-    QVector<RazerLedId> allLedIds = { RazerLedId::ScrollWheelLED, RazerLedId::BatteryLED, RazerLedId::LogoLED, RazerLedId::BacklightLED, RazerLedId::MacroRecordingLED, RazerLedId::GameModeLED, RazerLedId::KeymapRedLED, RazerLedId::KeymapGreenLED, RazerLedId::KeymapBlueLED, RazerLedId::RightSideLED, RazerLedId::LeftSideLED };
-    QVector<RazerLedId> ledIds = {};
-    QStringList features = {};
-    QVector<RazerDeviceQuirks> quirks = quirksCombinations.at(0);
-    MatrixDimensions dims = {};
-    ushort maxDPI = 0;
-    RazerDevice *device;
-    int quirksCombinationsIndex = 0;
-    do {
-        device = new RazerMatrixDevice(hid_dev_info->path, hid_dev_info->vendor_id, hid_dev_info->product_id, name, type, allLedIds, validFx, validFeatures, quirks, dims, maxDPI);
-        if (!device->openDeviceHandle()) {
-            qCritical("Failed to open device handle.");
-            qCritical("You can give your current user permissions to access the hidraw nodes with the following commands:");
-            qCritical("$ sudo chmod g+rw /dev/hidraw*");
-            qCritical("$ sudo chgrp $(id -g) /dev/hidraw*");
-            delete device;
-            return true;
-        }
-        if (!device->initialize()) {
-            qWarning("Failed to initialize leds, trying out quirks.");
-            delete device;
-            if (quirksCombinationsIndex >= quirksCombinations.size()) {
-                qCritical("Tried all quirks combinations and none helped.");
-                return true;
-            }
-            quirks = quirksCombinations.at(quirksCombinationsIndex++);
-            inputValid = false;
+device_valid:
+    // Try setStatic if the device has RGB, otherwise setOn
+    for (auto led : device->getLeds()) {
+        const char *effectDesc;
+        if (deviceHasRgb) {
+            led->setStatic({ 0xFF, 0xFF, 0x00 });
+            effectDesc = "yellow";
         } else {
-            qInfo("Successfully initialized LEDs.");
-            inputValid = true;
+            led->setOn();
+            effectDesc = "on";
         }
-    } while (!inputValid);
-
-    for (auto led : device->getLeds()) {
-        led->setOff();
-    }
-    qInfo("Now all LEDs should be off. Is that correct? (y/N)");
-    std::cout << "> ";
-    input = cin.readLine();
-    if (input.compare("y", Qt::CaseInsensitive) != 0) {
-        qInfo("That's bad :( Exiting for now (TODO: Test out existing quirks if they help)"); // TODO
-        return true;
-    }
-    for (auto led : device->getLeds()) {
-        led->setStatic({ 0xFF, 0xFF, 0x00 });
-        qInfo("Did a LED just turn yellow (tried %s)? (y/N)", qUtf8Printable(LedIdToString.value(led->getLedId())));
+        qInfo("Did a LED just turn %s (tried %s)? (y/N)", effectDesc, qUtf8Printable(LedIdToString.value(led->getLedId())));
         std::cout << "> ";
         input = cin.readLine();
         if (input.compare("y", Qt::CaseInsensitive) == 0) {
             ledIds.append(led->getLedId());
         }
         led->setOff();
-        QThread::msleep(500);
     }
+
     if (ledIds.isEmpty()) {
         qInfo("You said that no LED is supported. Exiting. TODO: quirks"); // TODO
-        return true;
+        return false;
     } else if (ledIds.size() == allLedIds.size()) {
-        qInfo("You said that all LEDs do something. This is most likely not true. If the same zone is always lighting up, please choose only 'backlight'. Exiting.");
-        return true;
+        qWarning("You said that all LEDs do something. This is most likely not true; taking this as just the 'backlight' LED is supported.");
+        ledIds = { RazerLedId::BacklightLED };
     }
 
     // == TYPE ==
@@ -149,11 +211,24 @@ bool BringupUtil::newDevice()
         }
     } while (!inputValid);
 
+    // Reinitialize device with figured-out ledIds
+    // Get set FX to deduplicate the logic above with non-RGB vs RGB devices
+    QStringList fxInUse = device->getSupportedFx();
+    delete device;
+    device = tryDevice(pclass, ledIds, fxInUse, quirks);
+    if (device == nullptr) {
+        qCritical("Re-initialized device with new Led IDs and failed.");
+        qFatal("Exiting now.");
+    }
+
     // == FX ==
-    QVector<RazerEffect> fxVec = testLedEffects();
+    QVector<RazerEffect> fxVec = testLedEffects(device);
+
+    brightnessWorks = device->hasFx("brightness") && testBrightness(device);
 
     // == FEATURES ==
     if (type == "mouse") {
+        // == MAX DPI ==
         QString maxDPIstr;
         do {
             qInfo("What's the maximum DPI of the mouse (e.g. 16000)?");
@@ -168,15 +243,41 @@ bool BringupUtil::newDevice()
             }
         } while (!inputValid);
 
-        if (testDPI())
+        // == DPI ==
+        if (testDPI(device)) {
             features.append("dpi");
-        if (testPollRate())
+        } else {
+            // Try the ByteDPI quirk
+            qInfo("Normal DPI check failed, trying ByteDPI quirk...");
+            QVector<RazerDeviceQuirks> quirksNew = QVector<RazerDeviceQuirks>(quirks);
+            quirksNew.append(RazerDeviceQuirks::ByteDPI);
+            RazerDevice *deviceNew = tryDevice(pclass, ledIds, fxInUse, quirksNew);
+            if (testDPI(deviceNew)) {
+                delete device;
+                device = deviceNew;
+                quirks = quirksNew;
+                features.append("dpi");
+            } else {
+                delete deviceNew;
+                qWarning("Your device is a mouse but seems to not support DPI!");
+            }
+        }
+
+        // == POLL RATE ==
+        if (testPollRate(device)) {
             features.append("poll_rate");
+        } else {
+            qWarning("Your device is a mouse but seems to not support Poll Rate!");
+        }
     }
+
     if (type == "keyboard") {
-        if (testKeyboardLayout())
+        // == KEYBOARD LAYOUT ==
+        if (testKeyboardLayout(device))
             features.append("keyboard_layout");
     }
+
+    // TODO: Custom frame
 
     // Convert to QJsonArray
     QJsonArray ledIdsJson;
@@ -185,6 +286,8 @@ bool BringupUtil::newDevice()
     QJsonArray fxJson;
     for (auto fx : fxVec)
         fxJson.append(EffectToString.value(fx));
+    if (brightnessWorks)
+        fxJson.append("brightness");
     QJsonArray featuresJson = QJsonArray::fromStringList(features);
     QJsonArray quirksJson;
     for (auto quirk : quirks)
@@ -196,7 +299,7 @@ bool BringupUtil::newDevice()
         { "vid", vid },
         { "pid", pid },
         { "type", type },
-        { "pclass", "matrix" }, // TODO
+        { "pclass", pclass },
         { "leds", ledIdsJson },
         { "fx", fxJson },
         { "features", featuresJson },
@@ -213,14 +316,61 @@ bool BringupUtil::newDevice()
 
     QJsonDocument doc(deviceObj);
     QString jsonString = doc.toJson(QJsonDocument::Indented);
-    qInfo("%s", qUtf8Printable(jsonString));
+    qInfo("JSON Result:\n\n%s", qUtf8Printable(jsonString));
+    qInfo("You can copy this into ./data/devices/%s.json and run ./scripts/format-devices-json.py to format the file!", qUtf8Printable(type));
 
     return true;
 }
 
-bool BringupUtil::testDPI()
+bool BringupUtil::existingDevice()
 {
-    if (!device->checkFeature("dpi")) {
+    qInfo("=============================");
+    qInfo("== razer_test bringup util ==");
+    qInfo("==  DEVICE TESTING WIZARD  ==");
+    qInfo("=============================");
+    qInfo("Device: %s", qUtf8Printable(device->getName()));
+    qInfo("Serial: %s", qUtf8Printable(device->getSerial()));
+    qInfo("Firmware version: %s", qUtf8Printable(device->getFirmwareVersion()));
+
+    QTextStream cin(stdin);
+    QString input;
+
+    qInfo("Do you want to test this device? (y/N)");
+    std::cout << "> ";
+    input = cin.readLine();
+    if (input.compare("y", Qt::CaseInsensitive) != 0) {
+        qInfo("Exiting bringup util.");
+        return false;
+    }
+
+    foreach (RazerLED *led, device->getLeds()) {
+        qInfo("Setting LED to static with color #FFFF00");
+        qDebug("LED object path: %s", qUtf8Printable(led->getObjectPath().path()));
+        led->setStatic({ 0xFF, 0xFF, 0x00 });
+        led->setBrightness(255);
+    }
+
+    // Automatic tests
+    if (!testDPI(device))
+        return false;
+    if (!testPollRate(device))
+        return false;
+    if (!testKeyboardLayout(device))
+        return false;
+    if (!testBrightness(device))
+        return false;
+
+    // Interactive tests
+    // TODO: Check return value of testLedEffects
+    testLedEffects(device);
+
+    return true;
+}
+
+bool BringupUtil::testDPI(RazerDevice *device)
+{
+    if (!device->hasFeature("dpi")) {
+        qDebug("Skip testDPI because the device doesn't have the feature.");
         return true; // unsupported
     }
     auto dpi = device->getDPI();
@@ -241,9 +391,10 @@ bool BringupUtil::testDPI()
     return true;
 }
 
-bool BringupUtil::testPollRate()
+bool BringupUtil::testPollRate(RazerDevice *device)
 {
-    if (!device->checkFeature("poll_rate")) {
+    if (!device->hasFeature("poll_rate")) {
+        qDebug("Skip testPollRate because the device doesn't have the feature.");
         return true; // unsupported
     }
     auto pollRate = device->getPollRate();
@@ -268,9 +419,10 @@ bool BringupUtil::testPollRate()
     return true;
 }
 
-bool BringupUtil::testBrightness()
+bool BringupUtil::testBrightness(RazerDevice *device)
 {
-    if (!device->checkFx("brightness")) {
+    if (!device->hasFx("brightness")) {
+        qDebug("Skip testBrightness because the device doesn't have the feature.");
         return true; // unsupported
     }
     for (auto led : device->getLeds()) {
@@ -293,9 +445,10 @@ bool BringupUtil::testBrightness()
     return true;
 }
 
-bool BringupUtil::testKeyboardLayout()
+bool BringupUtil::testKeyboardLayout(RazerDevice *device)
 {
-    if (!device->checkFeature("keyboard_layout")) {
+    if (!device->hasFeature("keyboard_layout")) {
+        qDebug("Skip testKeyboardLayout because the device doesn't have the feature.");
         return true; // unsupported
     }
     auto layout = device->getKeyboardLayout();
@@ -311,31 +464,50 @@ bool BringupUtil::testKeyboardLayout()
     }
 }
 
-QVector<RazerEffect> BringupUtil::testLedEffects()
+QVector<RazerEffect> BringupUtil::testLedEffects(RazerDevice *device)
 {
     QTextStream cin(stdin);
-
     QString input;
+
     QVector<RazerEffect> workingEffects;
 
     for (auto led : device->getLeds()) {
-        qInfo("Checking functionality of LED '%s'", qUtf8Printable(LedIdToString.value(led->getLedId())));
+        qInfo("-- Checking functionality of LED '%s' --", qUtf8Printable(LedIdToString.value(led->getLedId())));
         auto currEffect = led->getCurrentEffect();
         auto currColors = led->getCurrentColors();
+        // LED-local array
+        QVector<RazerEffect> workingEffectsLed;
         for (auto effectStr : device->getSupportedFx()) {
+            // Skip brightness "effect" here
             if (effectStr == "brightness")
                 continue;
+            // Try to set the effect (setEffect can also return false for unimplemented effects, e.g. blinking on Matrix)
             RazerEffect effect = StringToEffect.value(effectStr);
-            setEffect(led, effect, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 });
+            if (!setEffect(led, effect, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 })) {
+                qDebug("Setting effect %s returned false, skipping...", qUtf8Printable(effectStr));
+                continue;
+            }
+            // Ask the user if it worked
             qInfo("Effect %s should be active now. Is that correct? (y/N)", qUtf8Printable(effectStr));
             std::cout << "> ";
             input = cin.readLine();
             if (input.compare("y", Qt::CaseInsensitive) == 0) {
-                workingEffects.append(effect);
+                workingEffectsLed.append(effect);
             }
         }
+        if (workingEffects.size() == 0) {
+            workingEffects = workingEffectsLed;
+        } else {
+            if (workingEffects.size() != workingEffectsLed.size()) {
+                qWarning("You said, that this LED has a different amount of supported effects compared to the first one.");
+                qWarning("If you're sure, this wasn't a mistake on your side, please open an issue in the repo!");
+                qWarning("Ignoring this now...");
+            }
+        }
+
         if (currColors.size() <= 2) // should never happen
             currColors = { { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 } };
+        // Restore effect
         setEffect(led, currEffect, currColors.at(0), currColors.at(1), currColors.at(2));
     }
     return workingEffects;
@@ -345,26 +517,27 @@ bool BringupUtil::setEffect(RazerLED *led, RazerEffect effect, RGB color1, RGB c
 {
     Q_UNUSED(color3)
     if (effect == RazerEffect::Off) {
-        led->setOff();
+        return led->setOff();
+    } else if (effect == RazerEffect::On) {
+        return led->setOn();
     } else if (effect == RazerEffect::Static) {
-        led->setStatic(color1);
+        return led->setStatic(color1);
     } else if (effect == RazerEffect::Blinking) {
-        led->setBlinking(color1);
+        return led->setBlinking(color1);
     } else if (effect == RazerEffect::Breathing) {
-        led->setBreathing(color1);
+        return led->setBreathing(color1);
     } else if (effect == RazerEffect::BreathingDual) {
-        led->setBreathingDual(color1, color2);
+        return led->setBreathingDual(color1, color2);
     } else if (effect == RazerEffect::BreathingRandom) {
-        led->setBreathingRandom();
+        return led->setBreathingRandom();
     } else if (effect == RazerEffect::Spectrum) {
-        led->setSpectrum();
+        return led->setSpectrum();
     } else if (effect == RazerEffect::Wave) {
-        led->setWave(WaveDirection::LEFT_TO_RIGHT);
+        return led->setWave(WaveDirection::LEFT_TO_RIGHT);
     } else if (effect == RazerEffect::Reactive) {
-        led->setReactive(ReactiveSpeed::_1000MS, color1);
+        return led->setReactive(ReactiveSpeed::_1000MS, color1);
     } else {
-        qWarning("Unhandled effect %s at %s", qUtf8Printable(EffectToString.value(effect)), Q_FUNC_INFO);
+        qCritical("Unhandled effect %s at %s", qUtf8Printable(EffectToString.value(effect)), Q_FUNC_INFO);
         return false;
     }
-    return true;
 }

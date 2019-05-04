@@ -96,6 +96,8 @@ int main(int argc, char *argv[])
     registerMetaTypes();
 
     Daemon daemon(parser.isSet("devel"), parser.isSet("fake-devices"));
-    daemon.initialize();
+    if (!daemon.initialize())
+        return 1;
+
     return app.exec();
 }

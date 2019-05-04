@@ -88,7 +88,7 @@ bool RazerDevice::sendReport(razer_report request_report, razer_report *response
 
 #ifdef DEBUG
     printf("Request report: ");
-    for (int i = 1; i < sizeof(razer_report) + 1; i++)
+    for (uint i = 1; i < sizeof(razer_report) + 1; i++)
         printf("%02hhx ", req_buf[i]);
     printf("\n");
 #endif
@@ -100,7 +100,7 @@ bool RazerDevice::sendReport(razer_report request_report, razer_report *response
         // Send the Feature Report to the device
         res = hid_send_feature_report(handle, req_buf, sizeof(req_buf));
         if (res < 0) {
-            qWarning("Failed to send a feature report, retrying...");
+            qDebug("Failed to send a feature report, retrying...");
             retryCount--;
             continue;
         }
@@ -115,14 +115,14 @@ bool RazerDevice::sendReport(razer_report request_report, razer_report *response
         res_buf[0] = 0x00; // report number
         res = hid_get_feature_report(handle, res_buf, sizeof(res_buf));
         if (res < 0) {
-            qWarning("Failed to get a feature report, retrying...");
+            qDebug("Failed to get a feature report, retrying...");
             retryCount--;
             continue;
         }
 
 #ifdef DEBUG
         printf("Response report: ");
-        for (int i = 1; i < sizeof(razer_report) + 1; i++)
+        for (uint i = 1; i < sizeof(razer_report) + 1; i++)
             printf("%02hhx ", res_buf[i]);
         printf("\n");
 #endif
@@ -204,6 +204,34 @@ QList<QDBusObjectPath> RazerDevice::getLedObjectPaths()
 bool RazerDevice::hasQuirk(RazerDeviceQuirks quirk)
 {
     return quirks.contains(quirk);
+}
+
+bool RazerDevice::checkFx(QString fxStr)
+{
+    if (!fx.contains(fxStr)) {
+        dbusNotSupportedHelper(QString("%1: Unsupported FX: %2").arg(name, fxStr));
+        return false;
+    }
+    return true;
+}
+
+bool RazerDevice::hasFx(QString fxStr)
+{
+    return fx.contains(fxStr);
+}
+
+bool RazerDevice::checkFeature(QString featureStr)
+{
+    if (!features.contains(featureStr)) {
+        dbusNotSupportedHelper(QString("%1: Unsupported feature: %2").arg(name, featureStr));
+        return false;
+    }
+    return true;
+}
+
+bool RazerDevice::hasFeature(QString featureStr)
+{
+    return features.contains(featureStr);
 }
 
 QString RazerDevice::getSerial()
@@ -381,29 +409,6 @@ bool RazerDevice::startCustomEffectThread(QString effectName)
 void RazerDevice::pauseCustomEffectThread()
 {
     thread->pauseThread();
-}
-
-bool RazerDevice::checkFx(QString fxStr)
-{
-    if (!fx.contains(fxStr)) {
-        dbusNotSupportedHelper(QString("%1: Unsupported FX: %2").arg(name, fxStr));
-        return false;
-    }
-    return true;
-}
-
-bool RazerDevice::hasFx(QString fxStr)
-{
-    return fx.contains(fxStr);
-}
-
-bool RazerDevice::checkFeature(QString featureStr)
-{
-    if (!features.contains(featureStr)) {
-        dbusNotSupportedHelper(QString("%1: Unsupported feature: %2").arg(name, featureStr));
-        return false;
-    }
-    return true;
 }
 
 void RazerDevice::customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData)
