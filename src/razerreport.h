@@ -83,6 +83,8 @@ razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_st
 razer_report razer_chroma_misc_one_row_set_custom_frame(uchar start_col, uchar stop_col, const uchar *rgb_data);
 razer_report razer_chroma_misc_set_dpi_xy(RazerVarstore variable_storage, ushort dpi_x, ushort dpi_y);
 razer_report razer_chroma_misc_get_dpi_xy(RazerVarstore variable_storage);
+razer_report razer_chroma_misc_set_dpi_xy_byte(uchar dpi_x, uchar dpi_y);
+razer_report razer_chroma_misc_get_dpi_xy_byte();
 
 razer_report razer_chroma_misc_get_polling_rate();
 razer_report razer_chroma_misc_set_polling_rate(uchar poll_rate_byte);

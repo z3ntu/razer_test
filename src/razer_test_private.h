@@ -82,7 +82,8 @@ enum class RazerDeviceQuirks {
     ExtendedMatrix,
     MouseMatrix,
     MatrixBrightness,
-    FireflyCustomFrame
+    FireflyCustomFrame,
+    ByteDPI,
 };
 inline uint qHash(RazerDeviceQuirks key, uint seed)
 {
@@ -93,14 +94,16 @@ const QHash<QString, RazerDeviceQuirks> StringToQuirks {
     { "extended_matrix", RazerDeviceQuirks::ExtendedMatrix },
     { "mouse_matrix", RazerDeviceQuirks::MouseMatrix },
     { "matrix_brightness", RazerDeviceQuirks::MatrixBrightness },
-    { "firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame }
+    { "firefly_custom_frame", RazerDeviceQuirks::FireflyCustomFrame },
+    { "byte_dpi", RazerDeviceQuirks::ByteDPI },
 };
 
 const QHash<RazerDeviceQuirks, QString> QuirksToString {
     { RazerDeviceQuirks::ExtendedMatrix, "extended_matrix" },
     { RazerDeviceQuirks::MouseMatrix, "mouse_matrix" },
     { RazerDeviceQuirks::MatrixBrightness, "matrix_brightness" },
-    { RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame" }
+    { RazerDeviceQuirks::FireflyCustomFrame, "firefly_custom_frame" },
+    { RazerDeviceQuirks::ByteDPI, "byte_dpi" },
 };
 
 const QHash<QString, RazerLedId> StringToLedId {
@@ -114,7 +117,7 @@ const QHash<QString, RazerLedId> StringToLedId {
     { "keymap_green", RazerLedId::KeymapGreenLED },
     { "keymap_blue", RazerLedId::KeymapBlueLED },
     { "right_side", RazerLedId::RightSideLED },
-    { "left_side", RazerLedId::LeftSideLED }
+    { "left_side", RazerLedId::LeftSideLED },
 };
 
 const QHash<RazerLedId, QString> LedIdToString {

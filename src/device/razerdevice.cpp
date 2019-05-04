@@ -258,12 +258,22 @@ RazerDPI RazerDevice::getDPI()
         return { 0, 0 };
     razer_report report, response_report;
 
-    report = razer_chroma_misc_get_dpi_xy(RazerVarstore::STORE);
+    if (hasQuirk(RazerDeviceQuirks::ByteDPI)) {
+        report = razer_chroma_misc_get_dpi_xy_byte();
+    } else {
+        report = razer_chroma_misc_get_dpi_xy(RazerVarstore::STORE);
+    }
     if (!sendReportDBusHelper(report, &response_report))
         return { 0, 0 };
 
-    ushort dpi_x = (response_report.arguments[1] << 8) | (response_report.arguments[2] & 0xFF);
-    ushort dpi_y = (response_report.arguments[3] << 8) | (response_report.arguments[4] & 0xFF);
+    ushort dpi_x, dpi_y;
+    if (hasQuirk(RazerDeviceQuirks::ByteDPI)) {
+        dpi_x = ((float)response_report.arguments[0]) / 255 * 6750;
+        dpi_y = ((float)response_report.arguments[1]) / 255 * 6750;
+    } else {
+        dpi_x = (response_report.arguments[1] << 8) | (response_report.arguments[2] & 0xFF);
+        dpi_y = (response_report.arguments[3] << 8) | (response_report.arguments[4] & 0xFF);
+    }
     return { dpi_x, dpi_y };
 }
 
@@ -274,7 +284,13 @@ bool RazerDevice::setDPI(RazerDPI dpi)
         return false;
     razer_report report, response_report;
 
-    report = razer_chroma_misc_set_dpi_xy(RazerVarstore::STORE, dpi.dpi_x, dpi.dpi_y);
+    if (hasQuirk(RazerDeviceQuirks::ByteDPI)) {
+        uchar dpi_x_scaled = ((float)dpi.dpi_x / 6750 * 255);
+        uchar dpi_y_scaled = ((float)dpi.dpi_y / 6750 * 255);
+        report = razer_chroma_misc_set_dpi_xy_byte(dpi_x_scaled, dpi_y_scaled);
+    } else {
+        report = razer_chroma_misc_set_dpi_xy(RazerVarstore::STORE, dpi.dpi_x, dpi.dpi_y);
+    }
     if (!sendReportDBusHelper(report, &response_report))
         return false;
 

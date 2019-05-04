@@ -250,6 +250,24 @@ razer_report razer_chroma_misc_get_dpi_xy(RazerVarstore variable_storage)
     return report;
 }
 
+razer_report razer_chroma_misc_set_dpi_xy_byte(uchar dpi_x, uchar dpi_y)
+{
+    razer_report report = get_razer_report(0x04, 0x01, 0x03);
+
+    report.arguments[0] = dpi_x;
+    report.arguments[1] = dpi_y;
+    report.arguments[2] = 0x00;
+
+    return report;
+}
+
+razer_report razer_chroma_misc_get_dpi_xy_byte()
+{
+    razer_report report = get_razer_report(0x04, 0x81, 0x03);
+
+    return report;
+}
+
 razer_report razer_chroma_misc_get_polling_rate()
 {
     return get_razer_report(0x00, 0x85, 0x01);
