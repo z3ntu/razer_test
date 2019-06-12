@@ -80,6 +80,7 @@ public slots:
 
 protected:
     bool checkFx(QString fxStr);
+    bool hasFx(QString fxStr);
     void saveFxAndColors(RazerEffect fx, int numColors, RGB color1 = { 0, 0, 0 }, RGB color2 = { 0, 0, 0 }, RGB color3 = { 0, 0, 0 });
 
     // D-Bus replies don't work when called from another object

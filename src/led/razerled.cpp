@@ -57,10 +57,15 @@ razer_test::RazerLedId RazerLED::getLedId()
 bool RazerLED::checkFx(QString fxStr)
 {
     if (!device->checkFx(fxStr)) {
-        dbusNotSupportedHelper("Unsupported FX.");
+        dbusNotSupportedHelper(QString("%1: Unsupported FX: %2").arg(device->getName(), fxStr));
         return false;
     }
     return true;
+}
+
+bool RazerLED::hasFx(QString fxStr)
+{
+    return device->hasFx(fxStr);
 }
 
 void RazerLED::saveFxAndColors(RazerEffect fx, int numColors, RGB color1, RGB color2, RGB color3)

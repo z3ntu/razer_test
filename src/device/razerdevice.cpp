@@ -385,17 +385,22 @@ void RazerDevice::pauseCustomEffectThread()
 
 bool RazerDevice::checkFx(QString fxStr)
 {
-    if (!fxStr.isEmpty() && !fx.contains(fxStr)) {
-        dbusNotSupportedHelper("Unsupported FX.");
+    if (!fx.contains(fxStr)) {
+        dbusNotSupportedHelper(QString("%1: Unsupported FX: %2").arg(name, fxStr));
         return false;
     }
     return true;
 }
 
+bool RazerDevice::hasFx(QString fxStr)
+{
+    return fx.contains(fxStr);
+}
+
 bool RazerDevice::checkFeature(QString featureStr)
 {
     if (!features.contains(featureStr)) {
-        dbusNotSupportedHelper("Unsupported feature.");
+        dbusNotSupportedHelper(QString("%1: Unsupported feature: %2").arg(name, featureStr));
         return false;
     }
     return true;

@@ -72,6 +72,7 @@ public:
     bool hasQuirk(RazerDeviceQuirks quirk);
     bool checkFeature(QString featureStr);
     bool checkFx(QString fxStr);
+    bool hasFx(QString fxStr);
 
 public slots:
     // TODO: CamelCase public functions (at least for D-Bus)
