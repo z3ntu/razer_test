@@ -47,14 +47,8 @@
 #include "dbus/razerledadaptor.h"
 #include "config.h"
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-#define TARGET_BUS QDBusConnection::systemBus()
-#elif defined(Q_OS_DARWIN) || defined(Q_OS_WIN)
-#define TARGET_BUS QDBusConnection::sessionBus()
-#endif
-
 Daemon::Daemon(bool develMode, bool fakeDevices)
-    : connection(TARGET_BUS), develMode(develMode), fakeDevices(fakeDevices)
+    : connection(RAZER_TEST_DBUS_BUS), develMode(develMode), fakeDevices(fakeDevices)
 {
 #ifndef NO_DEVNOTIFIER_IMPL
     if (!fakeDevices) {
