@@ -21,7 +21,7 @@ configure_file(input : 'src/config.h.in',
 if host_machine.system() == 'linux'
     hidapi = dependency('hidapi-hidraw')
 else
-    hidapi = dependency('hidapi', fallback : ['hidapi', 'hidapi'])
+    hidapi = dependency('hidapi', fallback : ['hidapi', 'hidapi_dep'])
 endif
 
 qt5 = import('qt5')
