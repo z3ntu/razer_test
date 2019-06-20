@@ -25,7 +25,7 @@
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #define RAZER_TEST_DBUS_BUS QDBusConnection::systemBus()
-#elif defined(Q_OS_DARWIN) || defined(Q_OS_WIN)
+#elif defined(Q_OS_DARWIN) || defined(Q_OS_WIN) || defined(Q_OS_HAIKU)
 #define RAZER_TEST_DBUS_BUS QDBusConnection::sessionBus()
 #else
 #error "Please choose a RAZER_TEST_DBUS_BUS for this platform!"
