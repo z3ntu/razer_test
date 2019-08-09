@@ -112,7 +112,7 @@ bool RazerFakeDevice::setPollRate(ushort poll_rate)
 bool RazerFakeDevice::displayCustomFrame()
 {
     qDebug("Called %s", Q_FUNC_INFO);
-    if (!checkFx("custom_frame"))
+    if (!checkFeature("custom_frame"))
         return false;
     return true;
 }
@@ -120,7 +120,7 @@ bool RazerFakeDevice::displayCustomFrame()
 bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
 {
     qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
-    if (!checkFx("custom_frame"))
+    if (!checkFeature("custom_frame"))
         return false;
     return true;
 }

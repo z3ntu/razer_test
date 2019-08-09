@@ -323,7 +323,7 @@ QVector<RazerEffect> BringupUtil::testLedEffects()
         auto currEffect = led->getCurrentEffect();
         auto currColors = led->getCurrentColors();
         for (auto effectStr : device->getSupportedFx()) {
-            if (effectStr == "custom_frame" || effectStr == "brightness")
+            if (effectStr == "brightness")
                 continue;
             RazerEffect effect = StringToEffect.value(effectStr);
             setEffect(led, effect, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 });

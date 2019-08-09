@@ -39,7 +39,7 @@ bool RazerMatrixDevice::initialize()
 bool RazerMatrixDevice::displayCustomFrame()
 {
     qDebug("Called %s", Q_FUNC_INFO);
-    if (!checkFx("custom_frame"))
+    if (!checkFeature("custom_frame"))
         return false;
 
     RazerMatrixLED *led = static_cast<RazerMatrixLED *>(leds.values().first());
@@ -53,7 +53,7 @@ bool RazerMatrixDevice::displayCustomFrame()
 bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
 {
     qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
-    if (!checkFx("custom_frame"))
+    if (!checkFeature("custom_frame"))
         return false;
 
     if (rgbData.size() != ((endColumn + 1 - startColumn) * 3)) {
