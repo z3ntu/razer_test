@@ -1,5 +1,16 @@
 [
     {
+        "name": "Razer Abyssus 1800",
+        "vid": "1532",
+        "pid": "0020",
+        "type": "mouse",
+        "pclass": "classic",
+        "leds": [4],
+        "fx": ["off", "on"],
+        "features": ["poll_rate"],
+        "max_dpi": 1800
+    },
+    {
         "name": "Razer DeathAdder Chroma",
         "vid": "1532",
         "pid": "0043",
