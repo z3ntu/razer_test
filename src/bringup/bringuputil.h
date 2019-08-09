@@ -19,9 +19,9 @@
 #ifndef BRINGUPUTIL_H
 #define BRINGUPUTIL_H
 
-#include <hidapi.h>
-
 #include "../device/razerdevice.h"
+
+#include <hidapi.h>
 
 /**
  * @todo write docs

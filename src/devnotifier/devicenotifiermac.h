@@ -22,7 +22,6 @@
 #include "idevicenotifier.h"
 
 #include <IOKit/IOTypes.h>
-
 #include <QHash>
 
 /**

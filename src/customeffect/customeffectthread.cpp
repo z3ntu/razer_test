@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QVector>
-
 #include "customeffectthread.h"
 
 #include "spectrumeffect.h"
 #include "waveeffect.h"
+
+#include <QVector>
 
 CustomEffectThread::CustomEffectThread(const uchar width, const uchar height, QObject *parent)
     : QThread(parent), width(width), height(height)

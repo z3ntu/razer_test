@@ -1,10 +1,10 @@
 #ifndef MYPLUGIN
 #define MYPLUGIN
 
-#include <QObject>
-#include <QDBusMetaType>
-
 #include "plugininterface.h"
+
+#include <QDBusMetaType>
+#include <QObject>
 
 class MyPlugin : public QObject, public QDBusCpp2XmlPlugin
 {

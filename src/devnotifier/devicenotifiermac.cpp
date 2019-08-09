@@ -20,7 +20,6 @@
 
 #include <IOKit/IOCFPlugIn.h>
 #include <IOKit/usb/IOUSBLib.h>
-
 #include <QDebug>
 #include <QThread>
 

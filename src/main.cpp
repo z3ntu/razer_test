@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QCommandLineParser>
-#include <QCoreApplication>
-#include <QDir>
-
 #include "config.h"
 #include "daemon.h"
 #include "razer_test.h"
+
+#include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QDir>
 
 #define ANSI_BOLD "\x1b[1m"
 #define ANSI_COLOR_RED "\x1b[31m"

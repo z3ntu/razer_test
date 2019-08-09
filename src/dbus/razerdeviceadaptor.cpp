@@ -9,10 +9,11 @@
  */
 
 #include "razerdeviceadaptor.h"
-#include <QtCore/QMetaObject>
+
 #include <QtCore/QByteArray>
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QMetaObject>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>

@@ -19,11 +19,11 @@
 #ifndef CUSTOMEFFECTTHREAD_H
 #define CUSTOMEFFECTTHREAD_H
 
-#include <QThread>
-#include <QMutex>
-#include <QWaitCondition>
-
 #include "customeffectbase.h"
+
+#include <QMutex>
+#include <QThread>
+#include <QWaitCondition>
 
 /**
  * @todo write docs

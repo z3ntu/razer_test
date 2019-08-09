@@ -19,11 +19,10 @@
 #ifndef DEVICENOTIFIERLINUX_H
 #define DEVICENOTIFIERLINUX_H
 
-#include <libudev.h>
+#include "idevicenotifier.h"
 
 #include <QHash>
-
-#include "idevicenotifier.h"
+#include <libudev.h>
 
 /**
  * @todo write docs

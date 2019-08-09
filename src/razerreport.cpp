@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstring>
-
 #include "razerreport.h"
+
+#include <cstring>
 
 /**
  * Calculate the checksum for the usb message

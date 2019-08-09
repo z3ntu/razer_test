@@ -17,6 +17,7 @@
  */
 
 #include "razerclassicled.h"
+
 #include "../razerreport.h"
 
 bool RazerClassicLED::initialize()

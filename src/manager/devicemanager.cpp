@@ -17,6 +17,7 @@
  */
 
 #include "devicemanager.h"
+
 #include "config.h"
 
 DeviceManager::DeviceManager(QVector<RazerDevice *> rDevices)

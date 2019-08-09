@@ -19,11 +19,11 @@
 #ifndef DEVICEMANAGER_H
 #define DEVICEMANAGER_H
 
+#include "../device/razerdevice.h"
+
+#include <QDBusObjectPath>
 #include <QObject>
 #include <QVector>
-#include <QDBusObjectPath>
-
-#include "../device/razerdevice.h"
 
 /**
  * @todo write docs

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../src/razerreport.h"
+
 #include <QObject>
 #include <QtTest>
-
-#include "../src/razerreport.h"
 
 class SomeTest : public QObject
 {

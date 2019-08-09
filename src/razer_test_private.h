@@ -20,6 +20,7 @@
 #define RAZERTESTPRIVATE_H
 
 #include <QtGlobal>
+#include <razer_test.h>
 
 namespace razer_test {
 

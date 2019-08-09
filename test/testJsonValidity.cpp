@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../src/validjsonvalues.h"
+
 #include <QObject>
 #include <QtTest>
-
-#include "../src/validjsonvalues.h"
 
 class testJsonValidity : public QObject
 {

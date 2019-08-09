@@ -19,11 +19,11 @@
 #ifndef DAEMON_H
 #define DAEMON_H
 
+#include "device/razerdevice.h"
+
 #include <QDBusConnection>
 #include <QJsonArray>
 #include <QObject>
-
-#include "device/razerdevice.h"
 #if defined(Q_OS_LINUX)
 #include "devnotifier/devicenotifierlinux.h"
 #elif defined(Q_OS_DARWIN)

@@ -1,5 +1,7 @@
 #include "myplugin.h"
+
 #include "razer_test.h"
+
 #include <QMetaType>
 #include <QVector>
 

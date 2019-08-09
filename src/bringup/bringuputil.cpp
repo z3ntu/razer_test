@@ -17,14 +17,14 @@
  */
 
 #include "bringuputil.h"
-#include "../validjsonvalues.h"
+
 #include "../device/razermatrixdevice.h"
+#include "../validjsonvalues.h"
 
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTextStream>
-
 #include <iostream>
 
 BringupUtil::BringupUtil(struct hid_device_info *hid_dev_info)

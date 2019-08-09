@@ -16,36 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "daemon.h"
+
+#include <QCoreApplication>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QString>
+#include <QTextStream>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
 #include <hidapi.h>
-
-#include <QFile>
-#include <QDir>
-#include <QTextStream>
-#include <QString>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QDebug>
-#include <QCoreApplication>
-
-#include "daemon.h"
 
 #ifdef ENABLE_BRINGUP_UTIL
 #include "bringup/bringuputil.h"
 #endif
-#include "device/razerdevice.h"
-#include "device/razerclassicdevice.h"
-#include "device/razermatrixdevice.h"
-#include "device/razerfakedevice.h"
-#include "led/razerled.h"
-#include "led/razerclassicled.h"
-#include "dbus/razerdeviceadaptor.h"
-#include "dbus/devicemanageradaptor.h"
-#include "dbus/razerledadaptor.h"
 #include "config.h"
+#include "dbus/devicemanageradaptor.h"
+#include "dbus/razerdeviceadaptor.h"
+#include "dbus/razerledadaptor.h"
+#include "device/razerclassicdevice.h"
+#include "device/razerdevice.h"
+#include "device/razerfakedevice.h"
+#include "device/razermatrixdevice.h"
+#include "led/razerclassicled.h"
+#include "led/razerled.h"
 
 Daemon::Daemon(bool develMode, bool fakeDevices)
     : connection(RAZER_TEST_DBUS_BUS), develMode(develMode), fakeDevices(fakeDevices)

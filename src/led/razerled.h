@@ -19,14 +19,14 @@
 #ifndef RAZERLED_H
 #define RAZERLED_H
 
-#include <QMetaType>
+#include "../razer_test_private.h"
+#include "../razerreport.h"
+#include "razer_test.h"
+
 #include <QDBusArgument>
 #include <QDBusContext>
 #include <QList>
-
-#include "razer_test.h"
-#include "../razer_test_private.h"
-#include "../razerreport.h"
+#include <QMetaType>
 
 using namespace razer_test;
 

@@ -19,19 +19,18 @@
 #ifndef RAZERDEVICE_H
 #define RAZERDEVICE_H
 
-#include <hidapi.h>
+#include "../customeffect/customeffectthread.h"
+#include "../led/razerled.h"
+#include "../razerreport.h"
+#include "razer_test.h"
 
+#include <QByteArray>
+#include <QDBusContext>
+#include <QHash>
 #include <QObject>
 #include <QString>
 #include <QVector>
-#include <QHash>
-#include <QDBusContext>
-#include <QByteArray>
-
-#include "razer_test.h"
-#include "../razerreport.h"
-#include "../customeffect/customeffectthread.h"
-#include "../led/razerled.h"
+#include <hidapi.h>
 
 // class RazerLED;
 
