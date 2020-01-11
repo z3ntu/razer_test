@@ -13,7 +13,7 @@ class MyPlugin : public QObject, public QDBusCpp2XmlPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.DBus.Cpp2XmlPlugin")
 
 public:
-    virtual void registerMetaTypes();
+    void registerMetaTypes() override;
 };
 
 #endif //MYPLUGIN

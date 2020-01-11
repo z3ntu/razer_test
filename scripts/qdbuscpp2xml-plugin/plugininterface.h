@@ -1,5 +1,8 @@
 #ifndef SOMEMYINCLUDE_H
 #define SOMEMYINCLUDE_H
+
+#include <QtPlugin>
+
 class QDBusCpp2XmlPlugin
 {
 public:
