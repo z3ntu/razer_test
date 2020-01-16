@@ -102,7 +102,7 @@ void CustomEffectThread::run()
     }
 }
 
-void CustomEffectThread::customEffectRgbDataReady(const uchar row, const QByteArray &rgbData)
+void CustomEffectThread::customEffectRgbDataReady(const uchar row, const QVector<RGB> &rgbData)
 {
     emit rgbDataReady(row, 0, width - 1, rgbData);
 }

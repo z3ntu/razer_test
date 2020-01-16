@@ -44,7 +44,7 @@ RazerEffect RazerLED::getCurrentEffect()
     return effect;
 }
 
-QList<RGB> RazerLED::getCurrentColors()
+QVector<RGB> RazerLED::getCurrentColors()
 {
     return { color1, color2, color3 };
 }

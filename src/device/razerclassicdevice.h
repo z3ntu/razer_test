@@ -32,7 +32,7 @@ public:
     bool initialize() override;
 
     bool displayCustomFrame() override;
-    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) override;
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) override;
 };
 
 #endif // RAZERCLASSICDEVICE_H

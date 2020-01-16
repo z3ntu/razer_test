@@ -29,13 +29,11 @@ void WaveEffect::prepareRgbData()
 {
     // Iterate through rows
     for (uchar i = 0; i < height; i++) {
-        RGBval rowVal = startVal;
+        RGB rowVal = startVal;
         SpectrumColor nextColor = startNextColor;
         // Iterate through columns
-        for (int j = 0; j < width * 3; j++) {
-            rgbData[i][j++] = rowVal.red;
-            rgbData[i][j++] = rowVal.green;
-            rgbData[i][j] = rowVal.blue;
+        for (int j = 0; j < width; j++) {
+            rgbData[i][j] = rowVal;
 
             // FF0000 Red
             // Increase Green until
@@ -52,28 +50,28 @@ void WaveEffect::prepareRgbData()
             // FF0000 Red
             // REPEAT
             if (nextColor == SpectrumColor::Yellow) {
-                rowVal.green = increaseByNoOverflow(rowVal.green, 0x40);
-                if (rowVal.green == 0xFF)
+                rowVal.g = increaseByNoOverflow(rowVal.g, 0x40);
+                if (rowVal.g == 0xFF)
                     nextColor = SpectrumColor::Green;
             } else if (nextColor == SpectrumColor::Green) {
-                rowVal.red = decreaseByNoUnderflow(rowVal.red, 0x40);
-                if (rowVal.red == 0x00)
+                rowVal.r = decreaseByNoUnderflow(rowVal.r, 0x40);
+                if (rowVal.r == 0x00)
                     nextColor = SpectrumColor::Cyan;
             } else if (nextColor == SpectrumColor::Cyan) {
-                rowVal.blue = increaseByNoOverflow(rowVal.blue, 0x40);
-                if (rowVal.blue == 0xFF)
+                rowVal.b = increaseByNoOverflow(rowVal.b, 0x40);
+                if (rowVal.b == 0xFF)
                     nextColor = SpectrumColor::Blue;
             } else if (nextColor == SpectrumColor::Blue) {
-                rowVal.green = decreaseByNoUnderflow(rowVal.green, 0x40);
-                if (rowVal.green == 0x00)
+                rowVal.g = decreaseByNoUnderflow(rowVal.g, 0x40);
+                if (rowVal.g == 0x00)
                     nextColor = SpectrumColor::Magenta;
             } else if (nextColor == SpectrumColor::Magenta) {
-                rowVal.red = increaseByNoOverflow(rowVal.red, 0x40);
-                if (rowVal.red == 0xFF)
+                rowVal.r = increaseByNoOverflow(rowVal.r, 0x40);
+                if (rowVal.r == 0xFF)
                     nextColor = SpectrumColor::Red;
             } else if (nextColor == SpectrumColor::Red) {
-                rowVal.blue = decreaseByNoUnderflow(rowVal.blue, 0x40);
-                if (rowVal.blue == 0x00)
+                rowVal.b = decreaseByNoUnderflow(rowVal.b, 0x40);
+                if (rowVal.b == 0x00)
                     nextColor = SpectrumColor::Yellow;
             }
         }

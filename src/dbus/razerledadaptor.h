@@ -37,7 +37,7 @@ class RazerLEDAdaptor : public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Introspection", ""
                                        "  <interface name=\"io.github.openrazer1.Led\">\n"
                                        "    <property access=\"read\" type=\"a(yyy)\" name=\"CurrentColors\">\n"
-                                       "      <annotation value=\"QList&lt;RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                                       "      <annotation value=\"QVector&lt;RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                                        "    </property>\n"
                                        "    <property access=\"read\" type=\"(i)\" name=\"CurrentEffect\">\n"
                                        "      <annotation value=\"RazerEffect\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
@@ -105,8 +105,8 @@ public:
     virtual ~RazerLEDAdaptor();
 
 public: // PROPERTIES
-    Q_PROPERTY(QList<RGB> CurrentColors READ currentColors)
-    QList<RGB> currentColors() const;
+    Q_PROPERTY(QVector<RGB> CurrentColors READ currentColors)
+    QVector<RGB> currentColors() const;
 
     Q_PROPERTY(RazerEffect CurrentEffect READ currentEffect)
     RazerEffect currentEffect() const;

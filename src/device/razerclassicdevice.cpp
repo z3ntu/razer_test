@@ -46,9 +46,10 @@ bool RazerClassicDevice::displayCustomFrame()
     return false;
 }
 
-bool RazerClassicDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
+bool RazerClassicDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData)
 {
-    qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
+    qDebug("Called %s with param %i, %i, %i", Q_FUNC_INFO, row, startColumn, endColumn);
+    qDebug() << " (cont.) rgbData:" << rgbData;
     if (!checkFeature("custom_frame"))
         return false;
 

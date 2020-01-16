@@ -43,7 +43,7 @@ class RazerFakeDevice : public RazerDevice
     bool setPollRate(ushort poll_rate) override;
 
     bool displayCustomFrame() override;
-    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) override;
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) override;
 
 private:
     QString serial;

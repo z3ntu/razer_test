@@ -3,7 +3,7 @@ project('qdbuscpp2xml-plugin', 'cpp',
   default_options : ['warning_level=3', 'cpp_std=c++14'])
 
 src = ['myplugin.cpp']
-inc = include_directories('../../src/')
+inc = include_directories('../../include/')
 
 qt5 = import('qt5')
 qt5_dep = dependency('qt5', modules : ['Core', 'DBus'])

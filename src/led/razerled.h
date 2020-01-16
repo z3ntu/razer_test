@@ -41,7 +41,7 @@ class RazerLED : public QObject, protected QDBusContext
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
-    Q_PROPERTY(QList<RGB> CurrentColors READ getCurrentColors)
+    Q_PROPERTY(QVector<RGB> CurrentColors READ getCurrentColors)
     Q_PROPERTY(RazerEffect CurrentEffect READ getCurrentEffect)
     Q_PROPERTY(RazerLedId LedId READ getLedId)
 
@@ -55,7 +55,7 @@ public:
 
     QDBusObjectPath getObjectPath();
     RazerEffect getCurrentEffect();
-    QList<RGB> getCurrentColors();
+    QVector<RGB> getCurrentColors();
     RazerLedId getLedId();
 
     RazerDevice *device;

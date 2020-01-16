@@ -80,7 +80,8 @@ class RazerDeviceAdaptor : public QDBusAbstractAdaptor
                                        "      <arg direction=\"in\" type=\"y\" name=\"row\"/>\n"
                                        "      <arg direction=\"in\" type=\"y\" name=\"startColumn\"/>\n"
                                        "      <arg direction=\"in\" type=\"y\" name=\"endColumn\"/>\n"
-                                       "      <arg direction=\"in\" type=\"ay\" name=\"rgbData\"/>\n"
+                                       "      <arg direction=\"in\" type=\"a(yyy)\" name=\"rgbData\"/>\n"
+                                       "      <annotation value=\"QVector&lt;razer_test::RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.In3\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"startCustomEffectThread\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -113,7 +114,7 @@ public: // PROPERTIES
     QString type() const;
 
 public Q_SLOTS: // METHODS
-    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QVector<razer_test::RGB> &rgbData);
     bool displayCustomFrame();
     RazerDPI getDPI();
     QString getFirmwareVersion();

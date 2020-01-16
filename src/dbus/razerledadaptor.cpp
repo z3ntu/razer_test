@@ -34,10 +34,10 @@ RazerLEDAdaptor::~RazerLEDAdaptor()
     // destructor
 }
 
-QList<RGB> RazerLEDAdaptor::currentColors() const
+QVector<RGB> RazerLEDAdaptor::currentColors() const
 {
     // get the value of property CurrentColors
-    return qvariant_cast<QList<RGB>>(parent()->property("CurrentColors"));
+    return qvariant_cast<QVector<RGB>>(parent()->property("CurrentColors"));
 }
 
 RazerEffect RazerLEDAdaptor::currentEffect() const

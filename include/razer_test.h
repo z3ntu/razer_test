@@ -21,6 +21,7 @@
 
 #include <QDBusArgument>
 #include <QDBusMetaType>
+#include <QDebug>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #define RAZER_TEST_DBUS_BUS QDBusConnection::systemBus()
@@ -230,6 +231,12 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RGB &value
     return argument;
 }
 
+inline QDebug operator<<(QDebug dbg, const RGB &value)
+{
+    dbg.nospace() << "RGB(" << value.r << ", " << value.g << ", " << value.b << ")";
+    return dbg.maybeSpace();
+}
+
 }
 
 Q_DECLARE_METATYPE(razer_test::RazerLedId)
@@ -261,8 +268,8 @@ inline void registerMetaTypes()
 
     qRegisterMetaType<RGB>("RGB");
     qDBusRegisterMetaType<RGB>();
-    qRegisterMetaType<QList<RGB>>("QList<RGB>");
-    qDBusRegisterMetaType<QList<RGB>>();
+    qRegisterMetaType<QVector<RGB>>("QVector<RGB>");
+    qDBusRegisterMetaType<QVector<RGB>>();
 
     qRegisterMetaType<RazerEffect>("RazerEffect");
     qDBusRegisterMetaType<RazerEffect>();

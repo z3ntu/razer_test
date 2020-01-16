@@ -19,14 +19,12 @@
 #ifndef CUSTOMEFFECTBASE_H
 #define CUSTOMEFFECTBASE_H
 
+#include "razer_test.h"
+
 #include <QObject>
 #include <QVector>
 
-struct RGBval {
-    uchar red;
-    uchar green;
-    uchar blue;
-};
+using namespace razer_test;
 
 enum class SpectrumColor {
     Red,
@@ -66,12 +64,12 @@ public:
     ulong msleep;
 
 signals:
-    void rgbDataReady(const uchar row, const QByteArray &rgbData);
+    void rgbDataReady(const uchar row, const QVector<RGB> &rgbData);
 
 protected:
     const uchar width;
     const uchar height;
-    QVector<QByteArray> rgbData;
+    QVector<QVector<RGB>> rgbData;
 };
 
 #endif // CUSTOMEFFECTBASE_H

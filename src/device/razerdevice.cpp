@@ -411,7 +411,7 @@ void RazerDevice::pauseCustomEffectThread()
     thread->pauseThread();
 }
 
-void RazerDevice::customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData)
+void RazerDevice::customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<RGB> &rgbData)
 {
     if (!defineCustomFrame(row, startColumn, endColumn, rgbData)) {
         qWarning("defineCustomFrame went wrong.");

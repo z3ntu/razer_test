@@ -30,10 +30,8 @@ void SpectrumEffect::prepareRgbData()
     // Iterate through rows
     for (uchar i = 0; i < height; i++) {
         // Iterate through columns
-        for (int j = 0; j < width * 3; j++) {
-            rgbData[i][j++] = rgbVal.red;
-            rgbData[i][j++] = rgbVal.green;
-            rgbData[i][j] = rgbVal.blue;
+        for (int j = 0; j < width; j++) {
+            rgbData[i][j] = rgbVal;
         }
 
         // Send data to keyboard
@@ -55,28 +53,28 @@ void SpectrumEffect::prepareRgbData()
     // FF0000 Red
     // REPEAT
     if (nextColor == SpectrumColor::Yellow) {
-        rgbVal.green = increaseByNoOverflow(rgbVal.green, 0x10);
-        if (rgbVal.green == 0xFF)
+        rgbVal.g = increaseByNoOverflow(rgbVal.g, 0x10);
+        if (rgbVal.g == 0xFF)
             nextColor = SpectrumColor::Green;
     } else if (nextColor == SpectrumColor::Green) {
-        rgbVal.red = decreaseByNoUnderflow(rgbVal.red, 0x10);
-        if (rgbVal.red == 0x00)
+        rgbVal.r = decreaseByNoUnderflow(rgbVal.r, 0x10);
+        if (rgbVal.r == 0x00)
             nextColor = SpectrumColor::Cyan;
     } else if (nextColor == SpectrumColor::Cyan) {
-        rgbVal.blue = increaseByNoOverflow(rgbVal.blue, 0x10);
-        if (rgbVal.blue == 0xFF)
+        rgbVal.b = increaseByNoOverflow(rgbVal.b, 0x10);
+        if (rgbVal.b == 0xFF)
             nextColor = SpectrumColor::Blue;
     } else if (nextColor == SpectrumColor::Blue) {
-        rgbVal.green = decreaseByNoUnderflow(rgbVal.green, 0x10);
-        if (rgbVal.green == 0x00)
+        rgbVal.g = decreaseByNoUnderflow(rgbVal.g, 0x10);
+        if (rgbVal.g == 0x00)
             nextColor = SpectrumColor::Magenta;
     } else if (nextColor == SpectrumColor::Magenta) {
-        rgbVal.red = increaseByNoOverflow(rgbVal.red, 0x10);
-        if (rgbVal.red == 0xFF)
+        rgbVal.r = increaseByNoOverflow(rgbVal.r, 0x10);
+        if (rgbVal.r == 0xFF)
             nextColor = SpectrumColor::Red;
     } else if (nextColor == SpectrumColor::Red) {
-        rgbVal.blue = decreaseByNoUnderflow(rgbVal.blue, 0x10);
-        if (rgbVal.blue == 0x00)
+        rgbVal.b = decreaseByNoUnderflow(rgbVal.b, 0x10);
+        if (rgbVal.b == 0x00)
             nextColor = SpectrumColor::Yellow;
     }
 }

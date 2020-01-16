@@ -2,7 +2,7 @@
 <node>
   <interface name="io.github.openrazer1.Led">
     <property name="CurrentColors" type="a(yyy)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="QList&lt;RGB&gt;"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="QVector&lt;RGB&gt;"/>
     </property>
     <property name="CurrentEffect" type="(i)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerEffect"/>

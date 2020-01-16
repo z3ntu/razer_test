@@ -45,7 +45,8 @@
       <arg name="row" type="y" direction="in"/>
       <arg name="startColumn" type="y" direction="in"/>
       <arg name="endColumn" type="y" direction="in"/>
-      <arg name="rgbData" type="ay" direction="in"/>
+      <arg name="rgbData" type="a(yyy)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In3" value="QVector&lt;razer_test::RGB&gt;"/>
     </method>
     <method name="startCustomEffectThread">
       <arg type="b" direction="out"/>

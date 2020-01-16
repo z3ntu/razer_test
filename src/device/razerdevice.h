@@ -90,7 +90,7 @@ public slots:
 
     // Custom frame
     virtual bool displayCustomFrame() = 0;
-    virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData) = 0;
+    virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) = 0;
 
     // getDeviceMode, setDeviceMode
 
@@ -126,7 +126,7 @@ protected:
     void dbusNotSupportedHelper(const QString &errorMessage);
 
 private slots:
-    void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData);
+    void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<razer_test::RGB> &rgbData);
     void customFrameReady();
 };
 

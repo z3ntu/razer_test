@@ -70,11 +70,11 @@ QString RazerDeviceAdaptor::type() const
     return qvariant_cast<QString>(parent()->property("Type"));
 }
 
-bool RazerDeviceAdaptor::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QByteArray &rgbData)
+bool RazerDeviceAdaptor::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QVector<razer_test::RGB> &rgbData)
 {
     // handle method call io.github.openrazer1.Device.defineCustomFrame
     bool out0;
-    QMetaObject::invokeMethod(parent(), "defineCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, row), Q_ARG(uchar, startColumn), Q_ARG(uchar, endColumn), Q_ARG(QByteArray, rgbData));
+    QMetaObject::invokeMethod(parent(), "defineCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, row), Q_ARG(uchar, startColumn), Q_ARG(uchar, endColumn), Q_ARG(QVector<razer_test::RGB>, rgbData));
     return out0;
 }
 

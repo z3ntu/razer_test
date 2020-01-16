@@ -33,7 +33,7 @@ public:
     void prepareRgbData() override;
 
 private:
-    RGBval rgbVal;
+    RGB rgbVal;
     SpectrumColor nextColor;
 };
 

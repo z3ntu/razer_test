@@ -50,25 +50,34 @@ bool RazerMatrixDevice::displayCustomFrame()
     }
 }
 
-bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
+bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData)
 {
-    qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
+    qDebug("Called %s with param %i, %i, %i", Q_FUNC_INFO, row, startColumn, endColumn);
+    qDebug() << " (cont.) rgbData:" << rgbData;
     if (!checkFeature("custom_frame"))
         return false;
 
-    if (rgbData.size() != ((endColumn + 1 - startColumn) * 3)) {
-        dbusFailedHelper("defineCustomFrame called with invalid size of rgbData");
+    if (rgbData.size() != (endColumn + 1 - startColumn)) {
+        dbusFailedHelper(QString("defineCustomFrame called with invalid size (%d instead of %d) of rgbData").arg(rgbData.size(), (endColumn + 1 - startColumn)));
         return false;
+    }
+
+    QByteArray rgbData2;
+    foreach (const RGB &color, rgbData) {
+        rgbData2.append(color.r);
+        rgbData2.append(color.g);
+        rgbData2.append(color.b);
     }
 
     razer_report report, response_report;
 
     if (quirks.contains(RazerDeviceQuirks::FireflyCustomFrame)) {
-        report = razer_chroma_misc_one_row_set_custom_frame(startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
+        report = razer_chroma_misc_one_row_set_custom_frame(startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData2.constData()));
     } else {
-        report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData.constData()));
+        report = razer_chroma_standard_matrix_set_custom_frame(row, startColumn, endColumn, reinterpret_cast<const uchar *>(rgbData2.constData()));
     }
     if (!sendReportDBusHelper(report, &response_report))
         return false;
+
     return true;
 }

@@ -117,10 +117,16 @@ bool RazerFakeDevice::displayCustomFrame()
     return true;
 }
 
-bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QByteArray rgbData)
+bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData)
 {
-    qDebug("Called %s with param %i, %i, %i, %s", Q_FUNC_INFO, row, startColumn, endColumn, rgbData.toHex().constData());
+    qDebug("Called %s with param %i, %i, %i", Q_FUNC_INFO, row, startColumn, endColumn);
+    qDebug() << " (cont.) rgbData:" << rgbData;
     if (!checkFeature("custom_frame"))
         return false;
+
+    if (rgbData.size() != (endColumn + 1 - startColumn)) {
+        dbusFailedHelper(QString("defineCustomFrame called with invalid size (%d instead of %d) of rgbData").arg(rgbData.size(), (endColumn + 1 - startColumn)));
+        return false;
+    }
     return true;
 }
