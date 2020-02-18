@@ -3,6 +3,8 @@
 set -ex
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    # Work around "Error: The `brew link` step did not complete successfully"
+    brew unlink python@2
     # Work around "Homebrew must be run under Ruby 2.6! You're running 2.3.3. (RuntimeError)"
     brew update
     brew install qt hidapi
