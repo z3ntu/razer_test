@@ -37,6 +37,12 @@
       <arg type="b" direction="out"/>
       <arg name="poll_rate" type="q" direction="in"/>
     </method>
+    <method name="getBatteryLevel">
+      <arg type="q" direction="out"/>
+    </method>
+    <method name="isCharging">
+      <arg type="b" direction="out"/>
+    </method>
     <method name="displayCustomFrame">
       <arg type="b" direction="out"/>
     </method>

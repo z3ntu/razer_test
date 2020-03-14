@@ -89,4 +89,7 @@ razer_report razer_chroma_misc_get_dpi_xy_byte();
 razer_report razer_chroma_misc_get_polling_rate();
 razer_report razer_chroma_misc_set_polling_rate(uchar poll_rate_byte);
 
+razer_report razer_chroma_misc_get_battery_level();
+razer_report razer_chroma_misc_get_charging_status();
+
 #endif // RAZERREPORT_H

@@ -42,6 +42,9 @@ class RazerFakeDevice : public RazerDevice
     ushort getPollRate() override;
     bool setPollRate(ushort poll_rate) override;
 
+    ushort getBatteryLevel() override;
+    bool isCharging() override;
+
     bool displayCustomFrame() override;
     bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) override;
 

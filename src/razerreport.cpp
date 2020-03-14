@@ -280,3 +280,13 @@ razer_report razer_chroma_misc_set_polling_rate(uchar poll_rate_byte)
 
     return report;
 }
+
+razer_report razer_chroma_misc_get_battery_level()
+{
+    return get_razer_report(0x07, 0x80, 0x02);
+}
+
+razer_report razer_chroma_misc_get_charging_status()
+{
+    return get_razer_report(0x07, 0x84, 0x02);
+}

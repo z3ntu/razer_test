@@ -391,6 +391,34 @@ bool RazerDevice::setPollRate(ushort poll_rate)
     return true;
 }
 
+ushort RazerDevice::getBatteryLevel()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("battery"))
+        return 0;
+    razer_report report, response_report;
+
+    report = razer_chroma_misc_get_battery_level();
+    if (!sendReportDBusHelper(report, &response_report))
+        return 0;
+
+    return response_report.arguments[1];
+}
+
+bool RazerDevice::isCharging()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("battery"))
+        return 0;
+    razer_report report, response_report;
+
+    report = razer_chroma_misc_get_charging_status();
+    if (!sendReportDBusHelper(report, &response_report))
+        return 0;
+
+    return response_report.arguments[1];
+}
+
 MatrixDimensions RazerDevice::getMatrixDimensions()
 {
     qDebug("Called %s", Q_FUNC_INFO);

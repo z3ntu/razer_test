@@ -88,6 +88,9 @@ public slots:
     virtual ushort getPollRate();
     virtual bool setPollRate(ushort poll_rate);
 
+    virtual ushort getBatteryLevel();
+    virtual bool isCharging();
+
     // Custom frame
     virtual bool displayCustomFrame() = 0;
     virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) = 0;

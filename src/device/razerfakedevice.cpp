@@ -109,6 +109,24 @@ bool RazerFakeDevice::setPollRate(ushort poll_rate)
     return true;
 }
 
+ushort RazerFakeDevice::getBatteryLevel()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("battery"))
+        return 0;
+
+    return 255;
+}
+
+bool RazerFakeDevice::isCharging()
+{
+    qDebug("Called %s", Q_FUNC_INFO);
+    if (!checkFeature("battery"))
+        return 0;
+
+    return true;
+}
+
 bool RazerFakeDevice::displayCustomFrame()
 {
     qDebug("Called %s", Q_FUNC_INFO);
