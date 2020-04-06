@@ -1,0 +1,24 @@
+[
+    {
+        "name": "Razer Base Station Chroma",
+        "vid": "1532",
+        "pid": "0f08",
+        "type": "accessory",
+        "pclass": "matrix",
+        "leds": [5],
+        "fx": ["custom_frame", "brightness"],
+        "quirks": ["matrix_brightness", "mouse_matrix"],
+        "matrix_dimensions": [1, 14]
+    },
+    {
+        "name": "Razer Hardware Development Kit",
+        "vid": "1532",
+        "pid": "0f09",
+        "type": "accessory",
+        "pclass": "matrix",
+        "leds": [5],
+        "fx": ["custom_frame", "brightness"],
+        "quirks": ["matrix_brightness", "mouse_matrix"],
+        "matrix_dimensions": [4, 15]
+    }
+]

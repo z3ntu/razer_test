@@ -32,5 +32,18 @@
         "features": ["dpi", "poll_rate"],
         "quirks": ["mouse_matrix", "matrix_brightness"],
         "max_dpi": 16000
+    },
+    {
+        "name": "Razer Mamba Tournament Edition",
+        "vid": "1532",
+        "pid": "0046",
+        "type": "mouse",
+        "pclass": "matrix",
+        "leds": [5],
+        "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "brightness", "custom_frame"],
+        "features": ["dpi"],
+        "quirks": ["firefly_custom_frame"],
+        "max_dpi": 16000,
+        "matrix_dimensions": [1, 16]
     }
 ]
