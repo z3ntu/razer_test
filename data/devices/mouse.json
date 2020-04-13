@@ -32,5 +32,17 @@
         "features": ["dpi", "poll_rate"],
         "quirks": ["mouse_matrix", "matrix_brightness"],
         "max_dpi": 16000
+    },
+    {
+        "name": "Razer Mamba Elite",
+        "vid": "1532",
+        "pid": "006c",
+        "type": "mouse",
+        "pclass": "matrix",
+        "leds": [1, 4, 16, 17],
+        "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "brightness"],
+        "features": ["dpi", "poll_rate"],
+        "quirks": ["mouse_matrix", "matrix_brightness"],
+        "max_dpi": 16000
     }
 ]
