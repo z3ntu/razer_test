@@ -3,9 +3,7 @@ ARG build_type
 
 ADD . /root
 
-# HIDAPI will be available in Alpine 3.11, for now use the package from edge
-RUN echo "@edgecommunity https://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN apk add qt5-qtbase-dev g++ clang pkgconf hidapi-dev@edgecommunity eudev-dev
+RUN apk add qt5-qtbase-dev g++ clang pkgconf hidapi-dev eudev-dev
 RUN if [ "$build_type" != 'cron' ]; then apk add meson; fi
 RUN if [ "$build_type" = 'cron' ]; then apk add git python3 ninja; fi
 RUN if [ "$build_type" = 'cron' ]; then git clone https://github.com/mesonbuild/meson; fi
