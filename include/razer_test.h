@@ -259,6 +259,8 @@ inline void registerMetaTypes()
 
     qRegisterMetaType<RazerDPI>("RazerDPI");
     qDBusRegisterMetaType<RazerDPI>();
+    qRegisterMetaType<QVector<RazerDPI>>("QVector<RazerDPI>");
+    qDBusRegisterMetaType<QVector<RazerDPI>>();
 
     qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
     qDBusRegisterMetaType<ReactiveSpeed>();
