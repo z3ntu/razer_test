@@ -184,6 +184,12 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &
     return argument;
 }
 
+inline QDebug operator<<(QDebug dbg, const RazerDPI &value)
+{
+    dbg.nospace() << "RazerDPI(" << value.dpi_x << ", " << value.dpi_y << ")";
+    return dbg.maybeSpace();
+}
+
 struct MatrixDimensions {
     uchar x;
     uchar y;
