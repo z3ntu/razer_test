@@ -50,7 +50,7 @@ enum class RazerClassicEffectId : uchar {
     Breathing = 0x02, // Pulsating
     Spectrum = 0x04
 };
-inline uint qHash(RazerClassicEffectId key, uint seed)
+inline size_t qHash(RazerClassicEffectId key, size_t seed)
 {
     return ::qHash(static_cast<uchar>(key), seed);
 }
@@ -81,7 +81,7 @@ enum class RazerDeviceQuirks {
     FireflyCustomFrame,
     ByteDPI,
 };
-inline uint qHash(RazerDeviceQuirks key, uint seed)
+inline size_t qHash(RazerDeviceQuirks key, size_t seed)
 {
     return ::qHash(static_cast<uchar>(key), seed);
 }

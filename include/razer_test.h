@@ -67,7 +67,7 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerLedId
     value = static_cast<RazerLedId>(a);
     return argument;
 }
-inline uint qHash(RazerLedId key, uint seed)
+inline size_t qHash(RazerLedId key, size_t seed)
 {
     return ::qHash(static_cast<uchar>(key), seed);
 }
@@ -156,7 +156,7 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerEffec
     value = static_cast<RazerEffect>(a);
     return argument;
 }
-inline uint qHash(RazerEffect key, uint seed)
+inline size_t qHash(RazerEffect key, size_t seed)
 {
     return ::qHash(static_cast<uint>(key), seed);
 }

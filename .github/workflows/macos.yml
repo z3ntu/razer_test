@@ -1,18 +1,18 @@
 name: macOS
-on: push
+on: [push, pull_request]
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: brew install qt@5 hidapi meson
-      - run: echo "/usr/local/opt/qt@5/bin" >> $GITHUB_PATH
+      - run: brew install qt@6 hidapi meson
+      - run: echo "/opt/homebrew/opt/qt@6/bin" >> $GITHUB_PATH
       - name: Configure
-        run: meson -Dbuild_bringup_util=true -Dbuild_tests=true builddir/
+        run: meson setup builddir -Dbuild_bringup_util=true -Dbuild_tests=true
       - name: Build
-        run: ninja -C builddir/
+        run: meson compile -C builddir
       - name: Test
-        run: ninja -C builddir/ test
+        run: meson test -C builddir

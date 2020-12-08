@@ -1,7 +1,7 @@
 project('razer_test', 'cpp',
         version : '0.0.1',
-        meson_version : '>=0.44.0',
-        default_options : ['cpp_std=c++14'])
+        meson_version : '>=0.57.0',
+        default_options : ['cpp_std=c++17'])
 
 inc = include_directories('include')
 
@@ -24,8 +24,8 @@ else
     hidapi = dependency('hidapi', fallback : ['hidapi', 'hidapi_dep'])
 endif
 
-qt5 = import('qt5')
-qt5_dep = dependency('qt5', modules : ['Core', 'DBus'])
+qt6 = import('qt6')
+qt6_dep = dependency('qt6', modules : ['Core', 'DBus'])
 
 if get_option('build_tests')
     subdir('test')
@@ -53,7 +53,7 @@ src = [
     'src/manager/devicemanager.cpp'
 ]
 
-processed = qt5.preprocess(
+processed = qt6.preprocess(
   moc_headers : [
     'src/customeffect/customeffectbase.h',
     'src/customeffect/customeffectthread.h',
@@ -114,13 +114,13 @@ install_data('data/io.github.openrazer1.conf', install_dir : join_paths(get_opti
 executable('razer_test',
            [src, processed],
            include_directories : inc,
-           dependencies : [hidapi, qt5_dep, devnotifier_dep],
+           dependencies : [hidapi, qt6_dep, devnotifier_dep],
            install : true)
 if get_option('build_bringup_util')
   extra_src = ['src/bringup/bringuputil.cpp']
   executable('razer_test_bringup_util',
              [src, extra_src, processed],
              include_directories : inc,
-             dependencies : [hidapi, qt5_dep, devnotifier_dep],
+             dependencies : [hidapi, qt6_dep, devnotifier_dep],
              cpp_args : '-DENABLE_BRINGUP_UTIL')
 endif

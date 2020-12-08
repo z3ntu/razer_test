@@ -212,7 +212,7 @@ void Daemon::discoverDevices()
 void Daemon::discoverFakeDevices()
 {
     // Check if device is supported
-    foreach (const QJsonValue &deviceVal, supportedDevices) {
+    for (const QJsonValue &deviceVal : supportedDevices) {
         RazerDevice *device = initializeDevice(nullptr, deviceVal.toObject());
         if (device == nullptr)
             continue;
@@ -298,7 +298,7 @@ QJsonArray Daemon::loadDevicesFromJson(bool devel)
         QFile f(i.next().absoluteFilePath());
         f.open(QFile::ReadOnly);
         QJsonArray a = QJsonDocument::fromJson(f.readAll()).array();
-        foreach (const QJsonValue &value, a) {
+        for (const QJsonValue &value : a) {
             devices.append(value);
         }
     }
@@ -352,16 +352,16 @@ bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString
     *name = deviceObj["name"].toString();
     *type = deviceObj["type"].toString();
     *pclass = deviceObj["pclass"].toString();
-    foreach (const QJsonValue &ledVal, deviceObj["leds"].toArray()) {
+    for (const QJsonValue &ledVal : deviceObj["leds"].toArray()) {
         leds->append(static_cast<RazerLedId>(ledVal.toInt()));
     }
-    foreach (const QJsonValue &fxVal, deviceObj["fx"].toArray()) {
+    for (const QJsonValue &fxVal : deviceObj["fx"].toArray()) {
         fx->append(fxVal.toString());
     }
-    foreach (const QJsonValue &featureVal, deviceObj["features"].toArray()) {
+    for (const QJsonValue &featureVal : deviceObj["features"].toArray()) {
         features->append(featureVal.toString());
     }
-    foreach (const QJsonValue &quirkVal, deviceObj["quirks"].toArray()) {
+    for (const QJsonValue &quirkVal : deviceObj["quirks"].toArray()) {
         if (StringToQuirks.contains(quirkVal.toString())) {
             quirks->append(StringToQuirks.value(quirkVal.toString()));
         } else {
@@ -377,7 +377,7 @@ bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString
 QJsonObject Daemon::getDeviceJsonForDevice(ushort vid, ushort pid)
 {
     // Check if device is supported
-    foreach (const QJsonValue &deviceVal, supportedDevices) {
+    for (const QJsonValue &deviceVal : supportedDevices) {
         QJsonObject deviceObj = deviceVal.toObject();
 
         ushort vidJson, pidJson;

@@ -23,7 +23,6 @@ class QList;
 template<class Key, class Value>
 class QMap;
 class QString;
-class QStringList;
 class QVariant;
 QT_END_NAMESPACE
 
