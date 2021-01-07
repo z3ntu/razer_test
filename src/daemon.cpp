@@ -132,12 +132,12 @@ void Daemon::discoverDevices()
     QHash<QString, RazerDevice *> deviceCheckList = QHash<QString, RazerDevice *>(devicesHash);
 
     while (cur_dev) {
+        // Usage Page 0x01: Generic Desktop Controls
+        // Usage 0x80: System Control
+        // See also https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
         // TODO maybe needs https://github.com/cyanogen/uchroma/blob/2b8485e5ac931980bacb125b8dff7b9a39ea527f/uchroma/server/device_manager.py#L141-L155
-        if (cur_dev->interface_number != 0) {
-            qDebug() << "Ignored interface with number:" << cur_dev->interface_number;
-            if (cur_dev->interface_number == -1) {
-                qWarning("NOTE: On macOS you will need to apply the patch available at https://github.com/signal11/hidapi/pull/380 to your HIDAPI sources.");
-            }
+        if (cur_dev->usage_page != 0x1 || cur_dev->usage != 0x80) {
+            qDebug() << "Ignored interface with usage_page" << cur_dev->usage_page << "& usage" << cur_dev->usage;
             cur_dev = cur_dev->next;
             continue;
         }
