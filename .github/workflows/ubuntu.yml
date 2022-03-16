@@ -8,6 +8,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+      - run: sudo apt-get -y update
       - run: sudo apt-get -y install qt5-default libhidapi-dev libudev-dev meson
       - name: Configure
         run: meson -Dbuild_bringup_util=true -Dbuild_tests=true builddir/
