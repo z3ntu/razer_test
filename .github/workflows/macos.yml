@@ -1,0 +1,13 @@
+name: macOS build
+
+on: push
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: meson builddir
+      - name: Build
+        run: ninja -C builddir
