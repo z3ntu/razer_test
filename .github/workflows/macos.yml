@@ -11,6 +11,7 @@ jobs:
         with:
           python-version: '3.x'
       - run: brew install qt@5 hidapi meson
+      - run: echo "/usr/local/opt/qt@5/bin" >> $GITHUB_PATH
       - name: Configure
         run: meson builddir
       - name: Build
