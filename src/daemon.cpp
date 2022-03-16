@@ -30,6 +30,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <hidapi.h>
+#if defined(Q_OS_DARWIN)
+//#include <hidapi_darwin.h>
+#endif
 
 #ifdef ENABLE_BRINGUP_UTIL
 #include "bringup/bringuputil.h"
@@ -74,6 +77,12 @@ bool Daemon::initialize()
         // Initialize HIDAPI
         if (hid_init())
             return false;
+
+#if defined(Q_OS_DARWIN)
+        // Open devices in non-exclusive mode on macOS to let the macOS
+        // continue to get normal input.
+//        hid_darwin_set_open_exclusive(0);
+#endif
 
         discoverDevices();
     } else { // Handle fake devices
