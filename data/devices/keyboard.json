@@ -20,5 +20,15 @@
         "fx": ["off", "static", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "brightness"],
         "features": ["custom_frame", "keyboard_layout"],
         "matrix_dimensions": [6, 22]
+    },
+    {
+        "name": "Razer BlackWidow X Tournament Edition Chroma",
+        "vid": "1532",
+        "pid": "021a",
+        "type": "keyboard",
+        "pclass": "matrix",
+        "leds": [5],
+        "fx": ["off", "static", "blinking", "breathing", "breathing_dual", "breathing_random", "spectrum", "wave", "reactive", "brightness"],
+        "features": ["custom_frame", "keyboard_layout"]
     }
 ]
