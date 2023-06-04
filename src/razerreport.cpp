@@ -177,12 +177,12 @@ razer_report razer_chroma_standard_matrix_set_custom_frame(uchar row_index, ucha
     return report;
 }
 
-razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect)
+razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect_id)
 {
-    razer_report report = get_razer_report(0x0F, 0x02, 80);
+    razer_report report = get_razer_report(0x03, 0x0D, 80);
     report.arguments[0] = static_cast<uchar>(variable_storage);
     report.arguments[1] = static_cast<uchar>(led_id);
-    report.arguments[2] = static_cast<uchar>(effect);
+    report.arguments[2] = static_cast<uchar>(effect_id);
 
     return report;
 }
@@ -206,7 +206,7 @@ razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_
     return report;
 }
 
-razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect_id)
+razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMatrixEffectId effect_id)
 {
     razer_report report = get_razer_report(0x0F, 0x02, 80);
     report.arguments[0] = static_cast<uchar>(variable_storage);

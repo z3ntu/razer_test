@@ -76,7 +76,7 @@ razer_report razer_chroma_standard_matrix_set_custom_frame(uchar row_index, ucha
 
 razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, RazerLedId led_id, uchar brightness);
 razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, RazerLedId led_id);
-razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect_id);
+razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMatrixEffectId effect_id);
 
 razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect);
 

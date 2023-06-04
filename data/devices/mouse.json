@@ -30,7 +30,7 @@
         "leds": [1, 4, 16, 17],
         "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "brightness"],
         "features": ["dpi", "poll_rate"],
-        "quirks": ["mouse_matrix", "matrix_brightness"],
+        "quirks": ["extended_matrix", "matrix_brightness"],
         "max_dpi": 16000
     },
     {
@@ -42,7 +42,7 @@
         "leds": [1, 4, 16, 17],
         "fx": ["off", "breathing", "breathing_dual", "breathing_random", "reactive", "spectrum", "static", "wave", "brightness"],
         "features": ["dpi", "poll_rate"],
-        "quirks": ["mouse_matrix", "matrix_brightness"],
+        "quirks": ["extended_matrix", "matrix_brightness"],
         "max_dpi": 16000
     }
 ]

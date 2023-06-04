@@ -66,17 +66,12 @@ enum class RazerMatrixEffectId : uchar {
     Starlight = 0x19
 };
 
-// Also used by "extended matrix"
-// TODO Rename enum
 enum class RazerMouseMatrixEffectId : uchar {
     Off = 0x00,
-    Static = 0x01,
-    Breathing = 0x02,
-    Spectrum = 0x03,
-    Wave = 0x04,
-    Reactive = 0x05,
-    Starlight = 0x07,
-    CustomFrame = 0x08
+    Reactive = 0x02,
+    Breathing = 0x03,
+    Spectrum = 0x04,
+    Static = 0x06,
 };
 
 enum class RazerDeviceQuirks {
