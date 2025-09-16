@@ -368,8 +368,8 @@ bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString
             qCritical("Unhandled quirks string!");
         }
     }
-    *matrixDimensions = { deviceObj["matrix_dimensions"].toArray()[0].toVariant().value<uchar>(),
-                          deviceObj["matrix_dimensions"].toArray()[1].toVariant().value<uchar>() };
+    *matrixDimensions = { deviceObj["matrix_dimensions"].toArray().at(0).toVariant().value<uchar>(),
+                          deviceObj["matrix_dimensions"].toArray().at(1).toVariant().value<uchar>() };
     *maxDPI = deviceObj["max_dpi"].toInt();
     return true;
 }
