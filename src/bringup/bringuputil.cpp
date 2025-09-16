@@ -45,7 +45,7 @@ const QVector<QVector<RazerDeviceQuirks>> quirksCombinations {
     { RazerDeviceQuirks::MatrixBrightness }
 };
 
-RazerDevice *BringupUtil::tryDevice(QString pclass, QVector<razer_test::RazerLedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks)
+RazerDevice *BringupUtil::tryDevice(QString pclass, QVector<openrazer::LedId> ledIds, QStringList fx, QVector<RazerDeviceQuirks> quirks)
 {
     RazerDevice *device;
     if (pclass == "classic") {
@@ -103,9 +103,9 @@ bool BringupUtil::newDevice()
         return true;
     }
 
-    QVector<RazerLedId> ledIds = {};
+    QVector<openrazer::LedId> ledIds = {};
     QStringList features = {};
-    MatrixDimensions dims = {};
+    openrazer::MatrixDimensions dims = {};
     ushort maxDPI = 0;
     bool brightnessWorks = false;
 
@@ -192,7 +192,7 @@ device_valid:
         return false;
     } else if (ledIds.size() == allLedIds.size()) {
         qWarning("You said that all LEDs do something. This is most likely not true; taking this as just the 'backlight' LED is supported.");
-        ledIds = { RazerLedId::BacklightLED };
+        ledIds = { openrazer::LedId::BacklightLED };
     }
 
     // == TYPE ==
@@ -222,7 +222,7 @@ device_valid:
     }
 
     // == FX ==
-    QVector<RazerEffect> fxVec = testLedEffects(device);
+    QVector<openrazer::Effect> fxVec = testLedEffects(device);
 
     brightnessWorks = device->hasFx("brightness") && testBrightness(device);
 
@@ -379,7 +379,7 @@ bool BringupUtil::testDPI(RazerDevice *device)
         return false;
     }
     qInfo("The current DPI is: %hu - %hu", dpi.dpi_x, dpi.dpi_y);
-    RazerDPI newDPI = { 500, 600 };
+    openrazer::DPI newDPI = { 500, 600 };
     device->setDPI(newDPI);
     auto dpi2 = device->getDPI();
     if (dpi2.dpi_x != newDPI.dpi_x || dpi2.dpi_y != newDPI.dpi_y) {
@@ -464,25 +464,25 @@ bool BringupUtil::testKeyboardLayout(RazerDevice *device)
     }
 }
 
-QVector<RazerEffect> BringupUtil::testLedEffects(RazerDevice *device)
+QVector<openrazer::Effect> BringupUtil::testLedEffects(RazerDevice *device)
 {
     QTextStream cin(stdin);
     QString input;
 
-    QVector<RazerEffect> workingEffects;
+    QVector<openrazer::Effect> workingEffects;
 
     for (auto led : device->getLeds()) {
         qInfo("-- Checking functionality of LED '%s' --", qUtf8Printable(LedIdToString.value(led->getLedId())));
         auto currEffect = led->getCurrentEffect();
         auto currColors = led->getCurrentColors();
         // LED-local array
-        QVector<RazerEffect> workingEffectsLed;
+        QVector<openrazer::Effect> workingEffectsLed;
         for (auto effectStr : device->getSupportedFx()) {
             // Skip brightness "effect" here
             if (effectStr == "brightness")
                 continue;
             // Try to set the effect (setEffect can also return false for unimplemented effects, e.g. blinking on Matrix)
-            RazerEffect effect = StringToEffect.value(effectStr);
+            openrazer::Effect effect = StringToEffect.value(effectStr);
             if (!setEffect(led, effect, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 })) {
                 qDebug("Setting effect %s returned false, skipping...", qUtf8Printable(effectStr));
                 continue;
@@ -513,29 +513,29 @@ QVector<RazerEffect> BringupUtil::testLedEffects(RazerDevice *device)
     return workingEffects;
 }
 
-bool BringupUtil::setEffect(RazerLED *led, RazerEffect effect, RGB color1, RGB color2, RGB color3)
+bool BringupUtil::setEffect(RazerLED *led, openrazer::Effect effect, openrazer::RGB color1, openrazer::RGB color2, openrazer::RGB color3)
 {
     Q_UNUSED(color3)
-    if (effect == RazerEffect::Off) {
+    if (effect == openrazer::Effect::Off) {
         return led->setOff();
-    } else if (effect == RazerEffect::On) {
+    } else if (effect == openrazer::Effect::On) {
         return led->setOn();
-    } else if (effect == RazerEffect::Static) {
+    } else if (effect == openrazer::Effect::Static) {
         return led->setStatic(color1);
-    } else if (effect == RazerEffect::Blinking) {
+    } else if (effect == openrazer::Effect::Blinking) {
         return led->setBlinking(color1);
-    } else if (effect == RazerEffect::Breathing) {
+    } else if (effect == openrazer::Effect::Breathing) {
         return led->setBreathing(color1);
-    } else if (effect == RazerEffect::BreathingDual) {
+    } else if (effect == openrazer::Effect::BreathingDual) {
         return led->setBreathingDual(color1, color2);
-    } else if (effect == RazerEffect::BreathingRandom) {
+    } else if (effect == openrazer::Effect::BreathingRandom) {
         return led->setBreathingRandom();
-    } else if (effect == RazerEffect::Spectrum) {
+    } else if (effect == openrazer::Effect::Spectrum) {
         return led->setSpectrum();
-    } else if (effect == RazerEffect::Wave) {
-        return led->setWave(WaveDirection::LEFT_TO_RIGHT);
-    } else if (effect == RazerEffect::Reactive) {
-        return led->setReactive(ReactiveSpeed::_1000MS, color1);
+    } else if (effect == openrazer::Effect::Wave) {
+        return led->setWave(openrazer::WaveDirection::LEFT_TO_RIGHT);
+    } else if (effect == openrazer::Effect::Reactive) {
+        return led->setReactive(openrazer::ReactiveSpeed::_1000MS, color1);
     } else {
         qCritical("Unhandled effect %s at %s", qUtf8Printable(EffectToString.value(effect)), Q_FUNC_INFO);
         return false;

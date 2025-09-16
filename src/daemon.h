@@ -51,7 +51,7 @@ public:
     bool getVidPidFromJson(QJsonObject deviceObj, ushort *vid, ushort *pid);
     bool registerDeviceOnDBus(RazerDevice *device);
     void unregisterDeviceOnDBus(RazerDevice *device);
-    bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, MatrixDimensions *matrixDimensions, ushort *maxDPI);
+    bool getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<openrazer::LedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, openrazer::MatrixDimensions *matrixDimensions, ushort *maxDPI);
     QJsonObject getDeviceJsonForDevice(ushort vid, ushort pid);
 
     static QString hexUshortToString(ushort number);

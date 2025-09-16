@@ -36,14 +36,14 @@ class RazerFakeDevice : public RazerDevice
     QString getFirmwareVersion() override;
     QString getKeyboardLayout() override;
 
-    RazerDPI getDPI() override;
-    bool setDPI(RazerDPI dpi) override;
+    openrazer::DPI getDPI() override;
+    bool setDPI(openrazer::DPI dpi) override;
 
     ushort getPollRate() override;
     bool setPollRate(ushort poll_rate) override;
 
     bool displayCustomFrame() override;
-    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) override;
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<openrazer::RGB> rgbData) override;
 
 private:
     QString serial;
@@ -51,7 +51,7 @@ private:
 
     static int serialCounter;
 
-    RazerDPI dpi = { 500, 500 };
+    openrazer::DPI dpi = { 500, 500 };
     ushort poll_rate = 1000;
 };
 

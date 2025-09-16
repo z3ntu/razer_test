@@ -18,7 +18,7 @@
 
 #include "config.h"
 #include "daemon.h"
-#include "razer_test.h"
+#include "openrazer.h"
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
         qInfo("Running in development mode and using development data files.");
 
     // Register the enums with the Qt system
-    registerMetaTypes();
+    openrazer::registerMetaTypes();
 
     Daemon daemon(parser.isSet("devel"), parser.isSet("fake-devices"));
     if (!daemon.initialize())

@@ -33,14 +33,14 @@ public:
 
     bool setOff() override;
     bool setOn() override;
-    bool setStatic(RGB color) override;
-    bool setBreathing(RGB color) override;
-    bool setBreathingDual(RGB color, RGB color2) override;
+    bool setStatic(openrazer::RGB color) override;
+    bool setBreathing(openrazer::RGB color) override;
+    bool setBreathingDual(openrazer::RGB color, openrazer::RGB color2) override;
     bool setBreathingRandom() override;
-    bool setBlinking(RGB color) override;
+    bool setBlinking(openrazer::RGB color) override;
     bool setSpectrum() override;
-    bool setWave(WaveDirection direction) override;
-    bool setReactive(ReactiveSpeed speed, RGB color) override;
+    bool setWave(openrazer::WaveDirection direction) override;
+    bool setReactive(openrazer::ReactiveSpeed speed, openrazer::RGB color) override;
 
     bool setBrightness(uchar brightness) override;
     bool getBrightness(uchar *brightness) override;
@@ -51,16 +51,16 @@ private:
     bool ensureLedStateOn();
     bool setLedEffect(RazerClassicEffectId effect);
     bool getLedEffect(RazerClassicEffectId *effect);
-    bool setLedRgb(RGB color);
-    bool getLedRgb(RGB *color);
+    bool setLedRgb(openrazer::RGB color);
+    bool getLedRgb(openrazer::RGB *color);
 
     RazerClassicLedState classicState;
 
-    QHash<RazerClassicEffectId, RazerEffect> effectTranslationTable {
-        { RazerClassicEffectId::Static, RazerEffect::Static },
-        { RazerClassicEffectId::Blinking, RazerEffect::Blinking },
-        { RazerClassicEffectId::Breathing, RazerEffect::Breathing },
-        { RazerClassicEffectId::Spectrum, RazerEffect::Spectrum }
+    QHash<RazerClassicEffectId, openrazer::Effect> effectTranslationTable {
+        { RazerClassicEffectId::Static, openrazer::Effect::Static },
+        { RazerClassicEffectId::Blinking, openrazer::Effect::Blinking },
+        { RazerClassicEffectId::Breathing, openrazer::Effect::Breathing },
+        { RazerClassicEffectId::Spectrum, openrazer::Effect::Spectrum }
     };
 };
 

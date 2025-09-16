@@ -29,7 +29,7 @@ void WaveEffect::prepareRgbData()
 {
     // Iterate through rows
     for (uchar i = 0; i < height; i++) {
-        RGB rowVal = startVal;
+        openrazer::RGB rowVal = startVal;
         SpectrumColor nextColor = startNextColor;
         // Iterate through columns
         for (int j = 0; j < width; j++) {

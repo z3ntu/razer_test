@@ -55,6 +55,7 @@ src = [
 
 processed = qt6.preprocess(
   moc_headers : [
+    'include/openrazer.h',
     'src/customeffect/customeffectbase.h',
     'src/customeffect/customeffectthread.h',
     'src/daemon.h',
@@ -82,7 +83,7 @@ else
 endif
 
 # Install public header
-install_headers('include/razer_test.h')
+#install_headers('include/razer_test.h')
 
 # Install pkg-config file
 pkg = import('pkgconfig')

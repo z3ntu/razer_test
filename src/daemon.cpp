@@ -244,11 +244,11 @@ RazerDevice *Daemon::initializeDevice(QString dev_path, QJsonObject deviceObj)
         return nullptr; // Message is printed in that method
 
     QString name, type, pclass;
-    QVector<RazerLedId> leds;
+    QVector<openrazer::LedId> leds;
     QStringList fx;
     QStringList features;
     QVector<RazerDeviceQuirks> quirks;
-    MatrixDimensions matrixDimensions;
+    openrazer::MatrixDimensions matrixDimensions;
     ushort maxDPI;
     if (!getDeviceInfoFromJson(deviceObj, &name, &type, &pclass, &leds, &fx, &features, &quirks, &matrixDimensions, &maxDPI)) {
         qCritical("Failed to get device info from JSON");
@@ -346,14 +346,14 @@ void Daemon::unregisterDeviceOnDBus(RazerDevice *device)
     connection.unregisterObject(device->getObjectPath().path(), QDBusConnection::UnregisterTree);
 }
 
-bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<RazerLedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, MatrixDimensions *matrixDimensions, ushort *maxDPI)
+bool Daemon::getDeviceInfoFromJson(QJsonObject deviceObj, QString *name, QString *type, QString *pclass, QVector<openrazer::LedId> *leds, QStringList *fx, QStringList *features, QVector<RazerDeviceQuirks> *quirks, openrazer::MatrixDimensions *matrixDimensions, ushort *maxDPI)
 {
     // TODO: Check everything for sanity
     *name = deviceObj["name"].toString();
     *type = deviceObj["type"].toString();
     *pclass = deviceObj["pclass"].toString();
     for (const QJsonValue &ledVal : deviceObj["leds"].toArray()) {
-        leds->append(static_cast<RazerLedId>(ledVal.toInt()));
+        leds->append(static_cast<openrazer::LedId>(ledVal.toInt()));
     }
     for (const QJsonValue &fxVal : deviceObj["fx"].toArray()) {
         fx->append(fxVal.toString());

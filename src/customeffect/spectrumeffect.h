@@ -33,7 +33,7 @@ public:
     void prepareRgbData() override;
 
 private:
-    RGB rgbVal;
+    openrazer::RGB rgbVal;
     SpectrumColor nextColor;
 };
 

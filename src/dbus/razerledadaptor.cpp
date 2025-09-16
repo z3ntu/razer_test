@@ -34,22 +34,22 @@ RazerLEDAdaptor::~RazerLEDAdaptor()
     // destructor
 }
 
-QVector<RGB> RazerLEDAdaptor::currentColors() const
+QVector<openrazer::RGB> RazerLEDAdaptor::currentColors() const
 {
     // get the value of property CurrentColors
-    return qvariant_cast<QVector<RGB>>(parent()->property("CurrentColors"));
+    return qvariant_cast<QVector<openrazer::RGB>>(parent()->property("CurrentColors"));
 }
 
-RazerEffect RazerLEDAdaptor::currentEffect() const
+openrazer::Effect RazerLEDAdaptor::currentEffect() const
 {
     // get the value of property CurrentEffect
-    return qvariant_cast<RazerEffect>(parent()->property("CurrentEffect"));
+    return qvariant_cast<openrazer::Effect>(parent()->property("CurrentEffect"));
 }
 
-RazerLedId RazerLEDAdaptor::ledId() const
+openrazer::LedId RazerLEDAdaptor::ledId() const
 {
     // get the value of property LedId
-    return qvariant_cast<RazerLedId>(parent()->property("LedId"));
+    return qvariant_cast<openrazer::LedId>(parent()->property("LedId"));
 }
 
 uchar RazerLEDAdaptor::getBrightness()
@@ -60,27 +60,27 @@ uchar RazerLEDAdaptor::getBrightness()
     return out0;
 }
 
-bool RazerLEDAdaptor::setBlinking(razer_test::RGB color)
+bool RazerLEDAdaptor::setBlinking(openrazer::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setBlinking
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setBlinking", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color));
+    QMetaObject::invokeMethod(parent(), "setBlinking", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::RGB, color));
     return out0;
 }
 
-bool RazerLEDAdaptor::setBreathing(razer_test::RGB color)
+bool RazerLEDAdaptor::setBreathing(openrazer::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setBreathing
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setBreathing", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color));
+    QMetaObject::invokeMethod(parent(), "setBreathing", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::RGB, color));
     return out0;
 }
 
-bool RazerLEDAdaptor::setBreathingDual(razer_test::RGB color, razer_test::RGB color2)
+bool RazerLEDAdaptor::setBreathingDual(openrazer::RGB color, openrazer::RGB color2)
 {
     // handle method call io.github.openrazer1.Led.setBreathingDual
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color), Q_ARG(razer_test::RGB, color2));
+    QMetaObject::invokeMethod(parent(), "setBreathingDual", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::RGB, color), Q_ARG(openrazer::RGB, color2));
     return out0;
 }
 
@@ -116,11 +116,11 @@ bool RazerLEDAdaptor::setOn()
     return out0;
 }
 
-bool RazerLEDAdaptor::setReactive(razer_test::ReactiveSpeed speed, razer_test::RGB color)
+bool RazerLEDAdaptor::setReactive(openrazer::ReactiveSpeed speed, openrazer::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setReactive
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setReactive", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::ReactiveSpeed, speed), Q_ARG(razer_test::RGB, color));
+    QMetaObject::invokeMethod(parent(), "setReactive", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::ReactiveSpeed, speed), Q_ARG(openrazer::RGB, color));
     return out0;
 }
 
@@ -132,18 +132,18 @@ bool RazerLEDAdaptor::setSpectrum()
     return out0;
 }
 
-bool RazerLEDAdaptor::setStatic(razer_test::RGB color)
+bool RazerLEDAdaptor::setStatic(openrazer::RGB color)
 {
     // handle method call io.github.openrazer1.Led.setStatic
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setStatic", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RGB, color));
+    QMetaObject::invokeMethod(parent(), "setStatic", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::RGB, color));
     return out0;
 }
 
-bool RazerLEDAdaptor::setWave(razer_test::WaveDirection direction)
+bool RazerLEDAdaptor::setWave(openrazer::WaveDirection direction)
 {
     // handle method call io.github.openrazer1.Led.setWave
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::WaveDirection, direction));
+    QMetaObject::invokeMethod(parent(), "setWave", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::WaveDirection, direction));
     return out0;
 }

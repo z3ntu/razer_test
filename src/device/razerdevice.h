@@ -22,7 +22,7 @@
 #include "../customeffect/customeffectthread.h"
 #include "../led/razerled.h"
 #include "../razerreport.h"
-#include "razer_test.h"
+#include "openrazer.h"
 
 #include <QByteArray>
 #include <QDBusContext>
@@ -46,10 +46,10 @@ class RazerDevice : public QObject, protected QDBusContext
     Q_PROPERTY(QList<QDBusObjectPath> Leds READ getLedObjectPaths)
     Q_PROPERTY(QStringList SupportedFx READ getSupportedFx)
     Q_PROPERTY(QStringList SupportedFeatures READ getSupportedFeatures)
-    Q_PROPERTY(MatrixDimensions MatrixDimensions READ getMatrixDimensions)
+    Q_PROPERTY(openrazer::MatrixDimensions MatrixDimensions READ getMatrixDimensions)
 
 public:
-    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI);
+    RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<openrazer::LedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, openrazer::MatrixDimensions matrixDimensions, ushort maxDPI);
     ~RazerDevice() override;
 
     virtual bool openDeviceHandle();
@@ -64,9 +64,9 @@ public:
     QString getType();
     QStringList getSupportedFx();
     QStringList getSupportedFeatures();
-    MatrixDimensions getMatrixDimensions();
+    openrazer::MatrixDimensions getMatrixDimensions();
 
-    QHash<RazerLedId, RazerLED *> getLeds();
+    QHash<openrazer::LedId, RazerLED *> getLeds();
     QList<QDBusObjectPath> getLedObjectPaths();
 
     bool hasQuirk(RazerDeviceQuirks quirk);
@@ -81,8 +81,8 @@ public slots:
     virtual QString getFirmwareVersion();
     virtual QString getKeyboardLayout();
 
-    virtual RazerDPI getDPI();
-    virtual bool setDPI(RazerDPI dpi);
+    virtual openrazer::DPI getDPI();
+    virtual bool setDPI(openrazer::DPI dpi);
     ushort getMaxDPI();
 
     virtual ushort getPollRate();
@@ -90,7 +90,7 @@ public slots:
 
     // Custom frame
     virtual bool displayCustomFrame() = 0;
-    virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData) = 0;
+    virtual bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<openrazer::RGB> rgbData) = 0;
 
     // getDeviceMode, setDeviceMode
 
@@ -105,17 +105,17 @@ protected:
     ushort product_id;
     QString name;
     QString type;
-    QVector<RazerLedId> ledIds;
+    QVector<openrazer::LedId> ledIds;
     QStringList fx;
     QStringList features;
     QVector<RazerDeviceQuirks> quirks;
 
-    MatrixDimensions matrixDimensions;
+    openrazer::MatrixDimensions matrixDimensions;
     ushort maxDPI;
 
     CustomEffectThread *thread;
 
-    QHash<RazerLedId, RazerLED *> leds;
+    QHash<openrazer::LedId, RazerLED *> leds;
 
     // Cache serial for use after the device has been removed
     QString serial;
@@ -126,7 +126,7 @@ protected:
     void dbusNotSupportedHelper(const QString &errorMessage);
 
 private slots:
-    void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<razer_test::RGB> &rgbData);
+    void customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<openrazer::RGB> &rgbData);
     void customFrameReady();
 };
 

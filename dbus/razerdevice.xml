@@ -7,7 +7,7 @@
     <property name="SupportedFx" type="as" access="read"/>
     <property name="SupportedFeatures" type="as" access="read"/>
     <property name="MatrixDimensions" type="(yy)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="MatrixDimensions"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="openrazer::MatrixDimensions"/>
     </property>
     <method name="getSerial">
       <arg type="s" direction="out"/>
@@ -20,12 +20,12 @@
     </method>
     <method name="getDPI">
       <arg type="(qq)" direction="out"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RazerDPI"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="openrazer::DPI"/>
     </method>
     <method name="setDPI">
       <arg type="b" direction="out"/>
       <arg name="dpi" type="(qq)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RazerDPI"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::DPI"/>
     </method>
     <method name="getMaxDPI">
       <arg type="q" direction="out"/>
@@ -46,7 +46,7 @@
       <arg name="startColumn" type="y" direction="in"/>
       <arg name="endColumn" type="y" direction="in"/>
       <arg name="rgbData" type="a(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In3" value="QVector&lt;razer_test::RGB&gt;"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In3" value="QList&lt;openrazer::RGB&gt;"/>
     </method>
     <method name="startCustomEffectThread">
       <arg type="b" direction="out"/>

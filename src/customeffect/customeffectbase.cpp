@@ -23,7 +23,7 @@ CustomEffectBase::CustomEffectBase(uchar width, uchar height)
 {
     // We need height times QByteArrays
     rgbData.resize(height);
-    foreach (QVector<RGB> arr, rgbData) {
+    foreach (QVector<openrazer::RGB> arr, rgbData) {
         // And each needs space for width * 3 bytes of data (RGB)
         arr.resize(width);
     }

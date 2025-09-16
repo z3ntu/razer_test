@@ -30,7 +30,7 @@ bool RazerFakeDevice::openDeviceHandle()
 
 bool RazerFakeDevice::initialize()
 {
-    foreach (RazerLedId ledId, ledIds) {
+    foreach (openrazer::LedId ledId, ledIds) {
         auto *rled = new RazerFakeLED(this, ledId);
         if (!rled->initialize()) {
             qWarning("Error while initializing LED with ID '%hhu'", static_cast<uchar>(ledId));
@@ -65,7 +65,7 @@ QString RazerFakeDevice::getKeyboardLayout()
     return keyboardLayoutIds.value(0x01, "unknown"); // en_US
 }
 
-RazerDPI RazerFakeDevice::getDPI()
+openrazer::DPI RazerFakeDevice::getDPI()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFeature("dpi"))
@@ -74,7 +74,7 @@ RazerDPI RazerFakeDevice::getDPI()
     return dpi;
 }
 
-bool RazerFakeDevice::setDPI(RazerDPI dpi)
+bool RazerFakeDevice::setDPI(openrazer::DPI dpi)
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFeature("dpi"))
@@ -117,7 +117,7 @@ bool RazerFakeDevice::displayCustomFrame()
     return true;
 }
 
-bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData)
+bool RazerFakeDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<openrazer::RGB> rgbData)
 {
     qDebug("Called %s with param %i, %i, %i", Q_FUNC_INFO, row, startColumn, endColumn);
     qDebug() << " (cont.) rgbData:" << rgbData;

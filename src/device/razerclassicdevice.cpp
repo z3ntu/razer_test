@@ -22,7 +22,7 @@
 
 bool RazerClassicDevice::initialize()
 {
-    foreach (RazerLedId ledId, ledIds) {
+    foreach (openrazer::LedId ledId, ledIds) {
         auto *rled = new RazerClassicLED(this, ledId);
         if (!rled->initialize()) {
             qWarning("Error while initializing LED with ID '%hhu'", static_cast<uchar>(ledId));
@@ -46,7 +46,7 @@ bool RazerClassicDevice::displayCustomFrame()
     return false;
 }
 
-bool RazerClassicDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData)
+bool RazerClassicDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<openrazer::RGB> rgbData)
 {
     qDebug("Called %s with param %i, %i, %i", Q_FUNC_INFO, row, startColumn, endColumn);
     qDebug() << " (cont.) rgbData:" << rgbData;

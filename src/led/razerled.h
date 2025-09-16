@@ -21,7 +21,7 @@
 
 #include "../razer_test_private.h"
 #include "../razerreport.h"
-#include "razer_test.h"
+#include "openrazer.h"
 
 #include <QDBusArgument>
 #include <QDBusContext>
@@ -41,12 +41,12 @@ class RazerLED : public QObject, protected QDBusContext
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "io.github.openrazer1.Led")
-    Q_PROPERTY(QVector<RGB> CurrentColors READ getCurrentColors)
-    Q_PROPERTY(RazerEffect CurrentEffect READ getCurrentEffect)
-    Q_PROPERTY(RazerLedId LedId READ getLedId)
+    Q_PROPERTY(QVector<openrazer::RGB> CurrentColors READ getCurrentColors)
+    Q_PROPERTY(openrazer::Effect CurrentEffect READ getCurrentEffect)
+    Q_PROPERTY(openrazer::LedId LedId READ getLedId)
 
 public:
-    RazerLED(RazerDevice *device, RazerLedId ledId);
+    RazerLED(RazerDevice *device, openrazer::LedId ledId);
     ~RazerLED() override;
 
     virtual bool initialize() = 0;
@@ -54,26 +54,26 @@ public:
     virtual bool getBrightness(uchar *brightness) = 0;
 
     QDBusObjectPath getObjectPath();
-    RazerEffect getCurrentEffect();
-    QVector<RGB> getCurrentColors();
-    RazerLedId getLedId();
+    openrazer::Effect getCurrentEffect();
+    QVector<openrazer::RGB> getCurrentColors();
+    openrazer::LedId getLedId();
 
     RazerDevice *device;
-    const RazerLedId ledId;
+    const openrazer::LedId ledId;
     uchar brightness;
 
 public slots:
     // FX
     virtual bool setOff() = 0;
     virtual bool setOn() = 0;
-    virtual bool setStatic(RGB color) = 0;
-    virtual bool setBreathing(RGB color) = 0;
-    virtual bool setBreathingDual(RGB color, RGB color2) = 0;
+    virtual bool setStatic(openrazer::RGB color) = 0;
+    virtual bool setBreathing(openrazer::RGB color) = 0;
+    virtual bool setBreathingDual(openrazer::RGB color, openrazer::RGB color2) = 0;
     virtual bool setBreathingRandom() = 0;
-    virtual bool setBlinking(RGB color) = 0;
+    virtual bool setBlinking(openrazer::RGB color) = 0;
     virtual bool setSpectrum() = 0;
-    virtual bool setWave(WaveDirection direction) = 0;
-    virtual bool setReactive(ReactiveSpeed speed, RGB color) = 0;
+    virtual bool setWave(openrazer::WaveDirection direction) = 0;
+    virtual bool setReactive(openrazer::ReactiveSpeed speed, openrazer::RGB color) = 0;
 
     virtual bool setBrightness(uchar brightness) = 0;
     uchar getBrightness();
@@ -81,17 +81,17 @@ public slots:
 protected:
     bool checkFx(QString fxStr);
     bool hasFx(QString fxStr);
-    void saveFxAndColors(RazerEffect fx, int numColors, RGB color1 = { 0, 0, 0 }, RGB color2 = { 0, 0, 0 }, RGB color3 = { 0, 0, 0 });
+    void saveFxAndColors(openrazer::Effect fx, int numColors, openrazer::RGB color1 = { 0, 0, 0 }, openrazer::RGB color2 = { 0, 0, 0 }, openrazer::RGB color3 = { 0, 0, 0 });
 
     // D-Bus replies don't work when called from another object
     bool sendReportDBusHelper(razer_report request_report, razer_report *response_report);
     void dbusFailedHelper(const QString &errorMessage);
     void dbusNotSupportedHelper(const QString &errorMessage);
 
-    RazerEffect effect = RazerEffect::Spectrum;
-    RGB color1 = { 0, 255, 0 };
-    RGB color2 = { 255, 0, 0 };
-    RGB color3 = { 0, 0, 255 };
+    openrazer::Effect effect = openrazer::Effect::Spectrum;
+    openrazer::RGB color1 = { 0, 255, 0 };
+    openrazer::RGB color2 = { 255, 0, 0 };
+    openrazer::RGB color3 = { 0, 0, 255 };
 };
 
 #include "../device/razerdevice.h"

@@ -58,7 +58,7 @@ razer_report get_razer_report(uchar command_class, uchar command_id, uchar data_
     return new_report;
 }
 
-razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, RazerLedId led_id, uchar brightness)
+razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_storage, openrazer::LedId led_id, uchar brightness)
 {
     razer_report report = get_razer_report(0x03, 0x03, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -68,7 +68,7 @@ razer_report razer_chroma_standard_set_led_brightness(RazerVarstore variable_sto
     return report;
 }
 
-razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_storage, RazerLedId led_id)
+razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_storage, openrazer::LedId led_id)
 {
     razer_report report = get_razer_report(0x03, 0x83, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -77,7 +77,7 @@ razer_report razer_chroma_standard_get_led_brightness(RazerVarstore variable_sto
     return report;
 }
 
-razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerClassicEffectId led_effect)
+razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage, openrazer::LedId led_id, RazerClassicEffectId led_effect)
 {
     razer_report report = get_razer_report(0x03, 0x02, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -87,7 +87,7 @@ razer_report razer_chroma_standard_set_led_effect(RazerVarstore variable_storage
     return report;
 }
 
-razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage, RazerLedId led_id)
+razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage, openrazer::LedId led_id)
 {
     razer_report report = get_razer_report(0x03, 0x82, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -96,7 +96,7 @@ razer_report razer_chroma_standard_get_led_effect(RazerVarstore variable_storage
     return report;
 }
 
-razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, RazerLedId led_id, uchar red, uchar green, uchar blue)
+razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, openrazer::LedId led_id, uchar red, uchar green, uchar blue)
 {
     razer_report report = get_razer_report(0x03, 0x01, 0x05);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -108,7 +108,7 @@ razer_report razer_chroma_standard_set_led_rgb(RazerVarstore variable_storage, R
     return report;
 }
 
-razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, RazerLedId led_id)
+razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, openrazer::LedId led_id)
 {
     razer_report report = get_razer_report(0x03, 0x81, 0x05);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -116,7 +116,7 @@ razer_report razer_chroma_standard_get_led_rgb(RazerVarstore variable_storage, R
     return report;
 }
 
-razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, RazerLedId led_id, RazerClassicLedState led_state)
+razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage, openrazer::LedId led_id, RazerClassicLedState led_state)
 {
     razer_report report = get_razer_report(0x03, 0x00, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -126,7 +126,7 @@ razer_report razer_chroma_standard_set_led_state(RazerVarstore variable_storage,
     return report;
 }
 
-razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage, RazerLedId led_id)
+razer_report razer_chroma_standard_get_led_state(RazerVarstore variable_storage, openrazer::LedId led_id)
 {
     razer_report report = get_razer_report(0x03, 0x80, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -177,7 +177,7 @@ razer_report razer_chroma_standard_matrix_set_custom_frame(uchar row_index, ucha
     return report;
 }
 
-razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMouseMatrixEffectId effect_id)
+razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_storage, openrazer::LedId led_id, RazerMouseMatrixEffectId effect_id)
 {
     razer_report report = get_razer_report(0x03, 0x0D, 80);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -187,7 +187,7 @@ razer_report razer_chroma_extended_mouse_matrix_effect(RazerVarstore variable_st
     return report;
 }
 
-razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, RazerLedId led_id, uchar brightness)
+razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_storage, openrazer::LedId led_id, uchar brightness)
 {
     razer_report report = get_razer_report(0x0F, 0x04, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -197,7 +197,7 @@ razer_report razer_chroma_extended_matrix_set_brightness(RazerVarstore variable_
     return report;
 }
 
-razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, RazerLedId led_id)
+razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_storage, openrazer::LedId led_id)
 {
     razer_report report = get_razer_report(0x0F, 0x84, 0x03);
     report.arguments[0] = static_cast<uchar>(variable_storage);
@@ -206,7 +206,7 @@ razer_report razer_chroma_extended_matrix_get_brightness(RazerVarstore variable_
     return report;
 }
 
-razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage, RazerLedId led_id, RazerMatrixEffectId effect_id)
+razer_report razer_chroma_extended_matrix_effect(RazerVarstore variable_storage, openrazer::LedId led_id, RazerMatrixEffectId effect_id)
 {
     razer_report report = get_razer_report(0x0F, 0x02, 80);
     report.arguments[0] = static_cast<uchar>(variable_storage);

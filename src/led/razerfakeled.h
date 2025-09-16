@@ -33,14 +33,14 @@ public:
 
     bool setOff() override;
     bool setOn() override;
-    bool setStatic(RGB color) override;
-    bool setBreathing(RGB color) override;
-    bool setBreathingDual(RGB color, RGB color2) override;
+    bool setStatic(openrazer::RGB color) override;
+    bool setBreathing(openrazer::RGB color) override;
+    bool setBreathingDual(openrazer::RGB color, openrazer::RGB color2) override;
     bool setBreathingRandom() override;
-    bool setBlinking(RGB color) override;
+    bool setBlinking(openrazer::RGB color) override;
     bool setSpectrum() override;
-    bool setWave(WaveDirection direction) override;
-    bool setReactive(ReactiveSpeed speed, RGB color) override;
+    bool setWave(openrazer::WaveDirection direction) override;
+    bool setReactive(openrazer::ReactiveSpeed speed, openrazer::RGB color) override;
 
     bool setBrightness(uchar brightness) override;
     bool getBrightness(uchar *brightness) override;

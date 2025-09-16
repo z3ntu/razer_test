@@ -2,13 +2,13 @@
 <node>
   <interface name="io.github.openrazer1.Led">
     <property name="CurrentColors" type="a(yyy)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="QVector&lt;RGB&gt;"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="QList&lt;openrazer::RGB&gt;"/>
     </property>
     <property name="CurrentEffect" type="(i)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerEffect"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="openrazer::Effect"/>
     </property>
     <property name="LedId" type="(i)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="RazerLedId"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="openrazer::LedId"/>
     </property>
     <method name="setOff">
       <arg type="b" direction="out"/>
@@ -19,19 +19,19 @@
     <method name="setStatic">
       <arg type="b" direction="out"/>
       <arg name="color" type="(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::RGB"/>
     </method>
     <method name="setBreathing">
       <arg type="b" direction="out"/>
       <arg name="color" type="(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::RGB"/>
     </method>
     <method name="setBreathingDual">
       <arg type="b" direction="out"/>
       <arg name="color" type="(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::RGB"/>
       <arg name="color2" type="(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="razer_test::RGB"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="openrazer::RGB"/>
     </method>
     <method name="setBreathingRandom">
       <arg type="b" direction="out"/>
@@ -39,7 +39,7 @@
     <method name="setBlinking">
       <arg type="b" direction="out"/>
       <arg name="color" type="(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::RGB"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::RGB"/>
     </method>
     <method name="setSpectrum">
       <arg type="b" direction="out"/>
@@ -47,14 +47,14 @@
     <method name="setWave">
       <arg type="b" direction="out"/>
       <arg name="direction" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::WaveDirection"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::WaveDirection"/>
     </method>
     <method name="setReactive">
       <arg type="b" direction="out"/>
       <arg name="speed" type="(i)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="razer_test::ReactiveSpeed"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="openrazer::ReactiveSpeed"/>
       <arg name="color" type="(yyy)" direction="in"/>
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="razer_test::RGB"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="openrazer::RGB"/>
     </method>
     <method name="setBrightness">
       <arg type="b" direction="out"/>

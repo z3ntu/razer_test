@@ -18,7 +18,7 @@
 
 #include "razerled.h"
 
-RazerLED::RazerLED(RazerDevice *device, RazerLedId ledId)
+RazerLED::RazerLED(RazerDevice *device, openrazer::LedId ledId)
     : device(device), ledId(ledId)
 {
 }
@@ -39,17 +39,17 @@ uchar RazerLED::getBrightness()
     return brightness;
 }
 
-RazerEffect RazerLED::getCurrentEffect()
+openrazer::Effect RazerLED::getCurrentEffect()
 {
     return effect;
 }
 
-QVector<RGB> RazerLED::getCurrentColors()
+QVector<openrazer::RGB> RazerLED::getCurrentColors()
 {
     return { color1, color2, color3 };
 }
 
-razer_test::RazerLedId RazerLED::getLedId()
+openrazer::LedId RazerLED::getLedId()
 {
     return ledId;
 }
@@ -68,7 +68,7 @@ bool RazerLED::hasFx(QString fxStr)
     return device->hasFx(fxStr);
 }
 
-void RazerLED::saveFxAndColors(RazerEffect fx, int numColors, RGB color1, RGB color2, RGB color3)
+void RazerLED::saveFxAndColors(openrazer::Effect fx, int numColors, openrazer::RGB color1, openrazer::RGB color2, openrazer::RGB color3)
 {
     this->effect = fx;
     if (numColors >= 1) {

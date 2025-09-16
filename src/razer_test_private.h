@@ -20,7 +20,7 @@
 #define RAZERTESTPRIVATE_H
 
 #include <QtGlobal>
-#include <razer_test.h>
+#include <openrazer.h>
 
 namespace razer_test {
 
@@ -102,58 +102,58 @@ const QHash<RazerDeviceQuirks, QString> QuirksToString {
     { RazerDeviceQuirks::ByteDPI, "byte_dpi" },
 };
 
-const QHash<QString, RazerLedId> StringToLedId {
-    { "scroll_wheel", RazerLedId::ScrollWheelLED },
-    { "battery", RazerLedId::BatteryLED },
-    { "logo", RazerLedId::LogoLED },
-    { "backlight", RazerLedId::BacklightLED },
-    { "macro_recording", RazerLedId::MacroRecordingLED },
-    { "game_mode", RazerLedId::GameModeLED },
-    { "keymap_red", RazerLedId::KeymapRedLED },
-    { "keymap_green", RazerLedId::KeymapGreenLED },
-    { "keymap_blue", RazerLedId::KeymapBlueLED },
-    { "right_side", RazerLedId::RightSideLED },
-    { "left_side", RazerLedId::LeftSideLED },
+const QHash<QString, openrazer::LedId> StringToLedId {
+    { "scroll_wheel", openrazer::LedId::ScrollWheelLED },
+    { "battery", openrazer::LedId::BatteryLED },
+    { "logo", openrazer::LedId::LogoLED },
+    { "backlight", openrazer::LedId::BacklightLED },
+    { "macro_recording", openrazer::LedId::MacroRecordingLED },
+    { "game_mode", openrazer::LedId::GameModeLED },
+    { "keymap_red", openrazer::LedId::KeymapRedLED },
+    { "keymap_green", openrazer::LedId::KeymapGreenLED },
+    { "keymap_blue", openrazer::LedId::KeymapBlueLED },
+    { "right_side", openrazer::LedId::RightSideLED },
+    { "left_side", openrazer::LedId::LeftSideLED },
 };
 
-const QHash<RazerLedId, QString> LedIdToString {
-    { RazerLedId::ScrollWheelLED, "scroll_wheel" },
-    { RazerLedId::BatteryLED, "battery" },
-    { RazerLedId::LogoLED, "logo" },
-    { RazerLedId::BacklightLED, "backlight" },
-    { RazerLedId::MacroRecordingLED, "macro_recording" },
-    { RazerLedId::GameModeLED, "game_mode" },
-    { RazerLedId::KeymapRedLED, "keymap_red" },
-    { RazerLedId::KeymapGreenLED, "keymap_green" },
-    { RazerLedId::KeymapBlueLED, "keymap_blue" },
-    { RazerLedId::RightSideLED, "right_side" },
-    { RazerLedId::LeftSideLED, "left_side" }
+const QHash<openrazer::LedId, QString> LedIdToString {
+    { openrazer::LedId::ScrollWheelLED, "scroll_wheel" },
+    { openrazer::LedId::BatteryLED, "battery" },
+    { openrazer::LedId::LogoLED, "logo" },
+    { openrazer::LedId::BacklightLED, "backlight" },
+    { openrazer::LedId::MacroRecordingLED, "macro_recording" },
+    { openrazer::LedId::GameModeLED, "game_mode" },
+    { openrazer::LedId::KeymapRedLED, "keymap_red" },
+    { openrazer::LedId::KeymapGreenLED, "keymap_green" },
+    { openrazer::LedId::KeymapBlueLED, "keymap_blue" },
+    { openrazer::LedId::RightSideLED, "right_side" },
+    { openrazer::LedId::LeftSideLED, "left_side" }
 };
 
-const QHash<QString, RazerEffect> StringToEffect {
-    { "off", RazerEffect::Off },
-    { "on", RazerEffect::On },
-    { "static", RazerEffect::Static },
-    { "blinking", RazerEffect::Blinking },
-    { "breathing", RazerEffect::Breathing },
-    { "breathing_dual", RazerEffect::BreathingDual },
-    { "breathing_random", RazerEffect::BreathingRandom },
-    { "spectrum", RazerEffect::Spectrum },
-    { "wave", RazerEffect::Wave },
-    { "reactive", RazerEffect::Reactive }
+const QHash<QString, openrazer::Effect> StringToEffect {
+    { "off", openrazer::Effect::Off },
+    { "on", openrazer::Effect::On },
+    { "static", openrazer::Effect::Static },
+    { "blinking", openrazer::Effect::Blinking },
+    { "breathing", openrazer::Effect::Breathing },
+    { "breathing_dual", openrazer::Effect::BreathingDual },
+    { "breathing_random", openrazer::Effect::BreathingRandom },
+    { "spectrum", openrazer::Effect::Spectrum },
+    { "wave", openrazer::Effect::Wave },
+    { "reactive", openrazer::Effect::Reactive }
 };
 
-const QHash<RazerEffect, QString> EffectToString {
-    { RazerEffect::Off, "off" },
-    { RazerEffect::On, "on" },
-    { RazerEffect::Static, "static" },
-    { RazerEffect::Blinking, "blinking" },
-    { RazerEffect::Breathing, "breathing" },
-    { RazerEffect::BreathingDual, "breathing_dual" },
-    { RazerEffect::BreathingRandom, "breathing_random" },
-    { RazerEffect::Spectrum, "spectrum" },
-    { RazerEffect::Wave, "wave" },
-    { RazerEffect::Reactive, "reactive" }
+const QHash<openrazer::Effect, QString> EffectToString {
+    { openrazer::Effect::Off, "off" },
+    { openrazer::Effect::On, "on" },
+    { openrazer::Effect::Static, "static" },
+    { openrazer::Effect::Blinking, "blinking" },
+    { openrazer::Effect::Breathing, "breathing" },
+    { openrazer::Effect::BreathingDual, "breathing_dual" },
+    { openrazer::Effect::BreathingRandom, "breathing_random" },
+    { openrazer::Effect::Spectrum, "spectrum" },
+    { openrazer::Effect::Wave, "wave" },
+    { openrazer::Effect::Reactive, "reactive" }
 };
 
 const QHash<uchar, QString> keyboardLayoutIds {

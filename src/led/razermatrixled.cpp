@@ -30,7 +30,7 @@ bool RazerMatrixLED::initialize()
         qWarning("Error during setSpectrumInit()");
         return false;
     }
-    effect = RazerEffect::Spectrum;
+    effect = openrazer::Effect::Spectrum;
     return true;
 }
 
@@ -39,7 +39,7 @@ bool RazerMatrixLED::setOff()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("off"))
         return false;
-    saveFxAndColors(RazerEffect::Off, 0);
+    saveFxAndColors(openrazer::Effect::Off, 0);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Off);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -54,17 +54,17 @@ bool RazerMatrixLED::setOn()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("on"))
         return false;
-    saveFxAndColors(RazerEffect::On, 0);
+    saveFxAndColors(openrazer::Effect::On, 0);
     sendErrorReply(QDBusError::NotSupported);
     return false;
 }
 
-bool RazerMatrixLED::setStatic(RGB color)
+bool RazerMatrixLED::setStatic(openrazer::RGB color)
 {
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("static"))
         return false;
-    saveFxAndColors(RazerEffect::Static, 1, color);
+    saveFxAndColors(openrazer::Effect::Static, 1, color);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Static, 0x00, 0x00, 0x01, color.r, color.g, color.b);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -74,12 +74,12 @@ bool RazerMatrixLED::setStatic(RGB color)
     }
 }
 
-bool RazerMatrixLED::setBreathing(RGB color)
+bool RazerMatrixLED::setBreathing(openrazer::RGB color)
 {
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("breathing"))
         return false;
-    saveFxAndColors(RazerEffect::Breathing, 1, color);
+    saveFxAndColors(openrazer::Effect::Breathing, 1, color);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Breathing, 0x01, 0x00, 0x01, color.r, color.g, color.b);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -89,12 +89,12 @@ bool RazerMatrixLED::setBreathing(RGB color)
     }
 }
 
-bool RazerMatrixLED::setBreathingDual(RGB color, RGB color2)
+bool RazerMatrixLED::setBreathingDual(openrazer::RGB color, openrazer::RGB color2)
 {
     qDebug("Called %s with params %i, %i, %i, %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     if (!checkFx("breathing_dual"))
         return false;
-    saveFxAndColors(RazerEffect::BreathingDual, 2, color, color2);
+    saveFxAndColors(openrazer::Effect::BreathingDual, 2, color, color2);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Breathing, 0x02, 0x00, 0x02, color.r, color.g, color.b, color2.r, color2.g, color2.b);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -109,7 +109,7 @@ bool RazerMatrixLED::setBreathingRandom()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("breathing_random"))
         return false;
-    saveFxAndColors(RazerEffect::BreathingRandom, 0);
+    saveFxAndColors(openrazer::Effect::BreathingRandom, 0);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Breathing);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -119,7 +119,7 @@ bool RazerMatrixLED::setBreathingRandom()
     }
 }
 
-bool RazerMatrixLED::setBlinking(RGB color)
+bool RazerMatrixLED::setBlinking(openrazer::RGB color)
 {
     qDebug("Called %s with params %i, %i, %i", Q_FUNC_INFO, color.r, color.g, color.b);
     if (!checkFx("blinking"))
@@ -134,7 +134,7 @@ bool RazerMatrixLED::setSpectrum()
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFx("spectrum"))
         return false;
-    saveFxAndColors(RazerEffect::Spectrum, 0);
+    saveFxAndColors(openrazer::Effect::Spectrum, 0);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Spectrum);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -144,12 +144,12 @@ bool RazerMatrixLED::setSpectrum()
     }
 }
 
-bool RazerMatrixLED::setWave(WaveDirection direction)
+bool RazerMatrixLED::setWave(openrazer::WaveDirection direction)
 {
     qDebug("Called %s with params %hhu", Q_FUNC_INFO, static_cast<uchar>(direction));
     if (!checkFx("wave"))
         return false;
-    saveFxAndColors(RazerEffect::Wave, 0);
+    saveFxAndColors(openrazer::Effect::Wave, 0);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         // Wave direction is 0x00 / 0x01 instead of 0x01 / 0x02 for extended_matrix, so subtract one
         return setExtendedMatrixEffect(RazerMatrixEffectId::Wave, static_cast<uchar>(direction) - 0x01, 0x28);
@@ -162,12 +162,12 @@ bool RazerMatrixLED::setWave(WaveDirection direction)
     }
 }
 
-bool RazerMatrixLED::setReactive(ReactiveSpeed speed, RGB color)
+bool RazerMatrixLED::setReactive(openrazer::ReactiveSpeed speed, openrazer::RGB color)
 {
     qDebug("Called %s with params %hhu, %i, %i, %i", Q_FUNC_INFO, static_cast<uchar>(speed), color.r, color.g, color.b);
     if (!checkFx("reactive"))
         return false;
-    saveFxAndColors(RazerEffect::Reactive, 1, color);
+    saveFxAndColors(openrazer::Effect::Reactive, 1, color);
     if (device->hasQuirk(RazerDeviceQuirks::ExtendedMatrix)) {
         return setExtendedMatrixEffect(RazerMatrixEffectId::Reactive, 0x00, static_cast<uchar>(speed), 0x01, color.r, color.g, color.b);
     } else if (device->hasQuirk(RazerDeviceQuirks::MouseMatrix)) {
@@ -245,7 +245,7 @@ bool RazerMatrixLED::setExtendedMatrixEffect(RazerMatrixEffectId effect, uchar a
     razer_report report, response_report;
 
     // Custom Frame uses 0x00 LED ID
-    RazerLedId ledId = effect == RazerMatrixEffectId::CustomFrame ? RazerLedId::Unspecified : this->ledId;
+    openrazer::LedId ledId = effect == RazerMatrixEffectId::CustomFrame ? openrazer::LedId::Unspecified : this->ledId;
 
     report = razer_chroma_extended_matrix_effect(RazerVarstore::STORE, ledId, effect);
     report.arguments[3] = arg3;

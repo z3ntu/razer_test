@@ -11,8 +11,7 @@
 
 #ifndef RAZERDEVICEADAPTOR_H
 #define RAZERDEVICEADAPTOR_H
-#include "razer_test.h"
-using namespace razer_test;
+#include "openrazer.h"
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -54,12 +53,12 @@ class RazerDeviceAdaptor : public QDBusAbstractAdaptor
                                        "    </method>\n"
                                        "    <method name=\"getDPI\">\n"
                                        "      <arg direction=\"out\" type=\"(qq)\"/>\n"
-                                       "      <annotation value=\"RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
+                                       "      <annotation value=\"openrazer::DPI\" name=\"org.qtproject.QtDBus.QtTypeName.Out0\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setDPI\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(qq)\" name=\"dpi\"/>\n"
-                                       "      <annotation value=\"razer_test::RazerDPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::DPI\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"getMaxDPI\">\n"
                                        "      <arg direction=\"out\" type=\"q\"/>\n"
@@ -80,7 +79,7 @@ class RazerDeviceAdaptor : public QDBusAbstractAdaptor
                                        "      <arg direction=\"in\" type=\"y\" name=\"startColumn\"/>\n"
                                        "      <arg direction=\"in\" type=\"y\" name=\"endColumn\"/>\n"
                                        "      <arg direction=\"in\" type=\"a(yyy)\" name=\"rgbData\"/>\n"
-                                       "      <annotation value=\"QVector&lt;razer_test::RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.In3\"/>\n"
+                                       "      <annotation value=\"QVector&lt;openrazer::RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.In3\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"startCustomEffectThread\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -97,8 +96,8 @@ public: // PROPERTIES
     Q_PROPERTY(QList<QDBusObjectPath> Leds READ leds)
     QList<QDBusObjectPath> leds() const;
 
-    Q_PROPERTY(MatrixDimensions MatrixDimensions READ matrixDimensions)
-    MatrixDimensions matrixDimensions() const;
+    Q_PROPERTY(openrazer::MatrixDimensions MatrixDimensions READ matrixDimensions)
+    openrazer::MatrixDimensions matrixDimensions() const;
 
     Q_PROPERTY(QString Name READ name)
     QString name() const;
@@ -113,16 +112,16 @@ public: // PROPERTIES
     QString type() const;
 
 public Q_SLOTS: // METHODS
-    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QVector<razer_test::RGB> &rgbData);
+    bool defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QVector<openrazer::RGB> &rgbData);
     bool displayCustomFrame();
-    RazerDPI getDPI();
+    openrazer::DPI getDPI();
     QString getFirmwareVersion();
     QString getKeyboardLayout();
     ushort getMaxDPI();
     ushort getPollRate();
     QString getSerial();
     void pauseCustomEffectThread();
-    bool setDPI(razer_test::RazerDPI dpi);
+    bool setDPI(openrazer::DPI dpi);
     bool setPollRate(ushort poll_rate);
     bool startCustomEffectThread(const QString &effectName);
 Q_SIGNALS: // SIGNALS

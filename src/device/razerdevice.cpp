@@ -22,7 +22,7 @@
 #include <cstdio>
 #include <cstring>
 
-RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<RazerLedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, MatrixDimensions matrixDimensions, ushort maxDPI)
+RazerDevice::RazerDevice(QString dev_path, ushort vendor_id, ushort product_id, QString name, QString type, QVector<openrazer::LedId> ledIds, QStringList fx, QStringList features, QVector<RazerDeviceQuirks> quirks, openrazer::MatrixDimensions matrixDimensions, ushort maxDPI)
 {
     this->dev_path = dev_path;
     this->vendor_id = vendor_id;
@@ -187,7 +187,7 @@ QStringList RazerDevice::getSupportedFeatures()
     return features;
 }
 
-QHash<RazerLedId, RazerLED *> RazerDevice::getLeds()
+QHash<openrazer::LedId, RazerLED *> RazerDevice::getLeds()
 {
     return leds;
 }
@@ -278,7 +278,7 @@ QString RazerDevice::getKeyboardLayout()
     return keyboardLayoutIds.value(response_report.arguments[0], "unknown");
 }
 
-RazerDPI RazerDevice::getDPI()
+openrazer::DPI RazerDevice::getDPI()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFeature("dpi"))
@@ -304,7 +304,7 @@ RazerDPI RazerDevice::getDPI()
     return { dpi_x, dpi_y };
 }
 
-bool RazerDevice::setDPI(RazerDPI dpi)
+bool RazerDevice::setDPI(openrazer::DPI dpi)
 {
     qDebug("Called %s", Q_FUNC_INFO);
     if (!checkFeature("dpi"))
@@ -391,7 +391,7 @@ bool RazerDevice::setPollRate(ushort poll_rate)
     return true;
 }
 
-MatrixDimensions RazerDevice::getMatrixDimensions()
+openrazer::MatrixDimensions RazerDevice::getMatrixDimensions()
 {
     qDebug("Called %s", Q_FUNC_INFO);
     return matrixDimensions;
@@ -411,7 +411,7 @@ void RazerDevice::pauseCustomEffectThread()
     thread->pauseThread();
 }
 
-void RazerDevice::customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<RGB> &rgbData)
+void RazerDevice::customRgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<openrazer::RGB> &rgbData)
 {
     if (!defineCustomFrame(row, startColumn, endColumn, rgbData)) {
         qWarning("defineCustomFrame went wrong.");

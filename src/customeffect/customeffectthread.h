@@ -39,7 +39,7 @@ public:
     void pauseThread();
 
 signals:
-    void rgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<RGB> &rgbData);
+    void rgbDataReady(uchar row, uchar startColumn, uchar endColumn, const QVector<openrazer::RGB> &rgbData);
     void frameReady();
 
 protected:
@@ -58,7 +58,7 @@ private:
     QString currentEffect;
 
 private slots:
-    void customEffectRgbDataReady(const uchar row, const QVector<RGB> &rgbData);
+    void customEffectRgbDataReady(const uchar row, const QVector<openrazer::RGB> &rgbData);
 };
 
 #endif // CUSTOMEFFECTTHREAD_H

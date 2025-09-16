@@ -1,23 +1,9 @@
-/*
- * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2018-2019  Luca Weiss <luca@z3ntu.xyz>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright (C) 2018-2019  Luca Weiss <luca (at) z3ntu (dot) xyz>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef RAZERTEST_H
-#define RAZERTEST_H
+#ifndef OPENRAZER_H
+#define OPENRAZER_H
 
 #include <QDBusArgument>
 #include <QDBusMetaType>
@@ -31,9 +17,10 @@
 #error "Please choose a RAZER_TEST_DBUS_BUS for this platform!"
 #endif
 
-namespace razer_test {
+namespace openrazer {
+Q_NAMESPACE
 
-enum class RazerLedId : uchar {
+enum class LedId : uchar {
     Unspecified = 0x00,
     ScrollWheelLED = 0x01,
     BatteryLED = 0x03,
@@ -45,11 +32,15 @@ enum class RazerLedId : uchar {
     KeymapGreenLED = 0x0D,
     KeymapBlueLED = 0x0E,
     RightSideLED = 0x10,
-    LeftSideLED = 0x11
+    LeftSideLED = 0x11,
+    ChargingLED = 0x20,
+    FastChargingLED = 0x21,
+    FullyChargedLED = 0x22,
 };
+Q_ENUM_NS(LedId)
 
-// Marshall the RazerLedId data into a D-Bus argument
-inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerLedId &value)
+// Marshall the LedId data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const LedId &value)
 {
     argument.beginStructure();
     argument << static_cast<int>(value);
@@ -57,17 +48,17 @@ inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerLedId &valu
     return argument;
 }
 
-// Retrieve the RazerLedId data from the D-Bus argument
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerLedId &value)
+// Retrieve the LedId data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, LedId &value)
 {
     int a;
     argument.beginStructure();
     argument >> a;
     argument.endStructure();
-    value = static_cast<RazerLedId>(a);
+    value = static_cast<LedId>(a);
     return argument;
 }
-inline size_t qHash(RazerLedId key, size_t seed)
+inline uint qHash(LedId key, uint seed)
 {
     return ::qHash(static_cast<uchar>(key), seed);
 }
@@ -76,6 +67,7 @@ enum class WaveDirection : uchar {
     LEFT_TO_RIGHT = 0x01,
     RIGHT_TO_LEFT = 0x02
 };
+Q_ENUM_NS(WaveDirection)
 
 // Marshall the WaveDirection data into a D-Bus argument
 inline QDBusArgument &operator<<(QDBusArgument &argument, const WaveDirection &value)
@@ -97,12 +89,39 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, WaveDirect
     return argument;
 }
 
+enum class WheelDirection : uchar {
+    CLOCKWISE = 0x01,
+    COUNTER_CLOCKWISE = 0x02
+};
+Q_ENUM_NS(WheelDirection)
+
+// Marshall the WheelDirection data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const WheelDirection &value)
+{
+    argument.beginStructure();
+    argument << static_cast<int>(value);
+    argument.endStructure();
+    return argument;
+}
+
+// Retrieve the WheelDirection data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, WheelDirection &value)
+{
+    int a;
+    argument.beginStructure();
+    argument >> a;
+    argument.endStructure();
+    value = static_cast<WheelDirection>(a);
+    return argument;
+}
+
 enum class ReactiveSpeed : uchar {
     _500MS = 0x01,
     _1000MS = 0x02,
     _1500MS = 0x03,
     _2000MS = 0x04
 };
+Q_ENUM_NS(ReactiveSpeed)
 
 // Marshall the ReactiveSpeed data into a D-Bus argument
 inline QDBusArgument &operator<<(QDBusArgument &argument, const ReactiveSpeed &value)
@@ -124,21 +143,26 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, ReactiveSp
     return argument;
 }
 
-enum class RazerEffect {
+enum class Effect {
     Off,
     On,
     Static,
     Breathing,
     BreathingDual,
     BreathingRandom,
+    BreathingMono,
     Blinking,
     Spectrum,
     Wave,
+    Wheel,
     Reactive,
+    Ripple,
+    RippleRandom,
 };
+Q_ENUM_NS(Effect)
 
-// Marshall the RazerEffect data into a D-Bus argument
-inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerEffect &value)
+// Marshall the Effect data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const Effect &value)
 {
     argument.beginStructure();
     argument << static_cast<int>(value);
@@ -146,28 +170,28 @@ inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerEffect &val
     return argument;
 }
 
-// Retrieve the RazerEffect data from the D-Bus argument
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerEffect &value)
+// Retrieve the Effect data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, Effect &value)
 {
     int a;
     argument.beginStructure();
     argument >> a;
     argument.endStructure();
-    value = static_cast<RazerEffect>(a);
+    value = static_cast<Effect>(a);
     return argument;
 }
-inline size_t qHash(RazerEffect key, size_t seed)
+inline uint qHash(Effect key, uint seed)
 {
     return ::qHash(static_cast<uint>(key), seed);
 }
 
-struct RazerDPI {
+struct DPI {
     ushort dpi_x;
     ushort dpi_y;
 };
 
-// Marshall the RazerDPI data into a D-Bus argument
-inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &value)
+// Marshall the DPI data into a D-Bus argument
+inline QDBusArgument &operator<<(QDBusArgument &argument, const DPI &value)
 {
     argument.beginStructure();
     argument << value.dpi_x << value.dpi_y;
@@ -175,8 +199,8 @@ inline QDBusArgument &operator<<(QDBusArgument &argument, const RazerDPI &value)
     return argument;
 }
 
-// Retrieve the RazerDPI data from the D-Bus argument
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &value)
+// Retrieve the DPI data from the D-Bus argument
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, DPI &value)
 {
     argument.beginStructure();
     argument >> value.dpi_x >> value.dpi_y;
@@ -184,9 +208,9 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RazerDPI &
     return argument;
 }
 
-inline QDebug operator<<(QDebug dbg, const RazerDPI &value)
+inline QDebug operator<<(QDebug dbg, const DPI &value)
 {
-    dbg.nospace() << "RazerDPI(" << value.dpi_x << ", " << value.dpi_y << ")";
+    dbg.nospace() << "DPI(" << value.dpi_x << ", " << value.dpi_y << ")";
     return dbg.maybeSpace();
 }
 
@@ -211,6 +235,12 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, MatrixDime
     argument >> value.x >> value.y;
     argument.endStructure();
     return argument;
+}
+
+inline QDebug operator<<(QDebug dbg, const MatrixDimensions &value)
+{
+    dbg.nospace() << "MatrixDimensions(" << value.x << ", " << value.y << ")";
+    return dbg.maybeSpace();
 }
 
 struct RGB {
@@ -245,28 +275,34 @@ inline QDebug operator<<(QDebug dbg, const RGB &value)
 
 }
 
-Q_DECLARE_METATYPE(razer_test::RazerLedId)
-Q_DECLARE_METATYPE(razer_test::WaveDirection)
-Q_DECLARE_METATYPE(razer_test::ReactiveSpeed)
-Q_DECLARE_METATYPE(razer_test::RazerEffect)
-Q_DECLARE_METATYPE(razer_test::RazerDPI)
-Q_DECLARE_METATYPE(razer_test::MatrixDimensions)
-Q_DECLARE_METATYPE(razer_test::RGB)
+Q_DECLARE_METATYPE(openrazer::LedId)
+Q_DECLARE_METATYPE(openrazer::WaveDirection)
+Q_DECLARE_METATYPE(openrazer::WheelDirection)
+Q_DECLARE_METATYPE(openrazer::ReactiveSpeed)
+Q_DECLARE_METATYPE(openrazer::Effect)
+Q_DECLARE_METATYPE(openrazer::DPI)
+Q_DECLARE_METATYPE(openrazer::MatrixDimensions)
+Q_DECLARE_METATYPE(openrazer::RGB)
 
-namespace razer_test {
+namespace openrazer {
 
 inline void registerMetaTypes()
 {
-    qRegisterMetaType<RazerLedId>("RazerLedId");
-    qDBusRegisterMetaType<RazerLedId>();
+    qRegisterMetaType<LedId>("LedId");
+    qDBusRegisterMetaType<LedId>();
 
     qRegisterMetaType<WaveDirection>("WaveDirection");
     qDBusRegisterMetaType<WaveDirection>();
 
-    qRegisterMetaType<RazerDPI>("RazerDPI");
-    qDBusRegisterMetaType<RazerDPI>();
-    qRegisterMetaType<QVector<RazerDPI>>("QVector<RazerDPI>");
-    qDBusRegisterMetaType<QVector<RazerDPI>>();
+    qRegisterMetaType<WheelDirection>("WheelDirection");
+    qDBusRegisterMetaType<WheelDirection>();
+
+    qRegisterMetaType<DPI>("DPI");
+    qDBusRegisterMetaType<DPI>();
+    qRegisterMetaType<QVector<DPI>>("QVector<DPI>");
+    qDBusRegisterMetaType<QVector<DPI>>();
+    qRegisterMetaType<QPair<uchar, QVector<::openrazer::DPI>>>("QPair<uchar, QVector<DPI>>");
+    qDBusRegisterMetaType<QPair<uchar, QVector<::openrazer::DPI>>>();
 
     qRegisterMetaType<ReactiveSpeed>("ReactiveSpeed");
     qDBusRegisterMetaType<ReactiveSpeed>();
@@ -279,12 +315,12 @@ inline void registerMetaTypes()
     qRegisterMetaType<QVector<RGB>>("QVector<RGB>");
     qDBusRegisterMetaType<QVector<RGB>>();
 
-    qRegisterMetaType<RazerEffect>("RazerEffect");
-    qDBusRegisterMetaType<RazerEffect>();
+    qRegisterMetaType<Effect>("Effect");
+    qDBusRegisterMetaType<Effect>();
 
     qDBusRegisterMetaType<QList<QDBusObjectPath>>();
 }
 
 }
 
-#endif // RAZERTEST_H
+#endif // OPENRAZER_H

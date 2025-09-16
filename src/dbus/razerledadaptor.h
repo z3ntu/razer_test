@@ -11,8 +11,7 @@
 
 #ifndef RAZERLEDADAPTOR_H
 #define RAZERLEDADAPTOR_H
-#include "razer_test.h"
-using namespace razer_test;
+#include "openrazer.h"
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -39,10 +38,10 @@ class RazerLEDAdaptor : public QDBusAbstractAdaptor
                                        "      <annotation value=\"QVector&lt;RGB&gt;\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                                        "    </property>\n"
                                        "    <property access=\"read\" type=\"(i)\" name=\"CurrentEffect\">\n"
-                                       "      <annotation value=\"RazerEffect\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                                       "      <annotation value=\"openrazer::Effect\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                                        "    </property>\n"
                                        "    <property access=\"read\" type=\"(i)\" name=\"LedId\">\n"
-                                       "      <annotation value=\"RazerLedId\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
+                                       "      <annotation value=\"openrazer::LedId\" name=\"org.qtproject.QtDBus.QtTypeName\"/>\n"
                                        "    </property>\n"
                                        "    <method name=\"setOff\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -53,19 +52,19 @@ class RazerLEDAdaptor : public QDBusAbstractAdaptor
                                        "    <method name=\"setStatic\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color\"/>\n"
-                                       "      <annotation value=\"razer_test::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setBreathing\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color\"/>\n"
-                                       "      <annotation value=\"razer_test::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setBreathingDual\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color\"/>\n"
-                                       "      <annotation value=\"razer_test::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color2\"/>\n"
-                                       "      <annotation value=\"razer_test::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+                                       "      <annotation value=\"openrazer::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setBreathingRandom\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -73,7 +72,7 @@ class RazerLEDAdaptor : public QDBusAbstractAdaptor
                                        "    <method name=\"setBlinking\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color\"/>\n"
-                                       "      <annotation value=\"razer_test::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setSpectrum\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -81,14 +80,14 @@ class RazerLEDAdaptor : public QDBusAbstractAdaptor
                                        "    <method name=\"setWave\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(i)\" name=\"direction\"/>\n"
-                                       "      <annotation value=\"razer_test::WaveDirection\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::WaveDirection\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setReactive\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
                                        "      <arg direction=\"in\" type=\"(i)\" name=\"speed\"/>\n"
-                                       "      <annotation value=\"razer_test::ReactiveSpeed\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
+                                       "      <annotation value=\"openrazer::ReactiveSpeed\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
                                        "      <arg direction=\"in\" type=\"(yyy)\" name=\"color\"/>\n"
-                                       "      <annotation value=\"razer_test::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+                                       "      <annotation value=\"openrazer::RGB\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"setBrightness\">\n"
                                        "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -104,28 +103,28 @@ public:
     virtual ~RazerLEDAdaptor();
 
 public: // PROPERTIES
-    Q_PROPERTY(QVector<RGB> CurrentColors READ currentColors)
-    QVector<RGB> currentColors() const;
+    Q_PROPERTY(QVector<openrazer::RGB> CurrentColors READ currentColors)
+    QVector<openrazer::RGB> currentColors() const;
 
-    Q_PROPERTY(RazerEffect CurrentEffect READ currentEffect)
-    RazerEffect currentEffect() const;
+    Q_PROPERTY(openrazer::Effect CurrentEffect READ currentEffect)
+    openrazer::Effect currentEffect() const;
 
-    Q_PROPERTY(RazerLedId LedId READ ledId)
-    RazerLedId ledId() const;
+    Q_PROPERTY(openrazer::LedId LedId READ ledId)
+    openrazer::LedId ledId() const;
 
 public Q_SLOTS: // METHODS
     uchar getBrightness();
-    bool setBlinking(razer_test::RGB color);
-    bool setBreathing(razer_test::RGB color);
-    bool setBreathingDual(razer_test::RGB color, razer_test::RGB color2);
+    bool setBlinking(openrazer::RGB color);
+    bool setBreathing(openrazer::RGB color);
+    bool setBreathingDual(openrazer::RGB color, openrazer::RGB color2);
     bool setBreathingRandom();
     bool setBrightness(uchar brightness);
     bool setOff();
     bool setOn();
-    bool setReactive(razer_test::ReactiveSpeed speed, razer_test::RGB color);
+    bool setReactive(openrazer::ReactiveSpeed speed, openrazer::RGB color);
     bool setSpectrum();
-    bool setStatic(razer_test::RGB color);
-    bool setWave(razer_test::WaveDirection direction);
+    bool setStatic(openrazer::RGB color);
+    bool setWave(openrazer::WaveDirection direction);
 Q_SIGNALS: // SIGNALS
 };
 

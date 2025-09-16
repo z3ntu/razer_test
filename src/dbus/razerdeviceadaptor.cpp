@@ -40,10 +40,10 @@ QList<QDBusObjectPath> RazerDeviceAdaptor::leds() const
     return qvariant_cast<QList<QDBusObjectPath>>(parent()->property("Leds"));
 }
 
-MatrixDimensions RazerDeviceAdaptor::matrixDimensions() const
+openrazer::MatrixDimensions RazerDeviceAdaptor::matrixDimensions() const
 {
     // get the value of property MatrixDimensions
-    return qvariant_cast<MatrixDimensions>(parent()->property("MatrixDimensions"));
+    return qvariant_cast<openrazer::MatrixDimensions>(parent()->property("MatrixDimensions"));
 }
 
 QString RazerDeviceAdaptor::name() const
@@ -70,11 +70,11 @@ QString RazerDeviceAdaptor::type() const
     return qvariant_cast<QString>(parent()->property("Type"));
 }
 
-bool RazerDeviceAdaptor::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QVector<razer_test::RGB> &rgbData)
+bool RazerDeviceAdaptor::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, const QVector<openrazer::RGB> &rgbData)
 {
     // handle method call io.github.openrazer1.Device.defineCustomFrame
     bool out0;
-    QMetaObject::invokeMethod(parent(), "defineCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, row), Q_ARG(uchar, startColumn), Q_ARG(uchar, endColumn), Q_ARG(QVector<razer_test::RGB>, rgbData));
+    QMetaObject::invokeMethod(parent(), "defineCustomFrame", Q_RETURN_ARG(bool, out0), Q_ARG(uchar, row), Q_ARG(uchar, startColumn), Q_ARG(uchar, endColumn), Q_ARG(QVector<openrazer::RGB>, rgbData));
     return out0;
 }
 
@@ -86,11 +86,11 @@ bool RazerDeviceAdaptor::displayCustomFrame()
     return out0;
 }
 
-RazerDPI RazerDeviceAdaptor::getDPI()
+openrazer::DPI RazerDeviceAdaptor::getDPI()
 {
     // handle method call io.github.openrazer1.Device.getDPI
-    RazerDPI out0;
-    QMetaObject::invokeMethod(parent(), "getDPI", Q_RETURN_ARG(RazerDPI, out0));
+    openrazer::DPI out0;
+    QMetaObject::invokeMethod(parent(), "getDPI", Q_RETURN_ARG(openrazer::DPI, out0));
     return out0;
 }
 
@@ -140,11 +140,11 @@ void RazerDeviceAdaptor::pauseCustomEffectThread()
     QMetaObject::invokeMethod(parent(), "pauseCustomEffectThread");
 }
 
-bool RazerDeviceAdaptor::setDPI(razer_test::RazerDPI dpi)
+bool RazerDeviceAdaptor::setDPI(openrazer::DPI dpi)
 {
     // handle method call io.github.openrazer1.Device.setDPI
     bool out0;
-    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(razer_test::RazerDPI, dpi));
+    QMetaObject::invokeMethod(parent(), "setDPI", Q_RETURN_ARG(bool, out0), Q_ARG(openrazer::DPI, dpi));
     return out0;
 }
 

@@ -22,7 +22,7 @@
 
 bool RazerMatrixDevice::initialize()
 {
-    foreach (RazerLedId ledId, ledIds) {
+    foreach (openrazer::LedId ledId, ledIds) {
         auto *rled = new RazerMatrixLED(this, ledId);
         if (!rled->initialize()) {
             qWarning("Error while initializing LED with ID '%hhu'", static_cast<uchar>(ledId));
@@ -50,7 +50,7 @@ bool RazerMatrixDevice::displayCustomFrame()
     }
 }
 
-bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<RGB> rgbData)
+bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar endColumn, QVector<openrazer::RGB> rgbData)
 {
     qDebug("Called %s with param %i, %i, %i", Q_FUNC_INFO, row, startColumn, endColumn);
     qDebug() << " (cont.) rgbData:" << rgbData;
@@ -63,7 +63,7 @@ bool RazerMatrixDevice::defineCustomFrame(uchar row, uchar startColumn, uchar en
     }
 
     QByteArray rgbData2;
-    foreach (const RGB &color, rgbData) {
+    foreach (const openrazer::RGB &color, rgbData) {
         rgbData2.append(color.r);
         rgbData2.append(color.g);
         rgbData2.append(color.b);
